@@ -5,5 +5,6 @@ gemspec
 
 group :development do
   gem 'pry'
+  gem 'dotenv'
   gem 'pry-byebug', platform: :mri
 end
