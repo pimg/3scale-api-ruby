@@ -28,6 +28,7 @@ require '3scale/api'
 client = ThreeScale::API.new(admin_domain: 'foo-admin.3scale.net', provider_key: 'foobar')
 
 services = client.list_services
+```
 
 ## Design
 
