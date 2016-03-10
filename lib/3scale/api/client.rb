@@ -20,6 +20,11 @@ module ThreeScale
         extract(collection: 'services', entity: 'service', from: response)
       end
 
+      def create_service(attributes)
+        response = http_client.post('/admin/api/services', body: { service: attributes })
+        extract(entity: 'service', from: response)
+      end
+
       protected
 
       def extract(collection: nil, entity: , from: )

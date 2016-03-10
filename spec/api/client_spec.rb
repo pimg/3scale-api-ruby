@@ -18,4 +18,14 @@ RSpec.describe ThreeScale::API::Client do
       expect(client.list_services).to eq([])
     end
   end
+
+  context '#create_service' do
+    it do
+      expect(http_client).to receive(:post)
+                                 .with('/admin/api/services', body: { service: {}})
+                                 .and_return('service' => {})
+      expect(client.create_service({})).to eq({})
+    end
+  end
+
 end

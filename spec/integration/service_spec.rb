@@ -13,4 +13,9 @@ RSpec.describe 'Service API', type: :integration do
   context '#get_service' do
     it { expect(subject.show_service(service_id)).to be }
   end
+
+  context '#create_service' do
+    let(:name) { SecureRandom.uuid }
+    it { expect(subject.create_service('name' => name)).to include('name' => name) }
+  end
 end
