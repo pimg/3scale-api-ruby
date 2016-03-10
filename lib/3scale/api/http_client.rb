@@ -1,3 +1,5 @@
+require 'json'
+
 module ThreeScale
   module API
     class HttpClient
@@ -40,7 +42,7 @@ module ThreeScale
         module_function
 
         def decode(string)
-          JSON.parse(string)
+          ::JSON.parse(string)
         end
       end
     end
