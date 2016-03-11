@@ -1,6 +1,6 @@
 RSpec.describe ThreeScale::API::HttpClient do
   describe '#initialize' do
-    subject(:client) { described_class.new(admin_domain: 'foo-admin.3scale.net',
+    subject(:client) { described_class.new(endpoint: 'https://foo-admin.3scale.net',
                                            provider_key: 'some-key') }
 
     it { is_expected.to be }
@@ -12,7 +12,7 @@ RSpec.describe ThreeScale::API::HttpClient do
   let(:admin_domain) { 'foo-admin.3scale.net' }
   let(:provider_key) { 'some-key' }
 
-  subject(:client) { described_class.new(admin_domain: admin_domain, provider_key: provider_key) }
+  subject(:client) { described_class.new(endpoint: "https://#{admin_domain}", provider_key: provider_key) }
 
   describe '#get' do
     let!(:stub) {
