@@ -38,7 +38,17 @@ module ThreeScale
 
       # @param [::Net::HTTPResponse] response
       def parse(response)
-        parser.decode(response.body)
+        case response
+          when Net::HTTPUnprocessableEntity, Net::HTTPSuccess then parser.decode(response.body)
+          when Net::HTTPForbidden then forbidden!(response)
+          else "Can't handle #{response.inspect}"
+        end
+      end
+
+      class ForbiddenError < StandardError; end
+
+      def forbidden!(response)
+        raise ForbiddenError, response
       end
 
       def serialize(body)
