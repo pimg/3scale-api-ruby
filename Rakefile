@@ -7,3 +7,14 @@ begin
 rescue LoadError
   # no rspec available
 end
+
+begin
+  require 'yard'
+
+  YARD::Rake::YardocTask.new do |t|
+    t.files   = ['lib/**/*.rb']
+    t.options = ['--api' 'public']
+  end
+rescue LoadError
+  # no yard available
+end
