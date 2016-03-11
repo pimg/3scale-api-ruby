@@ -65,7 +65,10 @@ module ThreeScale
         module_function
 
         def decode(string)
-          ::JSON.parse(string)
+          case string
+            when ' '.freeze, ''.freeze then nil
+            else ::JSON.parse(string)
+          end
         end
 
         def encode(query)
