@@ -56,7 +56,7 @@ RSpec.describe ThreeScale::API::Client do
   context '#crete_method' do
     it do
       expect(http_client).to receive(:post)
-                                 .with('/admin/api/services/42/metrics/21/methods', body: { method: {}})
+                                 .with('/admin/api/services/42/metrics/21/methods', body: { metric: {}})
                                  .and_return('method' => {})
       expect(client.create_method(42, 21, {})).to eq({})
     end

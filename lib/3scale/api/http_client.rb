@@ -3,14 +3,28 @@ require 'json'
 module ThreeScale
   module API
     class HttpClient
-      attr_reader :admin_domain, :provider_key, :format
+      attr_reader :endpoint, :admin_domain, :provider_key, :headers, :format
 
-      def initialize(admin_domain: , provider_key: , format: :json, secure: true)
-        @admin_domain = admin_domain.freeze
+      def initialize(endpoint: , provider_key: , format: :json)
+        @endpoint = URI(endpoint).freeze
+        @admin_domain = @endpoint.host.freeze
         @provider_key = provider_key.freeze
-        @http = Net::HTTP.new(@admin_domain, secure ? 443 : 80)
-        @http.use_ssl = secure
-        @http.set_debug_output($stdout)
+        @http = Net::HTTP.new(admin_domain, @endpoint.port)
+        @http.use_ssl = @endpoint.is_a?(URI::HTTPS)
+
+        @headers = {
+            'Accept' => "application/#{format}",
+            'Content-Type' => "application/#{format}",
+            'Authorization' =>  'Basic ' + [":#{@provider_key}"].pack('m').delete("\r\n")
+        }
+
+        if debug?
+          @http.set_debug_output($stdout)
+          @headers['Accept-Encoding'] = 'identity'
+        end
+
+        @headers.freeze
+
         @format = format
       end
 
@@ -20,14 +34,6 @@ module ThreeScale
 
       def post(path, body: )
         parse @http.post("#{path}.#{format}", serialize(body), headers)
-      end
-
-      def headers
-        {
-            'Accept' => "application/#{format}",
-            'Content-Type' => "application/#{format}",
-            'Authorization' =>  'Basic ' + [":#{@provider_key}"].pack('m').delete("\r\n")
-        }
       end
 
       # @param [::Net::HTTPResponse] response
@@ -49,12 +55,20 @@ module ThreeScale
         end
       end
 
+      protected
+
+      def debug?
+        ENV.fetch('3SCALE_DEBUG', '0') == '1'
+      end
 
       module JSONParser
         module_function
 
         def decode(string)
-          ::JSON.parse(string)
+          case string
+            when ' '.freeze, ''.freeze then nil
+            else ::JSON.parse(string)
+          end
         end
 
         def encode(query)

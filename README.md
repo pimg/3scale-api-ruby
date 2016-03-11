@@ -25,7 +25,7 @@ Or install it yourself as:
 
 ```ruby
 require '3scale/api'
-client = ThreeScale::API.new(admin_domain: 'foo-admin.3scale.net', provider_key: 'foobar')
+client = ThreeScale::API.new(endpoint: 'https://foo-admin.3scale.net', provider_key: 'foobar')
 
 services = client.list_services
 ```

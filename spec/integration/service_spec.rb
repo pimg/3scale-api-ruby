@@ -1,11 +1,11 @@
 RSpec.describe 'Service API', type: :integration do
 
-  let(:admin_domain) { ENV.fetch('ADMIN_DOMAIN') }
+  let(:endpoint) { ENV.fetch('ENDPOINT') }
   let(:provider_key) { ENV.fetch('PROVIDER_KEY') }
   let(:service_id)   { ENV.fetch('SERVICE_ID') }
   let(:metric_id)   { ENV.fetch('METRIC_ID') }
 
-  subject!(:client) { ThreeScale::API.new(admin_domain: admin_domain, provider_key: provider_key) }
+  subject!(:client) { ThreeScale::API.new(endpoint: endpoint, provider_key: provider_key) }
 
   context '#list_services' do
     it { expect(subject.list_services.length).to be >= 1 }
@@ -17,7 +17,15 @@ RSpec.describe 'Service API', type: :integration do
 
   context '#create_service' do
     let(:name) { SecureRandom.uuid }
-    it { expect(subject.create_service('name' => name)).to include('name' => name) }
+    subject(:response) { client.create_service('name' => name) }
+
+    it { is_expected.to include('name' => name) }
+
+    context 'with invalid name' do
+      let(:name) { '' }
+
+      it { is_expected.to include('errors' => { 'name' => ["can't be blank"] }) }
+    end
   end
 
   context '#list_metrics' do
