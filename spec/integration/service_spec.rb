@@ -18,4 +18,18 @@ RSpec.describe 'Service API', type: :integration do
     let(:name) { SecureRandom.uuid }
     it { expect(subject.create_service('name' => name)).to include('name' => name) }
   end
+
+  context '#list_metrics' do
+    it { expect(subject.list_metrics(service_id).length).to be >= 1 }
+  end
+
+  context '#create_metric' do
+    let(:name) { SecureRandom.uuid }
+
+    it do
+      expect(subject.create_metric(service_id, 'friendly_name' => name, 'unit' => 'foo'))
+        .to include('friendly_name' => name, 'unit' => 'foo',
+                    'name' => name.tr('-', '_'), 'system_name' =>name.tr('-', '_') )
+    end
+  end
 end

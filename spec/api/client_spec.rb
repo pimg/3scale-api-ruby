@@ -28,4 +28,19 @@ RSpec.describe ThreeScale::API::Client do
     end
   end
 
+  context '#list_metrics' do
+    it do
+      expect(http_client).to receive(:get).with('/admin/api/services/42/metrics').and_return('metrics' => [])
+      expect(client.list_metrics(42)).to eq([])
+    end
+  end
+
+  context '#create_metric' do
+    it do
+      expect(http_client).to receive(:post)
+                                 .with('/admin/api/services/42/metrics', body: { metric: {}})
+                                 .and_return('metric' => {})
+      expect(client.create_metric(42, {})).to eq({})
+    end
+  end
 end
