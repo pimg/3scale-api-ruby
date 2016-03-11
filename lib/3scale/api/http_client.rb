@@ -36,6 +36,10 @@ module ThreeScale
         parse @http.post("#{path}.#{format}", serialize(body), headers)
       end
 
+      def delete(path)
+        parse @http.delete("#{path}.#{format}", headers)
+      end
+
       # @param [::Net::HTTPResponse] response
       def parse(response)
         case response
