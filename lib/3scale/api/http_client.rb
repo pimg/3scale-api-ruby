@@ -18,9 +18,14 @@ module ThreeScale
         parse @http.get("#{path}.#{format}", headers)
       end
 
+      def post(path, body: )
+        parse @http.post("#{path}.#{format}", serialize(body), headers)
+      end
+
       def headers
         {
             'Accept' => "application/#{format}",
+            'Content-Type' => "application/#{format}",
             'Authorization' =>  'Basic ' + [":#{@provider_key}"].pack('m').delete("\r\n")
         }
       end
@@ -28,6 +33,13 @@ module ThreeScale
       # @param [::Net::HTTPResponse] response
       def parse(response)
         parser.decode(response.body)
+      end
+
+      def serialize(body)
+        case body
+          when String then body
+          else parser.encode(body)
+        end
       end
 
       def parser
@@ -43,6 +55,10 @@ module ThreeScale
 
         def decode(string)
           ::JSON.parse(string)
+        end
+
+        def encode(query)
+          ::JSON.generate(query)
         end
       end
     end
