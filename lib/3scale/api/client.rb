@@ -93,6 +93,36 @@ module ThreeScale
         extract(entity: 'application_plan', from: response)
       end
 
+      # @api public
+      # @return [Array<Hash>]
+      # @param [Fixnum] application_plan_id Application Plan ID
+      def list_application_plan_limits(application_plan_id)
+        response = http_client.get("/admin/api/application_plans/#{application_plan_id}/limits")
+
+        extract(collection: 'limits', entity: 'limit', from: response)
+      end
+
+      # @api public
+      # @return [Hash]
+      # @param [Fixnum] application_plan_id Application Plan ID
+      # @param [Hash] attributes Metric Attributes
+      # @param [Fixnum] metric_id Metric ID
+      # @option attributes [String] :period Usage Limit period
+      # @option attributes [String] :value Usage Limit value
+      def create_application_plan_limit(application_plan_id, metric_id, attributes)
+        response = http_client.post("/admin/api/application_plans/#{application_plan_id}/metrics/#{metric_id}/limits",
+                                    body: { usage_limit: attributes })
+        extract(entity: 'limit', from: response)
+      end
+
+      # @param [Fixnum] application_plan_id Application Plan ID
+      # @param [Fixnum] metric_id Metric ID
+      # @param [Fixnum] limit_id Usage Limit ID
+      def delete_application_plan_limit(application_plan_id, metric_id, limit_id)
+        http_client.delete("/admin/api/application_plans/#{application_plan_id}/metrics/#{metric_id}/limits/#{limit_id}")
+        true
+      end
+
       protected
 
       def extract(collection: nil, entity: , from: )

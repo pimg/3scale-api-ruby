@@ -79,4 +79,33 @@ RSpec.describe ThreeScale::API::Client do
       expect(client.create_application_plan(42, {})).to eq({})
     end
   end
+
+  context '#list_application_plan_limits' do
+    it do
+      expect(http_client).to receive(:get)
+                                 .with('/admin/api/application_plans/42/limits')
+                                 .and_return('limits' => [{'limit' => {}}])
+      expect(client.list_application_plan_limits(42)).to eq([{}])
+    end
+  end
+
+  context '#create_application_plan_limit' do
+    it do
+      expect(http_client).to receive(:post)
+                                 .with('/admin/api/application_plans/42/metrics/21/limits', body: { usage_limit: {}})
+                                 .and_return('limit' => {})
+      expect(client.create_application_plan_limit(42, 21, {})).to eq({})
+    end
+  end
+
+  context '#delete_application_plan_limit' do
+    it do
+      expect(http_client).to receive(:delete)
+                                 .with('/admin/api/application_plans/42/metrics/21/limits/10')
+                                 .and_return(nil)
+      expect(client.delete_application_plan_limit(42, 21, 10)).to eq(true)
+    end
+  end
+
+
 end
