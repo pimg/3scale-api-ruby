@@ -4,6 +4,7 @@ RSpec.describe 'Service API', type: :integration do
   let(:provider_key) { ENV.fetch('PROVIDER_KEY') }
   let(:service_id)   { ENV.fetch('SERVICE_ID') }
   let(:metric_id)   { ENV.fetch('METRIC_ID') }
+  let(:application_plan_id)   { ENV.fetch('APPLICATION_PLAN_ID') }
 
   subject!(:client) { ThreeScale::API.new(endpoint: endpoint, provider_key: provider_key) }
 
@@ -66,6 +67,25 @@ RSpec.describe 'Service API', type: :integration do
     it do
       expect(subject.create_application_plan(service_id, 'name' => name))
           .to include('name' => name, 'default' => false)
+    end
+  end
+
+  context '#list_application_plan_limits' do
+    it { expect(subject.list_application_plan_limits(application_plan_id).length).to be >= 1 }
+  end
+
+  context '#create_application_plan_limit' do
+    let(:response) { subject.create_application_plan_limit(application_plan_id, metric_id, period: 'hour', value: 42) }
+
+    it do
+      expect(response).to include('period' => 'hour', 'value' => 42)
+    end
+
+    after do
+      # the test has to clean up after itself, otherwise the second run would fail validation
+      if (limit_id = response['id'])
+        subject.delete_application_plan_limit(application_plan_id, metric_id, limit_id)
+      end
     end
   end
 end
