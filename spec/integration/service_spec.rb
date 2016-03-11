@@ -3,6 +3,7 @@ RSpec.describe 'Service API', type: :integration do
   let(:admin_domain) { ENV.fetch('ADMIN_DOMAIN') }
   let(:provider_key) { ENV.fetch('PROVIDER_KEY') }
   let(:service_id)   { ENV.fetch('SERVICE_ID') }
+  let(:metric_id)   { ENV.fetch('METRIC_ID') }
 
   subject!(:client) { ThreeScale::API.new(admin_domain: admin_domain, provider_key: provider_key) }
 
@@ -30,6 +31,20 @@ RSpec.describe 'Service API', type: :integration do
       expect(subject.create_metric(service_id, 'friendly_name' => name, 'unit' => 'foo'))
         .to include('friendly_name' => name, 'unit' => 'foo',
                     'name' => name.tr('-', '_'), 'system_name' =>name.tr('-', '_') )
+    end
+  end
+
+  context '#list_methods' do
+    it { expect(subject.list_methods(service_id, metric_id).length).to be >= 1 }
+  end
+
+  context '#create_method' do
+    let(:name) { SecureRandom.uuid }
+
+    it do
+      expect(subject.create_method(service_id, metric_id, 'friendly_name' => name, 'unit' => 'bar'))
+          .to include('friendly_name' => name, # no unit
+                      'name' => name.tr('-', '_'), 'system_name' =>name.tr('-', '_') )
     end
   end
 end

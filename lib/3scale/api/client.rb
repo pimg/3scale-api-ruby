@@ -35,6 +35,17 @@ module ThreeScale
         extract(entity: 'metric', from: response)
       end
 
+      def list_methods(service_id, metric_id)
+        response = http_client.get("/admin/api/services/#{service_id}/metrics/#{metric_id}/methods")
+        extract(collection: 'methods', entity: 'method', from: response)
+      end
+
+      def create_method(service_id, metric_id, attributes)
+        response = http_client.post("/admin/api/services/#{service_id}/metrics/#{metric_id}/methods",
+                                   body: { metric: attributes })
+        extract(entity: 'method', from: response)
+      end
+
       protected
 
       def extract(collection: nil, entity: , from: )
