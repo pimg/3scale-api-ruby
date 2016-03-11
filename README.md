@@ -30,6 +30,8 @@ client = ThreeScale::API.new(endpoint: 'https://foo-admin.3scale.net', provider_
 services = client.list_services
 ```
 
+Get the whole list of methods available from [the RDoc site](http://www.rubydoc.info/gems/3scale-api/ThreeScale/API/Client).
+
 ## Design
 
 Design decisions:
