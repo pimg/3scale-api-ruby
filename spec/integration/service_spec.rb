@@ -17,7 +17,15 @@ RSpec.describe 'Service API', type: :integration do
 
   context '#create_service' do
     let(:name) { SecureRandom.uuid }
-    it { expect(subject.create_service('name' => name)).to include('name' => name) }
+    subject(:response) { client.create_service('name' => name) }
+
+    it { is_expected.to include('name' => name) }
+
+    context 'with invalid name' do
+      let(:name) { '' }
+
+      it { is_expected.to include('errors' => { 'name' => ["can't be blank"] }) }
+    end
   end
 
   context '#list_metrics' do

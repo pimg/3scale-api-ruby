@@ -55,7 +55,7 @@ module ThreeScale
 
         case from
           when Array then from.map { |e| e.fetch(entity) }
-          when Hash then from.fetch(entity)
+          when Hash then from.fetch(entity) { from }
           when nil then nil # raise exception?
           else
             raise "unknown #{from}"
