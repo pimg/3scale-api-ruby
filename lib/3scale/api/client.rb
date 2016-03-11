@@ -73,6 +73,26 @@ module ThreeScale
         extract(entity: 'method', from: response)
       end
 
+      # @api public
+      # @return [Array<Hash>]
+      # @param [Fixnum] service_id Service ID
+      def list_service_application_plans(service_id)
+        response = http_client.get("/admin/api/services/#{service_id}/application_plans")
+
+        extract(collection: 'plans', entity: 'application_plan', from: response)
+      end
+
+      # @api public
+      # @return [Hash]
+      # @param [Fixnum] service_id Service ID
+      # @param [Hash] attributes Metric Attributes
+      # @option attributes [String] :name Application Plan Name
+      def create_application_plan(service_id, attributes)
+        response = http_client.post("/admin/api/services/#{service_id}/application_plans",
+                                    body: { application_plan: attributes })
+        extract(entity: 'application_plan', from: response)
+      end
+
       protected
 
       def extract(collection: nil, entity: , from: )

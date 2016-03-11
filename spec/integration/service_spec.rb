@@ -55,4 +55,17 @@ RSpec.describe 'Service API', type: :integration do
                       'name' => name.tr('-', '_'), 'system_name' =>name.tr('-', '_') )
     end
   end
+
+  context '#list_service_application_plans' do
+    it { expect(subject.list_service_application_plans(service_id).length).to be >= 1 }
+  end
+
+  context '#create_method' do
+    let(:name) { SecureRandom.uuid }
+
+    it do
+      expect(subject.create_application_plan(service_id, 'name' => name))
+          .to include('name' => name, 'default' => false)
+    end
+  end
 end

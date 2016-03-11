@@ -61,4 +61,22 @@ RSpec.describe ThreeScale::API::Client do
       expect(client.create_method(42, 21, {})).to eq({})
     end
   end
+
+  context '#list_service_application_plans' do
+    it do
+      expect(http_client).to receive(:get)
+                                 .with('/admin/api/services/42/application_plans')
+                                 .and_return('plans' => [{'application_plan' => {}}])
+      expect(client.list_service_application_plans(42)).to eq([{}])
+    end
+  end
+
+  context '#create_application_plan' do
+    it do
+      expect(http_client).to receive(:post)
+                                 .with('/admin/api/services/42/application_plans', body: { application_plan: {}})
+                                 .and_return('application_plan' => {})
+      expect(client.create_application_plan(42, {})).to eq({})
+    end
+  end
 end
