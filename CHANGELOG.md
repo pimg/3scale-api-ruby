@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 ### Changed
 
+## [0.1.0] - 2016-03-14
+### Fixed
+- Added missing requires, fixes missing URI and Net::HTTP
+
 ## [0.1.0] - 2016-03-11
 ### Added
 - Service List, Show & Create
