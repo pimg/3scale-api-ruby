@@ -32,6 +32,10 @@ module ThreeScale
         parse @http.get("#{path}.#{format}", headers)
       end
 
+      def patch(path, body: )
+        parse @http.patch("#{path}.#{format}", serialize(body), headers)
+      end
+
       def post(path, body: )
         parse @http.post("#{path}.#{format}", serialize(body), headers)
       end
