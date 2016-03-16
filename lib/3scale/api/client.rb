@@ -35,6 +35,78 @@ module ThreeScale
       end
 
       # @api public
+      # @return [Hash]
+      # @param [Fixnum] service_id Service ID
+      def show_proxy(service_id)
+        response = http_client.get("/admin/api/services/#{service_id}/proxy")
+        extract(entity: 'proxy', from: response)
+      end
+
+      # @api public
+      # @return [Hash]
+      # @param [Fixnum] service_id Service ID
+      def update_proxy(service_id, attributes)
+        response = http_client.patch("/admin/api/services/#{service_id}/proxy",
+                                     body: { proxy: attributes })
+        extract(entity: 'proxy', from: response)
+      end
+
+      # @api public
+      # @return [Array<Hash>]
+      # @param [Fixnum] service_id Service ID
+      def list_mapping_rules(service_id)
+        response = http_client.get("/admin/api/services/#{service_id}/proxy/mapping_rules")
+        extract(entity: 'mapping_rule', collection: 'mapping_rules', from: response)
+      end
+
+      # @api public
+      # @return [Array<Hash>]
+      # @param [Fixnum] service_id Service ID
+      # @param [Fixnum] id Mapping Rule ID
+      def show_mapping_rule(service_id, id)
+        response = http_client.get("/admin/api/services/#{service_id}/proxy/mapping_rules/#{id}")
+        extract(entity: 'mapping_rule', from: response)
+      end
+
+      # @api public
+      # @return [Array<Hash>]
+      # @param [Fixnum] service_id Service ID
+      # @param [Hash] attributes Mapping Rule Attributes
+      # @option attributes [String] :http_method HTTP Method
+      # @option attributes [String] :pattern Pattern
+      # @option attributes [Fixnum] :delta Increase the metric by delta.
+      # @option attributes [Fixnum] :metric_id Metric ID
+      def create_mapping_rule(service_id, attributes)
+        response = http_client.post("/admin/api/services/#{service_id}/proxy/mapping_rules",
+                                   body: { mapping_rule: attributes })
+        extract(entity: 'mapping_rule', from: response)
+      end
+
+      # @api public
+      # @return [Array<Hash>]
+      # @param [Fixnum] service_id Service ID
+      # @param [Fixnum] id Mapping Rule ID
+      def delete_mapping_rule(service_id, id)
+        http_client.delete("/admin/api/services/#{service_id}/proxy/mapping_rules/#{id}")
+        true
+      end
+
+      # @api public
+      # @return [Array<Hash>]
+      # @param [Fixnum] service_id Service ID
+      # @param [Fixnum] id Mapping Rule ID
+      # @param [Hash] attributes Mapping Rule Attributes
+      # @option attributes [String] :http_method HTTP Method
+      # @option attributes [String] :pattern Pattern
+      # @option attributes [Fixnum] :delta Increase the metric by delta.
+      # @option attributes [Fixnum] :metric_id Metric ID
+      def update_mapping_rule(service_id, id, attributes)
+        response = http_client.patch("/admin/api/services/#{service_id}/mapping_rules/#{id}",
+                                   body: { mapping_rule: attributes })
+        extract(entity: 'mapping_rule', from: response)
+      end
+
+      # @api public
       # @return [Array<Hash>]
       # @param [Fixnum] service_id Service ID
       def list_metrics(service_id)

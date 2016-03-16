@@ -84,7 +84,7 @@ module ThreeScale
 
         def decode(string)
           case string
-            when ' '.freeze, ''.freeze then nil
+            when nil, ' '.freeze, ''.freeze then nil
             else ::JSON.parse(string)
           end
         end
