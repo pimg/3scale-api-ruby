@@ -9,6 +9,9 @@ rvm:
 - 2.1.8
 - jruby-9.0.5.0
 - rbx-3.19
+matrix:
+  allow_failures:
+  - rvm: rbx-3.19
 env:
   global:
   - secure: CTDtGyFZWGF9rlh+Eh6NxnFD8zomkp7zyoYyBKoM/RuzOlU2nzVGIoHLd+xmTa2QjhND3i8cYNbTenSivMyueatzUShzijNKH1HRpJ6/mrA9CPFj5QBgGlGqB+fbBjLBJrPkSgyLmtdKca83ok4Mkv0KAx4zS5Qmjlkak1Zji+zU8Z4ztc0y0wmIfebTNSnj+5S8kgPE01RTpBA1dyBK9L75m6kl3PrDtiKqLD79TxScNE9LsSiQ6XqfJPhn9jFFE47vd/DCFlOqif6g760v99Z+EPel6+Bj/pGUzYhexO408y8k3o+YMV0TOGZ9iBTgT3KV0TDMGUn5weOGJMMRllU5eVTkeYb4HvaejCcCPDkt70rQmBbaBdkVeL+Jkup8XyvODydoJIYwqps9NHTlaAhWUpVNmRPs/HTzdCXE9Dv+n7ARPHPgnEqU3HevXcIaw2p3AzydybFiRl1l9apOex0Jbr0UBcC+n7cZTz012nTODhP9rJmqIye1nscRD9ExklW5idyoDkiBNGjIdcc2tufH+tYl58w9Fr56oRhZ4uqzS3DCwKcQEIXrMTjFTT/fbE3SrGpovO7/s0FBad9702g/Xb3fWFOgA/LHjkecFWxPiHxDLA+5QRPst+k4WOVS7odAPg66b919YNXU6RK6drM1V6hc+O7FGnPS9U2P6Nk=
