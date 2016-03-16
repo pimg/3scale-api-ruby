@@ -1,19 +1,21 @@
+require 'securerandom'
+
 RSpec.describe 'Service API', type: :integration do
 
   let(:endpoint) { ENV.fetch('ENDPOINT') }
   let(:provider_key) { ENV.fetch('PROVIDER_KEY') }
-  let(:service_id)   { ENV.fetch('SERVICE_ID') }
-  let(:metric_id)   { ENV.fetch('METRIC_ID') }
-  let(:application_plan_id)   { ENV.fetch('APPLICATION_PLAN_ID') }
+  let(:service_id)   { ENV.fetch('SERVICE_ID').to_i }
+  let(:metric_id)   { ENV.fetch('METRIC_ID').to_i }
+  let(:application_plan_id)   { ENV.fetch('APPLICATION_PLAN_ID').to_i }
 
-  subject!(:client) { ThreeScale::API.new(endpoint: endpoint, provider_key: provider_key) }
+  subject(:client) { ThreeScale::API.new(endpoint: endpoint, provider_key: provider_key) }
 
   context '#list_services' do
-    it { expect(subject.list_services.length).to be >= 1 }
+    it { expect(client.list_services.length).to be >= 1 }
   end
 
-  context '#get_service' do
-    it { expect(subject.show_service(service_id)).to be }
+  context '#show_service' do
+    it { expect(client.show_service(service_id)).to be }
   end
 
   context '#create_service' do
@@ -29,62 +31,103 @@ RSpec.describe 'Service API', type: :integration do
     end
   end
 
+  context '#show_proxy' do
+    it { expect(client.show_proxy(service_id).keys.size).to be >= 1 }
+  end
+
+  context '#update_proxy' do
+    subject(:response) { client.update_proxy(service_id, credentials_location: 'headers') }
+    it { is_expected.to include('credentials_location' => 'headers') }
+  end
+
+  context '#create_mapping_rules' do
+    subject(:create) { client.create_mapping_rule(service_id,
+                                                    http_method: 'PUT',
+                                                    pattern: '/',
+                                                    metric_id: metric_id,
+                                                    delta: 2) }
+
+    it { expect(create).to include('http_method' => 'PUT') }
+
+    after { client.delete_mapping_rule(service_id, create.fetch('id')) }
+
+    context '#list_mapping_rules' do
+      before { create }
+      subject(:list) { client.list_mapping_rules(service_id) }
+      it { expect(list.size).to be >= 1 }
+      it { is_expected.to include(create) }
+    end
+
+    context '#delete_mapping_rule' do
+      subject(:delete) { client.delete_mapping_rule(service_id, create.fetch('id')) }
+
+      it { is_expected.to be }
+    end
+
+    context '#show_mapping_rule' do
+      subject(:show) { client.show_mapping_rule(service_id, create.fetch('id')) }
+      it { is_expected.to include('http_method' => 'PUT', 'pattern' => '/', 'metric_id' => metric_id, 'delta' => 2) }
+    end
+  end
+
   context '#list_metrics' do
-    it { expect(subject.list_metrics(service_id).length).to be >= 1 }
+    it { expect(client.list_metrics(service_id).length).to be >= 1 }
   end
 
   context '#create_metric' do
     let(:name) { SecureRandom.uuid }
 
     it do
-      expect(subject.create_metric(service_id, 'friendly_name' => name, 'unit' => 'foo'))
+      expect(client.create_metric(service_id, 'friendly_name' => name, 'unit' => 'foo'))
         .to include('friendly_name' => name, 'unit' => 'foo',
                     'name' => name.tr('-', '_'), 'system_name' =>name.tr('-', '_') )
     end
   end
 
   context '#list_methods' do
-    it { expect(subject.list_methods(service_id, metric_id).length).to be >= 1 }
+    it { expect(client.list_methods(service_id, metric_id).length).to be >= 1 }
   end
 
   context '#create_method' do
     let(:name) { SecureRandom.uuid }
 
     it do
-      expect(subject.create_method(service_id, metric_id, 'friendly_name' => name, 'unit' => 'bar'))
+      expect(client.create_method(service_id, metric_id, 'friendly_name' => name, 'unit' => 'bar'))
           .to include('friendly_name' => name, # no unit
                       'name' => name.tr('-', '_'), 'system_name' =>name.tr('-', '_') )
     end
   end
 
   context '#list_service_application_plans' do
-    it { expect(subject.list_service_application_plans(service_id).length).to be >= 1 }
+    it { expect(client.list_service_application_plans(service_id).length).to be >= 1 }
   end
 
   context '#create_method' do
     let(:name) { SecureRandom.uuid }
 
     it do
-      expect(subject.create_application_plan(service_id, 'name' => name))
+      expect(client.create_application_plan(service_id, 'name' => name))
           .to include('name' => name, 'default' => false)
     end
   end
 
-  context '#list_application_plan_limits' do
-    it { expect(subject.list_application_plan_limits(application_plan_id).length).to be >= 1 }
-  end
 
   context '#create_application_plan_limit' do
-    let(:response) { subject.create_application_plan_limit(application_plan_id, metric_id, period: 'hour', value: 42) }
+    let(:create) { client.create_application_plan_limit(application_plan_id, metric_id, period: 'hour', value: 42) }
 
     it do
-      expect(response).to include('period' => 'hour', 'value' => 42)
+      expect(create).to include('period' => 'hour', 'value' => 42)
+    end
+
+    context '#list_application_plan_limits' do
+      before { create }
+      it { expect(client.list_application_plan_limits(application_plan_id).length).to be >= 1 }
     end
 
     after do
       # the test has to clean up after itself, otherwise the second run would fail validation
-      if (limit_id = response['id'])
-        subject.delete_application_plan_limit(application_plan_id, metric_id, limit_id)
+      if (limit_id = create['id'])
+        client.delete_application_plan_limit(application_plan_id, metric_id, limit_id)
       end
     end
   end

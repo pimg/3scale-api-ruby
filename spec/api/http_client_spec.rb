@@ -51,6 +51,25 @@ RSpec.describe ThreeScale::API::HttpClient do
     end
   end
 
+  describe '#patch' do
+    let!(:stub) {
+      stub_request(:patch,  "https://:#{provider_key}@#{admin_domain}/foo.json")
+          .with(body: '{"bar":"baz"}')
+          .and_return(body: '{"foo":"bar"}')
+    }
+
+    subject { client.patch('/foo', body: {bar: 'baz'}) }
+
+    it 'makes a request' do
+      is_expected.to be
+      expect(stub).to have_been_requested
+    end
+
+    it 'returns body' do
+      is_expected.to eq('foo' => 'bar')
+    end
+  end
+
 
   describe '#delete' do
     let!(:stub) {

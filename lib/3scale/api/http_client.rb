@@ -34,6 +34,10 @@ module ThreeScale
         parse @http.get("#{path}.#{format}", headers)
       end
 
+      def patch(path, body: )
+        parse @http.patch("#{path}.#{format}", serialize(body), headers)
+      end
+
       def post(path, body: )
         parse @http.post("#{path}.#{format}", serialize(body), headers)
       end
@@ -82,7 +86,7 @@ module ThreeScale
 
         def decode(string)
           case string
-            when ' '.freeze, ''.freeze then nil
+            when nil, ' '.freeze, ''.freeze then nil
             else ::JSON.parse(string)
           end
         end

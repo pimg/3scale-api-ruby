@@ -28,10 +28,56 @@ RSpec.describe ThreeScale::API::Client do
     end
   end
 
-  context '#list_metrics' do
+  context '#show_proxy' do
     it do
-      expect(http_client).to receive(:get).with('/admin/api/services/42/metrics').and_return('metrics' => [])
-      expect(client.list_metrics(42)).to eq([])
+      expect(http_client).to receive(:get).with('/admin/api/services/42/proxy').and_return('proxy' => {})
+      expect(client.show_proxy(42)).to eq({})
+    end
+  end
+
+  context '#update_proxy' do
+    it do
+      expect(http_client).to receive(:patch)
+                                 .with('/admin/api/services/42/proxy', body: { proxy: {} })
+                                 .and_return('proxy' => {})
+      expect(client.update_proxy(42, {})).to eq({})
+    end
+  end
+
+  context '#list_mapping_rules' do
+    it do
+      expect(http_client).to receive(:get)
+                                 .with('/admin/api/services/42/proxy/mapping_rules')
+                                 .and_return('mapping_rules' => [{'mapping_rule' => {}}])
+      expect(client.list_mapping_rules(42)).to eq([{}])
+    end
+  end
+
+  context '#show_mapping_rule' do
+    it do
+      expect(http_client).to receive(:get)
+                                 .with('/admin/api/services/42/proxy/mapping_rules/21')
+                                 .and_return('mapping_rule' => {})
+      expect(client.show_mapping_rule(42, 21)).to eq({})
+    end
+  end
+
+  context '#create_mapping_rule' do
+    it do
+      expect(http_client).to receive(:post)
+                                 .with('/admin/api/services/42/proxy/mapping_rules',
+                                       body: { mapping_rule: { http_method: 'GET'}})
+                                 .and_return('mapping_rule' => { 'http_method' => 'GET'})
+      expect(client.create_mapping_rule(42, http_method: 'GET')).to eq('http_method' => 'GET')
+    end
+  end
+
+  context '#create_mapping_rule' do
+    it do
+      expect(http_client).to receive(:delete)
+                                 .with('/admin/api/services/42/proxy/mapping_rules/21')
+                                 .and_return(' ')
+      expect(client.delete_mapping_rule(42, 21)).to eq(true)
     end
   end
 
