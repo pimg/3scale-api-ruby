@@ -6,7 +6,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 ### Changed
 
-## [0.1.0] - 2016-03-14
+## [0.1.2] - 2016-03-16
+### Added
+- Proxy Show & Update
+- Mapping Rules List, Show, Create, Update & Delete
+
+## [0.1.1] - 2016-03-14
 ### Fixed
 - Added missing requires, fixes missing URI and Net::HTTP
 
