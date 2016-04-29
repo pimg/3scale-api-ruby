@@ -26,6 +26,14 @@ module ThreeScale
       end
 
       # @api public
+      # @return [Array<Hash>]
+      # @param [Fixnum] service_id Service ID
+      def list_applications(service_id)
+        response = http_client.get("/admin/api/applications", params: { service_id: service_id })
+        extract(collection: 'applications', entity: 'application', from: response)
+      end
+
+      # @api public
       # @return [Hash]
       # @param [Hash] attributes Service Attributes
       # @option attributes [String] :name Service Name
