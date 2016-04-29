@@ -30,20 +30,20 @@ module ThreeScale
         @format = format
       end
 
-      def get(path)
-        parse @http.get("#{path}.#{format}", headers)
+      def get(path, params: nil)
+        parse @http.get(format_path_n_query(path, params), headers)
       end
 
-      def patch(path, body: )
-        parse @http.patch("#{path}.#{format}", serialize(body), headers)
+      def patch(path, body: , params: nil)
+        parse @http.patch(format_path_n_query(path, params), serialize(body), headers)
       end
 
-      def post(path, body: )
-        parse @http.post("#{path}.#{format}", serialize(body), headers)
+      def post(path, body: , params: nil)
+        parse @http.post(format_path_n_query(path, params), serialize(body), headers)
       end
 
-      def delete(path)
-        parse @http.delete("#{path}.#{format}", headers)
+      def delete(path, params: nil)
+        parse @http.delete(format_path_n_query(path, params), headers)
       end
 
       # @param [::Net::HTTPResponse] response
@@ -79,6 +79,13 @@ module ThreeScale
 
       def debug?
         ENV.fetch('3SCALE_DEBUG', '0') == '1'
+      end
+
+      # Helper to create a string representing a path plus a query string
+      def format_path_n_query(path, params)
+        path = "#{path}.#{format}"
+        path << "?#{URI.encode_www_form(params)}" unless params.nil?
+        path
       end
 
       module JSONParser
