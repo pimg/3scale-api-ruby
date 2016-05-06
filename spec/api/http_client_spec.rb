@@ -34,12 +34,12 @@ RSpec.describe ThreeScale::API::HttpClient do
 
   describe '#post' do
     let!(:stub) {
-      stub_request(:post,  "https://:#{provider_key}@#{admin_domain}/foo.json")
+      stub_request(:post,  "https://:#{provider_key}@#{admin_domain}/foo.json?one=1&two=2")
           .with(body: '{"bar":"baz"}')
           .and_return(body: '{"foo":"bar"}')
     }
 
-    subject { client.post('/foo', body: {bar: 'baz'}) }
+    subject { client.post('/foo', body: {bar: 'baz'}, params: { one: 1, two: 2 }) }
 
     it 'makes a request' do
       is_expected.to be
@@ -53,12 +53,12 @@ RSpec.describe ThreeScale::API::HttpClient do
 
   describe '#patch' do
     let!(:stub) {
-      stub_request(:patch,  "https://:#{provider_key}@#{admin_domain}/foo.json")
+      stub_request(:patch,  "https://:#{provider_key}@#{admin_domain}/foo.json?one=1&two=2")
           .with(body: '{"bar":"baz"}')
           .and_return(body: '{"foo":"bar"}')
     }
 
-    subject { client.patch('/foo', body: {bar: 'baz'}) }
+    subject { client.patch('/foo', body: {bar: 'baz'}, params: { one: 1, two: 2 }) }
 
     it 'makes a request' do
       is_expected.to be
@@ -73,11 +73,11 @@ RSpec.describe ThreeScale::API::HttpClient do
 
   describe '#delete' do
     let!(:stub) {
-      stub_request(:delete,  "https://:#{provider_key}@#{admin_domain}/foo.json")
+      stub_request(:delete,  "https://:#{provider_key}@#{admin_domain}/foo.json?one=1&two=2")
           .and_return(body: '{"foo":"bar"}')
     }
 
-    subject { client.delete('/foo') }
+    subject { client.delete('/foo', params: { one: 1, two: 2 }) }
 
     it 'makes a request' do
       is_expected.to be
