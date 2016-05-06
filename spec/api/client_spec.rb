@@ -44,6 +44,13 @@ RSpec.describe ThreeScale::API::Client do
     end
   end
 
+  context '#list_applications' do
+    it do
+      expect(http_client).to receive(:get).with('/admin/api/applications').and_return('applications' => [])
+      expect(client.list_applications).to eq([])
+    end
+  end
+
   context '#list_mapping_rules' do
     it do
       expect(http_client).to receive(:get)
