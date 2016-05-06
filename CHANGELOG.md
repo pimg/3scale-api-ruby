@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- List Applications by Service
+
 ### Changed
 
 ## [0.1.2] - 2016-03-16
@@ -22,5 +24,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Application Plans List & Create
 - Usage Limits List, Create & Delete
 
-[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.2
+[0.1.1]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.1
 [0.1.0]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.0
