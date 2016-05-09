@@ -1,8 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
+This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachangelog.com/).
 
 ## [Unreleased]
+### Added
+
+## [0.1.3] - 2016-05-09
 ### Added
 - Applications List & List by Service
 
@@ -24,7 +28,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Application Plans List & Create
 - Usage Limits List, Create & Delete
 
-[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.3
 [0.1.2]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.2
 [0.1.1]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.1
 [0.1.0]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.0
