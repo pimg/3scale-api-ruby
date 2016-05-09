@@ -46,8 +46,17 @@ RSpec.describe ThreeScale::API::Client do
 
   context '#list_applications' do
     it do
-      expect(http_client).to receive(:get).with('/admin/api/applications').and_return('applications' => [])
+      expect(http_client).to receive(:get)
+                                 .with('/admin/api/applications', params: nil)
+                                 .and_return('applications' => [])
       expect(client.list_applications).to eq([])
+    end
+
+    it 'filters by service'do
+      expect(http_client).to receive(:get)
+                                 .with('/admin/api/applications', params: { service_id: 42 })
+                                 .and_return('applications' => [])
+      expect(client.list_applications(service_id: 42)).to eq([])
     end
   end
 

@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- List Applications by Service
+- Applications List & List by Service
 
 ### Changed
 
