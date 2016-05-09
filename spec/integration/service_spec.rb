@@ -40,6 +40,10 @@ RSpec.describe 'Service API', type: :integration do
     it { is_expected.to include('credentials_location' => 'headers') }
   end
 
+  context '#list_applications' do
+    it { expect(client.list_applications.length).to be >= 1 }
+  end
+
   context '#create_mapping_rules' do
     subject(:create) { client.create_mapping_rule(service_id,
                                                     http_method: 'PUT',
