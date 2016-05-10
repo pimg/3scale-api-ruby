@@ -60,6 +60,78 @@ RSpec.describe ThreeScale::API::Client do
     end
   end
 
+  context '#show_application' do
+    it do
+      expect(http_client).to receive(:get)
+                                 .with('/admin/api/applications/find', params: { application_id: 42 })
+                                 .and_return('application' => { 'id' => 42 })
+      expect(client.show_application(42)).to eq({ 'id' => 42 })
+    end
+  end
+
+  context '#find_application' do
+    it 'finds by id' do
+      expect(http_client).to receive(:get)
+                                 .with('/admin/api/applications/find', params: { application_id: 42 })
+                                 .and_return('application' => { 'id' => 42 })
+      expect(client.find_application(id: 42)).to eq({ 'id' => 42 })
+    end
+
+    it 'finds by user_key' do
+      expect(http_client).to receive(:get)
+                                 .with('/admin/api/applications/find', params: { user_key: 'hex' })
+                                 .and_return('application' => { 'user_key' => 'hex' })
+      expect(client.find_application(user_key: 'hex')).to eq({ 'user_key' => 'hex' })
+    end
+
+    it 'finds by app_id' do
+      expect(http_client).to receive(:get)
+                                 .with('/admin/api/applications/find', params: { app_id: 'hex' })
+                                 .and_return('application' => { 'app_id' => 'hex' })
+      expect(client.find_application(application_id: 'hex')).to eq({ 'app_id' => 'hex' })
+    end
+  end
+
+
+  context '#create_application' do
+    it do
+      expect(http_client).to receive(:post)
+                                 .with('/admin/api/accounts/42/applications', body: {
+                                     name: 'foo',
+                                     description: 'foo description',
+                                     plan_id: 21,
+                                     'user_key' => 'foobar',
+                                     applicaton_key: 'hex'
+                                 })
+                                 .and_return('application' => { 'id' => 42 })
+      expect(client.create_application(42,
+                                       plan_id: 21, name: 'foo', description: 'foo description',
+                                       'user_key' => 'foobar',
+                                       applicaton_key: 'hex'
+
+      )).to eq({ 'id' => 42 })
+    end
+  end
+
+  context '#signup' do
+    it do
+      expect(http_client).to receive(:post)
+                                 .with('/admin/api/signup', body: { org_name: 'foo',
+                                                                    username: 'foobar',
+                                                                    email: 'foo@example.com',
+                                                                    password: 'pass',
+                                                                    'billing_address_country' => 'Spain',
+                                                                    billing_address_city: 'Barcelona' })
+                                 .and_return('account' => { 'id' => 42 })
+      expect(client.signup(name: 'foo', username: 'foobar', password: 'pass',
+                           billing_address_city: 'Barcelona', email: 'foo@example.com',
+                           'billing_address_country' => 'Spain'))
+          .to eq({'id' => 42})
+    end
+
+  end
+
+
   context '#list_mapping_rules' do
     it do
       expect(http_client).to receive(:get)
