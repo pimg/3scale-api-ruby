@@ -60,6 +60,25 @@ RSpec.describe ThreeScale::API::Client do
     end
   end
 
+  context '#signup' do
+    it do
+      expect(http_client).to receive(:post)
+                                 .with('/admin/api/signup', body: { org_name: 'foo',
+                                                                    username: 'foo@example.com',
+                                                                    email: 'foo@example.com',
+                                                                    password: 'pass',
+                                                                    'billing_address_country' => 'Spain',
+                                                                    billing_address_city: 'Barcelona' })
+                                 .and_return('account' => { 'id' => 42 })
+      expect(client.signup(name: 'foo', email: 'foo@example.com', password: 'pass',
+                           billing_address_city: 'Barcelona',
+                           'billing_address_country' => 'Spain'))
+          .to eq({'id' => 42})
+    end
+
+  end
+
+
   context '#list_mapping_rules' do
     it do
       expect(http_client).to receive(:get)

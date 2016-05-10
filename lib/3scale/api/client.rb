@@ -35,6 +35,25 @@ module ThreeScale
       end
 
       # @api public
+      # @return [Hash] an Account
+      # @param [String] name Account Name
+      # @param [String] email User Email
+      # @param [String] password User Password
+      # @param [Hash] attributes User and Account Attributes
+      # @option attributes [String] :account_plan_id Account Plan ID
+      # @option attributes [String] :service_plan_id Service Plan ID
+      # @option attributes [String] :application_plan_id Application Plan ID
+      # @option attributes [String] :username User Name. Defaults to User Email.
+      def signup(attributes = {}, name: , email: , password: , **rest)
+        body = { org_name: name,
+                 username: email,
+                 email: email,
+                 password: password }.merge(attributes).merge(rest)
+        response = http_client.post('/admin/api/signup', body: body)
+        extract(entity: 'account', from: response)
+      end
+
+      # @api public
       # @return [Hash]
       # @param [Hash] attributes Service Attributes
       # @option attributes [String] :name Service Name
