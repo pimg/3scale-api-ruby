@@ -45,13 +45,30 @@ module ThreeScale
       # @return [Hash]
       # @param [Fixnum] id Application ID
       # @param [String] user_key Application User Key
-      # @param [String] app_id Application App ID
-      def find_application(id: nil, user_key: nil, app_id: nil)
-        params = { application_id: id, user_key: user_key, app_id: app_id }.reject { |_,value| value.nil? }
+      # @param [String] application_id Application App ID
+      def find_application(id: nil, user_key: nil, application_id: nil)
+        params = { application_id: id, user_key: user_key, app_id: application_id }.reject { |_,value| value.nil? }
         response = http_client.get('/admin/api/applications/find', params: params)
         extract(entity: 'application', from: response)
       end
 
+      # @api public
+      # @return [Hash] an Application
+      # @param [Fixnum] plan_id Application Plan ID
+      # @param [String] name Application Name
+      # @param [String] description Application Description
+      # @param [Hash] attributes Application Attributes
+      # @option attributes [String] :user_key Application User Key
+      # @option attributes [String] :application_id Application App ID
+      # @option attributes [String] :application_key Application App Key(s)
+      # @option attributes [String] :username User Name. Defaults to User Email.
+      def create_application(account_id, attributes = {}, plan_id: , name: , description: , **rest)
+        body = { plan_id: plan_id,
+                 name: name,
+                 description: description }.merge(attributes).merge(rest)
+        response = http_client.post("/admin/api/accounts/#{account_id}/applications", body: body)
+        extract(entity: 'application', from: response)
+      end
 
       # @api public
       # @return [Hash] an Account
