@@ -6,6 +6,7 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 ## [Unreleased]
 ### Added
 - Account Create (Signup Express)
+- Application Read & Find
 
 ## [0.1.3] - 2016-05-09
 ### Added

@@ -35,6 +35,25 @@ module ThreeScale
       end
 
       # @api public
+      # @return [Hash]
+      # @param [Fixnum] id Application ID
+      def show_application(id)
+        find_application(id: id)
+      end
+
+      # @api public
+      # @return [Hash]
+      # @param [Fixnum] id Application ID
+      # @param [String] user_key Application User Key
+      # @param [String] app_id Application App ID
+      def find_application(id: nil, user_key: nil, app_id: nil)
+        params = { application_id: id, user_key: user_key, app_id: app_id }.reject { |_,value| value.nil? }
+        response = http_client.get('/admin/api/applications/find', params: params)
+        extract(entity: 'application', from: response)
+      end
+
+
+      # @api public
       # @return [Hash] an Account
       # @param [String] name Account Name
       # @param [String] email User Email
