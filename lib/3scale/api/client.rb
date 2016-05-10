@@ -55,17 +55,14 @@ module ThreeScale
       # @api public
       # @return [Hash] an Application
       # @param [Fixnum] plan_id Application Plan ID
-      # @param [String] name Application Name
-      # @param [String] description Application Description
       # @param [Hash] attributes Application Attributes
+      # @option attributes [String] :name Application Name
+      # @option attributes [String] :description Application Description
       # @option attributes [String] :user_key Application User Key
       # @option attributes [String] :application_id Application App ID
       # @option attributes [String] :application_key Application App Key(s)
-      # @option attributes [String] :username User Name. Defaults to User Email.
-      def create_application(account_id, attributes = {}, plan_id: , name: , description: , **rest)
-        body = { plan_id: plan_id,
-                 name: name,
-                 description: description }.merge(attributes).merge(rest)
+      def create_application(account_id, attributes = {}, plan_id: , **rest)
+        body = { plan_id: plan_id }.merge(attributes).merge(rest)
         response = http_client.post("/admin/api/accounts/#{account_id}/applications", body: body)
         extract(entity: 'application', from: response)
       end
@@ -73,18 +70,16 @@ module ThreeScale
       # @api public
       # @return [Hash] an Account
       # @param [String] name Account Name
-      # @param [String] email User Email
-      # @param [String] password User Password
+      # @param [String] username User Username
       # @param [Hash] attributes User and Account Attributes
+      # @option attributes [String] :email User Email
+      # @option attributes [String] :password User Password
       # @option attributes [String] :account_plan_id Account Plan ID
       # @option attributes [String] :service_plan_id Service Plan ID
       # @option attributes [String] :application_plan_id Application Plan ID
-      # @option attributes [String] :username User Name. Defaults to User Email.
-      def signup(attributes = {}, name: , email: , password: , **rest)
+      def signup(attributes = {}, name: , username: , **rest)
         body = { org_name: name,
-                 username: email,
-                 email: email,
-                 password: password }.merge(attributes).merge(rest)
+                 username: username }.merge(attributes).merge(rest)
         response = http_client.post('/admin/api/signup', body: body)
         extract(entity: 'account', from: response)
       end

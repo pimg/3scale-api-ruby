@@ -13,11 +13,11 @@ RSpec.describe 'Account API', type: :integration do
     let(:name) { SecureRandom.hex(14) }
     let(:email) { "#{name}@example.com" }
 
-    subject(:signup) { client.signup(name: name, email: email, password: name,
+    subject(:signup) { client.signup(name: name, username: name,
                                      billing_address_city: 'Barcelona',
                                      'billing_address_country' => 'Spain') }
 
-    it do
+    it 'creates an account' do
       expect(signup).to include('org_name' => name)
       expect(signup['billing_address']).to include('company' => name, 'city' => 'Barcelona', 'country' => 'Spain')
     end
@@ -27,12 +27,11 @@ RSpec.describe 'Account API', type: :integration do
       let(:account_id) { signup.fetch('id') }
       subject(:create) { client.create_application(account_id,
                                                    plan_id: application_plan_id,
-                                                   name: name, description: name,
                                                    user_key: name,
                                                    application_id: name,
                                                    application_key: name) }
-      it do
-        expect(create).to include('name' => name, 'service_id' => service_id)
+      it 'creates an application' do
+        expect(create).to include('user_key' => name, 'service_id' => service_id)
       end
 
       context '#show_application' do
@@ -42,17 +41,17 @@ RSpec.describe 'Account API', type: :integration do
         subject(:show) { client.show_application(application_id) }
 
         it do
-          expect(show).to include('id' => application_id, 'name' => name, 'service_id' => service_id)
+          expect(show).to include('id' => application_id, 'service_id' => service_id)
         end
       end
 
       context '#find_application' do
         let(:application_id) { create.fetch('id') }
-        let(:user_key) { create.fetch('name') }
+        let(:user_key) { create.fetch('user_key') }
 
         it 'finds by id' do
           find = client.find_application(id: application_id)
-          expect(find).to include('id' => application_id, 'name' => name, 'service_id' => service_id)
+          expect(find).to include('id' => application_id, 'service_id' => service_id)
         end
 
         it 'finds by user_key' do
