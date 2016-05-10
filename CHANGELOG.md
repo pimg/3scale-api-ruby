@@ -5,6 +5,9 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 
 ## [Unreleased]
 ### Added
+
+## [0.1.4] - 2016-05-10
+### Added
 - Account Create (Signup Express)
 - Application Read & Find
 - Application Create
@@ -31,7 +34,8 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 - Application Plans List & Create
 - Usage Limits List, Create & Delete
 
-[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.1.4...HEAD
+[0.1.4]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.4
 [0.1.3]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.3
 [0.1.2]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.2
 [0.1.1]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.1
