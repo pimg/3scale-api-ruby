@@ -42,6 +42,10 @@ module ThreeScale
         parse @http.post(format_path_n_query(path, params), serialize(body), headers)
       end
 
+      def put(path, body: nil, params: nil)
+        parse @http.put(format_path_n_query(path, params), serialize(body), headers)
+      end
+
       def delete(path, params: nil)
         parse @http.delete(format_path_n_query(path, params), headers)
       end
@@ -63,6 +67,7 @@ module ThreeScale
 
       def serialize(body)
         case body
+          when nil then nil
           when String then body
           else parser.encode(body)
         end

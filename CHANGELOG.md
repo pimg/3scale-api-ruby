@@ -5,6 +5,7 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 
 ## [Unreleased]
 ### Added
+- Application Customize Plan
 
 ## [0.1.4] - 2016-05-10
 ### Added

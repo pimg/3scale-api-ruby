@@ -113,6 +113,16 @@ RSpec.describe ThreeScale::API::Client do
     end
   end
 
+  context '#customize_application_plan' do
+    it do
+      expect(http_client).to receive(:put)
+                                 .with('/admin/api/accounts/42/applications/21/customize_plan')
+                                 .and_return('application_plan' => { 'id' => 11 })
+
+      expect(client.customize_application_plan(42, 21)).to eq('id' => 11)
+    end
+  end
+
   context '#signup' do
     it do
       expect(http_client).to receive(:post)

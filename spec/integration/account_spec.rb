@@ -64,6 +64,18 @@ RSpec.describe 'Account API', type: :integration do
           expect(find).to include('id' => application_id, 'user_key' => user_key)
         end
       end
+
+      context '#customize_application_plan' do
+        let(:application_id) { create.fetch('id') }
+
+        subject(:customize) { client.customize_application_plan(account_id, application_id) }
+
+        it 'creates custom plan' do
+          expect(customize).to include('custom' => true, 'default' => false, 'state' => 'hidden')
+          expect(customize['name']).to match('(custom)')
+          expect(customize['system_name']).to match('custom')
+        end
+      end
     end
   end
 end

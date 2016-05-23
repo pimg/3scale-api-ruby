@@ -67,6 +67,17 @@ module ThreeScale
         extract(entity: 'application', from: response)
       end
 
+
+      # @api public
+      # @return [Hash] a Plan
+      # @param [Fixnum] account_id Account ID
+      # @param [Fixnum] application_id Application ID
+      def customize_application_plan(account_id, application_id)
+        response = http_client.put("/admin/api/accounts/#{account_id}/applications/#{application_id}/customize_plan")
+        extract(entity: 'application_plan', from: response)
+      end
+
+
       # @api public
       # @return [Hash] an Account
       # @param [String] name Account Name
