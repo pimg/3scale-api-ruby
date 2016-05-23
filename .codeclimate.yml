@@ -1,0 +1,12 @@
+engines:
+  duplication:
+    enabled: true
+    config:
+      languages:
+        - ruby
+    exclude_paths:
+      - spec/
+  rubocop:
+    enabled: true
+  reek:
+    enabled: true

@@ -1,12 +1,11 @@
 require 'securerandom'
 
 RSpec.describe 'Service API', type: :integration do
-
   let(:endpoint) { ENV.fetch('ENDPOINT') }
   let(:provider_key) { ENV.fetch('PROVIDER_KEY') }
   let(:service_id)   { ENV.fetch('SERVICE_ID').to_i }
-  let(:metric_id)   { ENV.fetch('METRIC_ID').to_i }
-  let(:application_plan_id)   { ENV.fetch('APPLICATION_PLAN_ID').to_i }
+  let(:metric_id) { ENV.fetch('METRIC_ID').to_i }
+  let(:application_plan_id) { ENV.fetch('APPLICATION_PLAN_ID').to_i }
 
   subject(:client) { ThreeScale::API.new(endpoint: endpoint, provider_key: provider_key) }
 
@@ -45,11 +44,13 @@ RSpec.describe 'Service API', type: :integration do
   end
 
   context '#create_mapping_rules' do
-    subject(:create) { client.create_mapping_rule(service_id,
-                                                    http_method: 'PUT',
-                                                    pattern: '/',
-                                                    metric_id: metric_id,
-                                                    delta: 2) }
+    subject(:create) do
+      client.create_mapping_rule(service_id,
+                                 http_method: 'PUT',
+                                 pattern: '/',
+                                 metric_id: metric_id,
+                                 delta: 2)
+    end
 
     it { expect(create).to include('http_method' => 'PUT') }
 
@@ -84,7 +85,7 @@ RSpec.describe 'Service API', type: :integration do
     it do
       expect(client.create_metric(service_id, 'friendly_name' => name, 'unit' => 'foo'))
         .to include('friendly_name' => name, 'unit' => 'foo',
-                    'name' => name.tr('-', '_'), 'system_name' =>name.tr('-', '_') )
+                    'name' => name.tr('-', '_'), 'system_name' => name.tr('-', '_'))
     end
   end
 
@@ -97,8 +98,8 @@ RSpec.describe 'Service API', type: :integration do
 
     it do
       expect(client.create_method(service_id, metric_id, 'friendly_name' => name, 'unit' => 'bar'))
-          .to include('friendly_name' => name, # no unit
-                      'name' => name.tr('-', '_'), 'system_name' =>name.tr('-', '_') )
+        .to include('friendly_name' => name, # no unit
+                    'name' => name.tr('-', '_'), 'system_name' => name.tr('-', '_'))
     end
   end
 
@@ -111,10 +112,9 @@ RSpec.describe 'Service API', type: :integration do
 
     it do
       expect(client.create_application_plan(service_id, 'name' => name))
-          .to include('name' => name, 'default' => false)
+        .to include('name' => name, 'default' => false)
     end
   end
-
 
   context '#create_application_plan_limit' do
     let(:create) { client.create_application_plan_limit(application_plan_id, metric_id, period: 'hour', value: 42) }

@@ -9,11 +9,11 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Michal Cichra']
   spec.email         = ['michal@3scale.net']
 
-  spec.summary       = %q{API Client for 3scale APIs}
-  spec.description   = %q{API Client to access your 3scale APIs: Account Management API}
+  spec.summary       = 'API Client for 3scale APIs'
+  spec.description   = 'API Client to access your 3scale APIs: Account Management API'
   spec.homepage      = 'https://github.com/3scale/3scale-api-ruby.'
 
-  spec.files         = Dir['{lib,exe}/**/*.rb'] + %w[README.md]
+  spec.files         = Dir['{lib,exe}/**/*.rb'] + %w(README.md)
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
