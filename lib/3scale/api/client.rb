@@ -1,7 +1,6 @@
 module ThreeScale
   module API
     class Client
-
       attr_reader :http_client
 
       # @param [ThreeScale::API::HttpClient] http_client
@@ -30,7 +29,7 @@ module ThreeScale
       # @param [Fixnum] service_id Service ID
       def list_applications(service_id: nil)
         params = service_id ? { service_id: service_id } : nil
-        response = http_client.get("/admin/api/applications", params: params)
+        response = http_client.get('/admin/api/applications', params: params)
         extract(collection: 'applications', entity: 'application', from: response)
       end
 
@@ -47,7 +46,7 @@ module ThreeScale
       # @param [String] user_key Application User Key
       # @param [String] application_id Application App ID
       def find_application(id: nil, user_key: nil, application_id: nil)
-        params = { application_id: id, user_key: user_key, app_id: application_id }.reject { |_,value| value.nil? }
+        params = { application_id: id, user_key: user_key, app_id: application_id }.reject { |_, value| value.nil? }
         response = http_client.get('/admin/api/applications/find', params: params)
         extract(entity: 'application', from: response)
       end
@@ -61,12 +60,11 @@ module ThreeScale
       # @option attributes [String] :user_key Application User Key
       # @option attributes [String] :application_id Application App ID
       # @option attributes [String] :application_key Application App Key(s)
-      def create_application(account_id, attributes = {}, plan_id: , **rest)
+      def create_application(account_id, attributes = {}, plan_id:, **rest)
         body = { plan_id: plan_id }.merge(attributes).merge(rest)
         response = http_client.post("/admin/api/accounts/#{account_id}/applications", body: body)
         extract(entity: 'application', from: response)
       end
-
 
       # @api public
       # @return [Hash] a Plan
@@ -76,7 +74,6 @@ module ThreeScale
         response = http_client.put("/admin/api/accounts/#{account_id}/applications/#{application_id}/customize_plan")
         extract(entity: 'application_plan', from: response)
       end
-
 
       # @api public
       # @return [Hash] an Account
@@ -88,7 +85,7 @@ module ThreeScale
       # @option attributes [String] :account_plan_id Account Plan ID
       # @option attributes [String] :service_plan_id Service Plan ID
       # @option attributes [String] :application_plan_id Application Plan ID
-      def signup(attributes = {}, name: , username: , **rest)
+      def signup(attributes = {}, name:, username:, **rest)
         body = { org_name: name,
                  username: username }.merge(attributes).merge(rest)
         response = http_client.post('/admin/api/signup', body: body)
@@ -148,7 +145,7 @@ module ThreeScale
       # @option attributes [Fixnum] :metric_id Metric ID
       def create_mapping_rule(service_id, attributes)
         response = http_client.post("/admin/api/services/#{service_id}/proxy/mapping_rules",
-                                   body: { mapping_rule: attributes })
+                                    body: { mapping_rule: attributes })
         extract(entity: 'mapping_rule', from: response)
       end
 
@@ -172,7 +169,7 @@ module ThreeScale
       # @option attributes [Fixnum] :metric_id Metric ID
       def update_mapping_rule(service_id, id, attributes)
         response = http_client.patch("/admin/api/services/#{service_id}/mapping_rules/#{id}",
-                                   body: { mapping_rule: attributes })
+                                     body: { mapping_rule: attributes })
         extract(entity: 'mapping_rule', from: response)
       end
 
@@ -211,7 +208,7 @@ module ThreeScale
       # @option attributes [String] :name Method Name
       def create_method(service_id, metric_id, attributes)
         response = http_client.post("/admin/api/services/#{service_id}/metrics/#{metric_id}/methods",
-                                   body: { metric: attributes })
+                                    body: { metric: attributes })
         extract(entity: 'method', from: response)
       end
 
@@ -267,19 +264,16 @@ module ThreeScale
 
       protected
 
-      def extract(collection: nil, entity: , from: )
-        if collection
-          from = from.fetch(collection)
-        end
+      def extract(collection: nil, entity:, from:)
+        from = from.fetch(collection) if collection
 
         case from
-          when Array then from.map { |e| e.fetch(entity) }
-          when Hash then from.fetch(entity) { from }
-          when nil then nil # raise exception?
-          else
-            raise "unknown #{from}"
+        when Array then from.map { |e| e.fetch(entity) }
+        when Hash then from.fetch(entity) { from }
+        when nil then nil # raise exception?
+        else
+          raise "unknown #{from}"
         end
-
       end
     end
   end

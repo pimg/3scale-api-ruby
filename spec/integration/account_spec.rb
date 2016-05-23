@@ -1,11 +1,10 @@
 require 'securerandom'
 
 RSpec.describe 'Account API', type: :integration do
-
   let(:endpoint) { ENV.fetch('ENDPOINT') }
   let(:provider_key) { ENV.fetch('PROVIDER_KEY') }
   let(:service_id)   { ENV.fetch('SERVICE_ID').to_i }
-  let(:application_plan_id)   { ENV.fetch('APPLICATION_PLAN_ID').to_i }
+  let(:application_plan_id) { ENV.fetch('APPLICATION_PLAN_ID').to_i }
 
   subject(:client) { ThreeScale::API.new(endpoint: endpoint, provider_key: provider_key) }
 
@@ -13,30 +12,32 @@ RSpec.describe 'Account API', type: :integration do
     let(:name) { SecureRandom.hex(14) }
     let(:email) { "#{name}@example.com" }
 
-    subject(:signup) { client.signup(name: name, username: name,
-                                     billing_address_city: 'Barcelona',
-                                     'billing_address_country' => 'Spain') }
+    subject(:signup) do
+      client.signup(name: name, username: name,
+                    billing_address_city: 'Barcelona',
+                    'billing_address_country' => 'Spain')
+    end
 
     it 'creates an account' do
       expect(signup).to include('org_name' => name)
       expect(signup['billing_address']).to include('company' => name, 'city' => 'Barcelona', 'country' => 'Spain')
     end
 
-
     context '#create_application' do
       let(:account_id) { signup.fetch('id') }
-      subject(:create) { client.create_application(account_id,
-                                                   plan_id: application_plan_id,
-                                                   user_key: name,
-                                                   application_id: name,
-                                                   application_key: name) }
+      subject(:create) do
+        client.create_application(account_id,
+                                  plan_id: application_plan_id,
+                                  user_key: name,
+                                  application_id: name,
+                                  application_key: name)
+      end
       it 'creates an application' do
         expect(create).to include('user_key' => name, 'service_id' => service_id)
       end
 
       context '#show_application' do
         let(:application_id) { create.fetch('id') }
-
 
         subject(:show) { client.show_application(application_id) }
 

@@ -7,7 +7,7 @@ module ThreeScale
     class HttpClient
       attr_reader :endpoint, :admin_domain, :provider_key, :headers, :format
 
-      def initialize(endpoint: , provider_key: , format: :json)
+      def initialize(endpoint:, provider_key:, format: :json)
         @endpoint = URI(endpoint).freeze
         @admin_domain = @endpoint.host.freeze
         @provider_key = provider_key.freeze
@@ -15,9 +15,9 @@ module ThreeScale
         @http.use_ssl = @endpoint.is_a?(URI::HTTPS)
 
         @headers = {
-            'Accept' => "application/#{format}",
-            'Content-Type' => "application/#{format}",
-            'Authorization' =>  'Basic ' + [":#{@provider_key}"].pack('m').delete("\r\n")
+          'Accept' => "application/#{format}",
+          'Content-Type' => "application/#{format}",
+          'Authorization' => 'Basic ' + [":#{@provider_key}"].pack('m').delete("\r\n")
         }
 
         if debug?
@@ -34,11 +34,11 @@ module ThreeScale
         parse @http.get(format_path_n_query(path, params), headers)
       end
 
-      def patch(path, body: , params: nil)
+      def patch(path, body:, params: nil)
         parse @http.patch(format_path_n_query(path, params), serialize(body), headers)
       end
 
-      def post(path, body: , params: nil)
+      def post(path, body:, params: nil)
         parse @http.post(format_path_n_query(path, params), serialize(body), headers)
       end
 
@@ -53,9 +53,9 @@ module ThreeScale
       # @param [::Net::HTTPResponse] response
       def parse(response)
         case response
-          when Net::HTTPUnprocessableEntity, Net::HTTPSuccess then parser.decode(response.body)
-          when Net::HTTPForbidden then forbidden!(response)
-          else "Can't handle #{response.inspect}"
+        when Net::HTTPUnprocessableEntity, Net::HTTPSuccess then parser.decode(response.body)
+        when Net::HTTPForbidden then forbidden!(response)
+        else "Can't handle #{response.inspect}"
         end
       end
 
@@ -67,16 +67,16 @@ module ThreeScale
 
       def serialize(body)
         case body
-          when nil then nil
-          when String then body
-          else parser.encode(body)
+        when nil then nil
+        when String then body
+        else parser.encode(body)
         end
       end
 
       def parser
         case format
-          when :json then JSONParser
-          else "unknown format #{format}"
+        when :json then JSONParser
+        else "unknown format #{format}"
         end
       end
 
@@ -98,8 +98,8 @@ module ThreeScale
 
         def decode(string)
           case string
-            when nil, ' '.freeze, ''.freeze then nil
-            else ::JSON.parse(string)
+          when nil, ' '.freeze, ''.freeze then nil
+          else ::JSON.parse(string)
           end
         end
 
