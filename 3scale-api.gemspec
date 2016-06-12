@@ -12,6 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'API Client for 3scale APIs'
   spec.description   = 'API Client to access your 3scale APIs: Account Management API'
   spec.homepage      = 'https://github.com/3scale/3scale-api-ruby.'
+  spec.license       = "MIT"
 
   spec.files         = Dir['{lib,exe}/**/*.rb'] + %w(README.md)
   spec.bindir        = 'exe'
