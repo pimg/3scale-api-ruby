@@ -1,3 +1,4 @@
+require 'pry'
 module ThreeScale
   module API
     class Client
@@ -90,6 +91,36 @@ module ThreeScale
                  username: username }.merge(attributes).merge(rest)
         response = http_client.post('/admin/api/signup', body: body)
         extract(entity: 'account', from: response)
+      end
+
+      # @api public
+      # @return [Hash] an Account
+      # @param [Fixnum] id Account ID
+      def show_account(id)
+        response = http_client.get("/admin/api/accounts/#{id}")
+        extract(entity: 'account', from: response)
+      end
+
+      # @api public
+      # @return [Hash] an Account
+      # @param [Fixnum] id Account ID
+      # @param [String] username Account User Name
+      # @param [String] email Account email
+      def find_account(id: nil, username: nil, email: nil)
+        params = { user_id: id, username: username, email: email }.reject { |_, value| value.nil? }
+        response = http_client.get('/admin/api/accounts/find', params: params)
+        extract(entity: 'account', from: response)
+      end
+
+      # @api public
+      # @return [Array<Hash>]
+      # @param [Fixnum] id Account ID
+      # @param [String] username Account User Name
+      # @param [String] email Account email
+      def list_users(account_id, state: nil, role: nil)
+        params = { state: state, role: role }.reject { |_, value| value.nil? }
+        response = http_client.get("/admin/api/accounts/#{account_id}/users")
+        extract(collection: 'users', entity: 'user', from: response)
       end
 
       # @api public
@@ -266,7 +297,7 @@ module ThreeScale
 
       def extract(collection: nil, entity:, from:)
         from = from.fetch(collection) if collection
-
+        #binding.pry
         case from
         when Array then from.map { |e| e.fetch(entity) }
         when Hash then from.fetch(entity) { from }
