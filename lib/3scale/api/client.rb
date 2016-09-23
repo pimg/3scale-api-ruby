@@ -103,6 +103,15 @@ module ThreeScale
 
       # @api public
       # @return [Hash]
+      # @param [Hash] attributes Service Attributes
+      # @option attributes [String] :name Service Name
+      def update_service(attributes, service_id)
+        response = http_client.put("/admin/api/services/#{service_id}", body: { service: attributes })
+        extract(entity: 'service', from: response)
+      end
+
+      # @api public
+      # @return [Hash]
       # @param [Fixnum] service_id Service ID
       def show_proxy(service_id)
         response = http_client.get("/admin/api/services/#{service_id}/proxy")
