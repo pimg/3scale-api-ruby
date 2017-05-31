@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'three_scale_api/resources/default_helpers'
-require 'three_scale_api/resources/application_key'
+require 'three_scale_api/clients/default_helpers'
+require 'three_scale_api/clients/application_key'
 
 module ThreeScaleApi
-  module Resources
+  module Clients
     # Application resource manager wrapper for an application entity received by the REST API
     class ApplicationManager < DefaultStateManager
       attr_accessor :account

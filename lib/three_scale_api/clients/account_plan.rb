@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'three_scale_api/resources/default_helpers'
+require 'three_scale_api/clients/default_helpers'
 
 module ThreeScaleApi
-  module Resources
+  module Clients
     # Account plan resource manager wrapper for account plan entity received by REST API
     class AccountPlanManager < DefaultPlanManager
       # @api public

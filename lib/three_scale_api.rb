@@ -2,13 +2,13 @@
 
 require 'three_scale_api/http_client'
 require 'three_scale_api/tools'
-require 'three_scale_api/resources/service'
-require 'three_scale_api/resources/account'
-require 'three_scale_api/resources/account_plan'
-require 'three_scale_api/resources/provider'
-require 'three_scale_api/resources/webhook'
-require 'three_scale_api/resources/active_doc'
-require 'three_scale_api/resources/settings'
+require 'three_scale_api/clients/service'
+require 'three_scale_api/clients/account'
+require 'three_scale_api/clients/account_plan'
+require 'three_scale_api/clients/provider'
+require 'three_scale_api/clients/webhook'
+require 'three_scale_api/clients/active_doc'
+require 'three_scale_api/clients/settings'
 
 module ThreeScaleApi
   # Base class that is supposed to be used for communication with the REST API
@@ -39,57 +39,57 @@ module ThreeScaleApi
     # @api public
     # Gets services manager instance
     #
-    # @return [ThreeScaleApi::Resources::ServiceManager] Service manager instance
+    # @return [ThreeScaleApi::Clients::ServiceManager] Service manager instance
     def services
-      @services_manager ||= ThreeScaleApi::Resources::ServiceManager.new(@http_client)
+      @services_manager ||= ThreeScaleApi::Clients::ServiceManager.new(@http_client)
     end
 
     # @api public
     # Gets accounts manager instance
     #
-    # @return [ThreeScaleApi::Resources::AccountManager] Account manager instance
+    # @return [ThreeScaleApi::Clients::AccountManager] Account manager instance
     def accounts
-      @accounts_manager ||= ThreeScaleApi::Resources::AccountManager.new(@http_client)
+      @accounts_manager ||= ThreeScaleApi::Clients::AccountManager.new(@http_client)
     end
 
     # @api public
     # Gets providers manager instance
     #
-    # @return [ThreeScaleApi::Resources::ProviderManager] Provider manager instance
+    # @return [ThreeScaleApi::Clients::ProviderManager] Provider manager instance
     def providers
-      @providers_manager ||= ThreeScaleApi::Resources::ProviderManager.new(@http_client)
+      @providers_manager ||= ThreeScaleApi::Clients::ProviderManager.new(@http_client)
     end
 
     # @api public
     # Gets account plans manager instance
     #
-    # @return [ThreeScaleApi::Resources::AccountPlanManager] Account plans manager instance
+    # @return [ThreeScaleApi::Clients::AccountPlanManager] Account plans manager instance
     def account_plans
-      @account_plans_manager ||= ThreeScaleApi::Resources::AccountPlanManager.new(@http_client)
+      @account_plans_manager ||= ThreeScaleApi::Clients::AccountPlanManager.new(@http_client)
     end
 
     # @api public
     # Gets active docs manager instance
     #
-    # @return [ThreeScaleApi::Resources::ActiveDocManager] active docs manager instance
+    # @return [ThreeScaleApi::Clients::ActiveDocManager] active docs manager instance
     def active_docs
-      @active_docs_manager ||= ThreeScaleApi::Resources::ActiveDocManager.new(@http_client)
+      @active_docs_manager ||= ThreeScaleApi::Clients::ActiveDocManager.new(@http_client)
     end
 
     # @api public
     # Gets webhooks manager instance
     #
-    # @return [ThreeScaleApi::Resources::WebHookManager] WebHooks manager instance
+    # @return [ThreeScaleApi::Clients::WebHookManager] WebHooks manager instance
     def webhooks
-      @webhooks_manager ||= ThreeScaleApi::Resources::WebHookManager.new(@http_client)
+      @webhooks_manager ||= ThreeScaleApi::Clients::WebHookManager.new(@http_client)
     end
 
     # @api public
     # Gets settings manager instance
     #
-    # @return [ThreeScaleApi::Resources::SettingsManager] Settings manager instance
+    # @return [ThreeScaleApi::Clients::SettingsManager] Settings manager instance
     def settings
-      @settings_manager ||= ThreeScaleApi::Resources::SettingsManager.new(@http_client)
+      @settings_manager ||= ThreeScaleApi::Clients::SettingsManager.new(@http_client)
     end
   end
 end

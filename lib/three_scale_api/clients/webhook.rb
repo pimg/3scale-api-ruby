@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'three_scale_api/resources/default'
+require 'three_scale_api/clients/default'
 
 module ThreeScaleApi
-  module Resources
+  module Clients
     # WebHook resource manager wrapper for the WebHook entity received by the REST API
     class WebHookManager < DefaultManager
       attr_accessor :service

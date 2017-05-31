@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 require 'three_scale_api/tools'
-require 'three_scale_api/resources/default'
-require 'three_scale_api/resources/proxy'
-require 'three_scale_api/resources/metric'
-require 'three_scale_api/resources/service_plan'
-require 'three_scale_api/resources/mapping_rule'
-require 'three_scale_api/resources/application_plan'
+require 'three_scale_api/clients/default'
+require 'three_scale_api/clients/proxy'
+require 'three_scale_api/clients/metric'
+require 'three_scale_api/clients/service_plan'
+require 'three_scale_api/clients/mapping_rule'
+require 'three_scale_api/clients/application_plan'
 
 module ThreeScaleApi
-  module Resources
+  module Clients
     # Service resource manager wrapper for the service entity received by the REST API
     class ServiceManager < DefaultManager
       # @api public

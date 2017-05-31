@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'three_scale_api/resources/default_helpers'
-require 'three_scale_api/resources/account_user'
-require 'three_scale_api/resources/application'
+require 'three_scale_api/clients/default_helpers'
+require 'three_scale_api/clients/account_user'
+require 'three_scale_api/clients/application'
 
 module ThreeScaleApi
-  module Resources
+  module Clients
     # Accounts resource manager wrapper for default entity received by REST API
     class AccountManager < DefaultStateManager
       # @api public

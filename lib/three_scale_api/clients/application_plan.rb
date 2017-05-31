@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'three_scale_api/resources/default_helpers'
-require 'three_scale_api/resources/application_plan_limit'
+require 'three_scale_api/clients/default_helpers'
+require 'three_scale_api/clients/application_plan_limit'
 
 module ThreeScaleApi
-  module Resources
+  module Clients
     # Application plan resource manager wrapper for an application plan entity
     # received by the REST API
     class ApplicationPlanManager < DefaultPlanManager
@@ -13,7 +13,7 @@ module ThreeScaleApi
       # Creates instance of the application plan resource manager
       #
       # @param [ThreeScaleQE::HttpClient] http_client Instance of http client
-      # @param [ThreeScaleQE::Resources::Service] service Service resource
+      # @param [ThreeScaleQE::Clients::Service] service Service resource
       def initialize(http_client, service = nil)
         super(http_client, entity_name: 'application_plan', collection_name: 'plans')
         @service = service
@@ -44,7 +44,7 @@ module ThreeScaleApi
       # Construct the proxy resource
       #
       # @param [ThreeScaleApi::HttpClient] client Instance of test client
-      # @param [ThreeScaleApi::Resources::DefaultManager] manager Instance of test client
+      # @param [ThreeScaleApi::Clients::DefaultManager] manager Instance of test client
       # @param [Hash] entity Entity Hash from API client of the proxy
       def initialize(client, manager, entity)
         super(client, manager, entity)

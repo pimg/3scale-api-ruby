@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require 'three_scale_api/tools'
-require 'three_scale_api/resources/default'
+require 'three_scale_api/clients/default'
 
 module ThreeScaleApi
-  module Resources
+  module Clients
     # Service resource manager wrapper for the service entity received by the REST API
     class SettingsManager < DefaultManager
       # @api public

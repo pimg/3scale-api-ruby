@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'three_scale_api/resources/default'
+require 'three_scale_api/clients/default'
 
 module ThreeScaleApi
-  module Resources
+  module Clients
     # Proxy resource manager wrapper for the proxy entity received by the REST API
     class ProxyManager < DefaultManager
       attr_accessor :service
@@ -104,7 +104,7 @@ module ThreeScaleApi
       # Construct the proxy resource
       #
       # @param [ThreeScaleApi::HttpClient] client Instance of test client
-      # @param [ThreeScaleApi::Resources::DefaultManager] manager Instance of the manager
+      # @param [ThreeScaleApi::Clients::DefaultManager] manager Instance of the manager
       # @param [Hash] entity Entity Hash from API client of the proxy
       def initialize(client, manager, entity)
         super(client, manager, entity)

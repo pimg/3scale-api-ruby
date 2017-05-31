@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'three_scale_api/resources/default'
-require 'three_scale_api/resources/application_plan_limit'
-require 'three_scale_api/resources/method'
+require 'three_scale_api/clients/default'
+require 'three_scale_api/clients/application_plan_limit'
+require 'three_scale_api/clients/method'
 
 module ThreeScaleApi
-  module Resources
+  module Clients
     # Metric resource manager wrapper for the metric entity received by REST API
     class MetricManager < DefaultManager
       attr_accessor :service
@@ -36,7 +36,7 @@ module ThreeScaleApi
       # Construct the metric resource
       #
       # @param [ThreeScaleApi::HttpClient] client Instance of http client
-      # @param [ThreeScaleApi::Resources::MetricManager] manager Metrics manager
+      # @param [ThreeScaleApi::Clients::MetricManager] manager Metrics manager
       # @param [Hash] entity Entity Hash from API client of the metric
       def initialize(client, manager, entity)
         super(client, manager, entity)

@@ -46,5 +46,24 @@ module ThreeScaleApi
     def self.log_factory(log_level: 'debug')
       LoggingFactory.new(log_level: log_level)
     end
+
+    # @api public
+    # Extracts Hash from response
+    #
+    # @param [String] collection Collection name
+    # @param [String] entity Entity name
+    # @param [object] from Response
+    def self.extract(collection: nil, entity:, from:)
+      from = from.fetch(collection) if collection
+
+      case from
+        when Array then from.map { |e| e.fetch(entity) }
+        when Hash then from.fetch(entity) { from }
+        when nil then nil # raise exception?
+        else
+          raise "unknown #{from}"
+      end
+    end
+
   end
 end

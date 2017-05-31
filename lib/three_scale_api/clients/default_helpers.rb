@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'three_scale_api/resources/default'
+require 'three_scale_api/clients/default'
 
 module ThreeScaleApi
-  module Resources
+  module Clients
     ########################
     ##                    ##
     ##   Plans helpers    ##

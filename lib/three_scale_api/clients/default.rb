@@ -4,7 +4,7 @@ require 'three_scale_api/tools'
 
 module ThreeScaleApi
   # Main module containing implementation of the resources and it's managers
-  module Resources
+  module Clients
     # Default resource manager wrapper for default entity received by REST API
     # All other managers inherits from Default manager
     class DefaultManager
@@ -28,24 +28,6 @@ module ThreeScaleApi
       # @return [String] Base URL for the REST call
       def base_path
         +'/admin/api'
-      end
-
-      # @api public
-      # Extracts Hash from response
-      #
-      # @param [String] collection Collection name
-      # @param [String] entity Entity name
-      # @param [object] from Response
-      def extract(collection: nil, entity:, from:)
-        from = from.fetch(collection) if collection
-
-        case from
-        when Array then from.map { |e| e.fetch(entity) }
-        when Hash then from.fetch(entity) { from }
-        when nil then nil # raise exception?
-        else
-          raise "unknown #{from}"
-        end
       end
 
       # @api public
@@ -202,7 +184,7 @@ module ThreeScaleApi
       #
       # @param [object] response Response from server
       def resource_instance(response)
-        result = extract(entity: @entity_name, from: response)
+        result = Tools.extract(entity: @entity_name, from: response)
         instance(result)
       end
 
@@ -210,7 +192,7 @@ module ThreeScaleApi
       #
       # @param [object] response Response from server
       def resource_list(response)
-        result = extract(collection: @collection_name, entity: @entity_name, from: response)
+        result = Tools.extract(collection: @collection_name, entity: @entity_name, from: response)
         result.map { |res| instance(res) }
       end
 
@@ -257,7 +239,7 @@ module ThreeScaleApi
       # Constructs the resource
       #
       # @param [ThreeScaleApi::HttpClient] client Instance of http client
-      # @param [ThreeScaleApi::Resources::DefaultManager] manager Instance of test client
+      # @param [ThreeScaleApi::Clients::DefaultManager] manager Instance of test client
       # @param [Hash] entity Entity Hash from API client
       def initialize(client, manager, entity)
         @http_client = client

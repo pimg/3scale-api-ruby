@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require 'three_scale_api/tools'
-require 'three_scale_api/resources/default_helpers'
+require 'three_scale_api/clients/default_helpers'
 
 module ThreeScaleApi
-  module Resources
+  module Clients
     # Provider resource manager wrapper for the provider entity received by the REST API
     class ProviderManager < DefaultUserManager
       # @api public

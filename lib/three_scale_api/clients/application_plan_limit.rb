@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'three_scale_api/resources/default'
+require 'three_scale_api/clients/default'
 
 module ThreeScaleApi
-  module Resources
+  module Clients
     # Application plan limit resource manager wrapper for an application plan limit entity
     # received by the REST API
     class ApplicationPlanLimitManager < DefaultManager
@@ -13,7 +13,7 @@ module ThreeScaleApi
       # Creates instance of the application plan resource manager
       #
       # @param [ThreeScaleQE::HttpClient] http_client Instance of http client
-      # @param [ThreeScaleQE::Resources::ApplicationPlan] app_plan Service resource
+      # @param [ThreeScaleQE::Clients::ApplicationPlan] app_plan Service resource
       def initialize(http_client, app_plan = nil, metric: nil)
         super(http_client, entity_name: 'limit', collection_name: 'limits')
         @service = app_plan.service
