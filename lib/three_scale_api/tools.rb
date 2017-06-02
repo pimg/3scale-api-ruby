@@ -56,14 +56,26 @@ module ThreeScaleApi
     def self.extract(collection: nil, entity:, from:)
       from = from.fetch(collection) if collection
 
-      case from
-        when Array then from.map { |e| e.fetch(entity) }
-        when Hash then from.fetch(entity) { from }
-        when nil then nil # raise exception?
-        else
-          raise "unknown #{from}"
+      response = case from
+                 when Array then from.map { |e| e.fetch(entity) }
+                 when Hash then from.fetch(entity) { from }
+                 when nil then nil # raise exception?
+                 else raise "unknown #{from}"
+                 end
+
+      if (response.is_a? Hash) && !response['error'].nil?
+        raise APIResponseError.new(response), response['error']
       end
+      response
     end
 
+    # Custom error that is thrown when the
+    class APIResponseError < StandardError
+      attr_reader :entity
+
+      def initialize(entity)
+        @entity = entity
+      end
+    end
   end
 end

@@ -17,7 +17,7 @@ module ThreeScaleApi
       #
       # @param [ThreeScaleQE::TestClient] http_client Instance of http client
       def initialize(http_client, service)
-        super(http_client, entity_name: 'metric', collection_name: 'metrics')
+        super(http_client, entity_name: 'metric')
         @service = service
       end
 

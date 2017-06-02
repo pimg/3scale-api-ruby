@@ -18,7 +18,7 @@ module ThreeScaleApi
       # @param [ThreeScaleQE::TestClient] http_client Instance of http client
       # @param [Account] account Account entity
       def initialize(http_client, account)
-        super(http_client, entity_name: 'application', collection_name: 'applications')
+        super(http_client, entity_name: 'application')
         @account = account
       end
 

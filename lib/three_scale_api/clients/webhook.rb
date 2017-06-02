@@ -15,7 +15,7 @@ module ThreeScaleApi
       #
       # @param [ThreeScaleQE::TestClient] http_client Instance of http client
       def initialize(http_client)
-        super(http_client, entity_name: 'webhook', collection_name: 'webhooks')
+        super(http_client, entity_name: 'webhook')
       end
 
       # Base path for the REST call
@@ -60,7 +60,7 @@ module ThreeScaleApi
       #
       # @return [WebHook] Webhook resource
       def read
-        @log.info('Read webhook')
+        log.info('Read webhook')
         response = http_client.patch(base_path, body: {})
         log_result resource_instance(response)
       end

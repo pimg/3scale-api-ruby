@@ -15,6 +15,8 @@ module ThreeScaleApi
   class Client
     attr_accessor :http_client
 
+    APIResponseError = Tools::APIResponseError
+
     # @api public
     # Initializes base client instance for manipulation with the REST API and resources
     #

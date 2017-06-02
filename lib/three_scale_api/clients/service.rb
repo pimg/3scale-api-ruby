@@ -19,7 +19,7 @@ module ThreeScaleApi
       #
       # @param [ThreeScaleQE::TestClient] http_client Instance of http client
       def initialize(http_client)
-        super(http_client, entity_name: 'service', collection_name: 'services')
+        super(http_client, entity_name: 'service')
       end
 
       # Base path for the REST call

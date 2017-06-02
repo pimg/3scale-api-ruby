@@ -15,7 +15,7 @@ module ThreeScaleApi
       #
       # @param [ThreeScaleQE::TestClient] http_client Instance of http client
       def initialize(http_client)
-        super(http_client, entity_name: 'account', collection_name: 'accounts')
+        super(http_client, entity_name: 'account')
       end
 
       # Base path for the REST call
@@ -38,7 +38,7 @@ module ThreeScaleApi
       # @option attributes [String] :service_plan_id Service Plan ID
       # @option attributes [String] :application_plan_id Application Plan ID
       def sign_up(attributes)
-        @log.info("Sign UP: #{attributes}")
+        log.info("Sign UP: #{attributes}")
         response = http_client.post('/admin/api/signup', body: attributes)
         log_result resource_instance(response)
       end
@@ -57,7 +57,7 @@ module ThreeScaleApi
       # @param [Fixnum] id Account ID
       # @param [Fixnum] plan_id Plan id
       def set_plan(id, plan_id)
-        @log.info("Set #{resource_name}  default (id: #{id}) ")
+        log.info("Set #{resource_name}  default (id: #{id}) ")
         body = { plan_id: plan_id }
         response = http_client.put("#{base_path}/#{id}/change_plan", body: body)
         log_result resource_instance(response)

@@ -16,7 +16,7 @@ module ThreeScaleApi
       # @param [ThreeScaleQE::HttpClient] http_client Instance of http client
       # @param [ThreeScaleQE::Clients::ApplicationPlan] app_plan Service resource
       def initialize(http_client, app_plan = nil, metric: nil)
-        super(http_client, entity_name: 'limit', collection_name: 'limits')
+        super(http_client, entity_name: 'limit')
         @service = app_plan.service
         @application_plan = app_plan
         @metric = metric
