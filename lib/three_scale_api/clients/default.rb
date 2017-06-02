@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 require 'three_scale_api/tools'
+require 'three_scale_api/resources/default'
 
 module ThreeScaleApi
   # Main module containing implementation of the resources and it's managers
   module Clients
     # Default resource manager wrapper for default entity received by REST API
     # All other managers inherits from Default manager
-    class DefaultManager
-      attr_accessor :http_client, :resource_instance, :log
+    class DefaultClient
+      attr_accessor :http_client, :log
 
       # @api public
       # Creates instance of the Default resource manager
@@ -17,7 +18,6 @@ module ThreeScaleApi
       def initialize(http_client, entity_name: nil, collection_name: nil)
         @http_client = http_client
         @log = http_client.logger_factory.get_instance(name: manager_name)
-        @resource_instance = DefaultResource
         @entity_name = entity_name
         @collection_name = collection_name
       end
@@ -89,8 +89,10 @@ module ThreeScaleApi
       # @param [Fixnum] id Id of the entity
       # @return [DefaultResource] Instance of the default resource
       def read(id = nil)
-        @log.info("Read #{resource_name}: #{id}")
-        response = http_client.get("#{base_path}/#{id}")
+        path = base_path
+        path = "#{path}/#{id}" unless id.nil?
+        @log.info("Read #{resource_name}: #{path}")
+        response = http_client.get(path)
         log_result resource_instance(response)
       end
 
@@ -151,10 +153,12 @@ module ThreeScaleApi
       #
       # @param [Hash, DefaultResource] attributes Attributes that will be updated
       # @return [DefaultResource] Updated resource
-      def update(attributes, id: nil)
+      def update(attributes, id: nil, method: :put)
         id ||= attributes['id']
-        @log.info("Update [#{id}]: #{attributes}")
-        response = http_client.put("#{base_path}/#{id}", body: attributes)
+        path = base_path
+        path = "#{path}/#{id}" unless id.nil?
+        @log.info("Update [#{path}]: #{attributes}")
+        response = http_client.method(method).call(path, body: attributes)
         log_result resource_instance(response)
       end
 
@@ -166,6 +170,10 @@ module ThreeScaleApi
         resource_list http_client.get(base_path, params: params)
       end
 
+      def resource_class
+        Resources.const_get resource_name
+      end
+
       # Wrapper to create instance of the Resource
       # Requires to have @resource_instance initialized to correct Resource subtype
       #
@@ -173,7 +181,7 @@ module ThreeScaleApi
       # @return [DefaultResource] Specific instance of the resource
       def instance(entity)
         inst = {}
-        res_inst = @resource_instance
+        res_inst = resource_class
         inst = res_inst.new(@http_client, self, entity) if res_inst.respond_to?(:new)
         instance_name = inst.class.name.split('::').last
         @log.debug("[RES] #{instance_name}: #{entity}")
@@ -208,7 +216,7 @@ module ThreeScaleApi
       # @return [String] Manager name
       def resource_name
         manager = manager_name.dup
-        manager['Manager'] = ''
+        manager['Client'] = ''
         manager
       end
 
@@ -227,121 +235,62 @@ module ThreeScaleApi
       end
     end
 
-    # Default resource wrapper for any entity received by REST API
-    # All other resources inherits from Default resource
-    class DefaultResource
-      attr_accessor :http_client,
-                    :manager,
-                    :api,
-                    :entity
+    # Default state resource manager wrapper for default entity received by REST API
+    module DefaultStateClient
 
       # @api public
-      # Constructs the resource
+      # Sets account to spec. state
       #
-      # @param [ThreeScaleApi::HttpClient] client Instance of http client
-      # @param [ThreeScaleApi::Clients::DefaultManager] manager Instance of test client
-      # @param [Hash] entity Entity Hash from API client
-      def initialize(client, manager, entity)
-        @http_client = client
-        @entity = entity
-        @manager = manager
+      # @param [Fixnum] id Account ID
+      # @param [String] state 'approve' or 'reject' or 'make_pending'
+      def set_state(id, state = 'approve')
+        @log.info "Set state [#{id}]: #{state}"
+        response = http_client.put("#{base_path}/#{id}/#{state}")
+        log_result resource_instance(response)
       end
+    end
 
+    # Default user resource manager wrapper for default entity received by REST API
+    module DefaultUserClient
+      include DefaultStateClient
       # @api public
-      # Access properties of the resource contained in the entity
+      # Suspends the user
       #
-      # @param [String] key Name of the property
-      # @return [object] Value of the property
-      def [](key)
-        return nil unless entity
-        @entity[key]
+      # @param [Fixnum] id User ID
+      def suspend(id)
+        set_state(id, state: 'suspend')
       end
 
       # @api public
-      # Set property value of the resource contained in the entity
+      # Resumes the user
       #
-      # @param [String] key Name of the property
-      # @param [String] value Value of the property
-      # @return [object] Value of the property
-      def []=(key, value)
-        return nil unless entity
-        @entity[key] = value
+      # @param [Fixnum] id User ID
+      def resume(id)
+        set_state(id, state: 'unsuspend')
       end
 
       # @api public
-      # Deletes Resource if possible (method is implemented in the manager)
-      def delete
-        return false unless @entity
-        @manager.delete(@entity['id']) if @manager.respond_to?(:delete)
+      # Resumes the user
+      #
+      # @param [Fixnum] id User ID
+      def activate(id)
+        set_state(id, state: 'activate')
       end
 
       # @api public
-      # Updates Resource if possible (method is implemented in the manager)
+      # Sets role as admin
       #
-      # @return [DefaultEntity] Updated entity
-      def update
-        return nil unless @entity
-        @manager.update(@entity) if @manager.respond_to?(:update)
+      # @param [Fixnum] id User ID
+      def set_as_admin(id)
+        set_state(id, state: 'admin')
       end
 
       # @api public
-      # Reloads entity from remote server if possible
+      # Sets role as member
       #
-      # @return [DefaultEntity] Entity
-      def read
-        return nil unless entity
-        return nil unless @manager.respond_to?(:read)
-        ent = @manager.read(@entity['id'])
-        @entity = ent.entity
-      end
-
-      # @api public
-      # Converts to string
-      #
-      # @return [String] String representation of the resource
-      def to_s
-        entity.to_s
-      end
-
-      # Wrapper to create manager instance
-      #
-      # @param [Class<DefaultManager>] which Manager which instance will be created
-      # @param [Array<Symbol>] args Optional arguments
-      # @return [DefaultManager] Instance of the specific manager
-      def manager_instance(which, *args)
-        which.new(@http_client, self, *args) if which.respond_to?(:new)
-      end
-
-      # Respond to method missing
-      #
-      # If symbol is not defined in current class, it will be forwarded to entity hash
-      # @param [Symbol, String] symbol Method name
-      # @return [Bool] true if responds, false otherwise
-      def respond_to_missing?(symbol, *_)
-        entity.respond_to?(symbol) || entity.key?(symbol)
-      end
-
-      # Method missing implementation
-      #
-      # @param [Symbol, String] symbol Method name
-      # @param [Array] args Arguments passed to method
-      # @param [Block] block Block passed to method
-      def method_missing(symbol, *args, &block)
-        if entity.key?(symbol)
-          entity[symbol]
-        elsif entity.respond_to?(symbol)
-          entity.send(symbol, *args, &block)
-        else
-          super
-        end
-      end
-
-      # @api public
-      # Converts resource to hash
-      #
-      # @return [Hash] Entity hash
-      def to_h
-        @entity
+      # @param [Fixnum] id User ID
+      def set_as_member(id)
+        set_state(id, state: 'admin')
       end
     end
   end

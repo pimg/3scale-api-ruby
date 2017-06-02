@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 require 'three_scale_api/clients/default'
+require 'three_scale_api/resources/proxy'
+
 
 module ThreeScaleApi
   module Clients
     # Proxy resource manager wrapper for the proxy entity received by the REST API
-    class ProxyManager < DefaultManager
+    class ProxyClient < DefaultClient
       attr_accessor :service
       # @api public
       # Creates instance of the Proxy resource manager
@@ -14,7 +16,6 @@ module ThreeScaleApi
       def initialize(http_client, service)
         super(http_client, entity_name: 'proxy', collection_name: 'proxies')
         @service = service
-        @resource_instance = Proxy
       end
 
       # @api public
@@ -23,26 +24,6 @@ module ThreeScaleApi
       # @return [String] Base URL for the REST call
       def base_path
         super.concat "/services/#{@service['id']}/proxy"
-      end
-
-      # @api public
-      # Reads proxy
-      #
-      # @return [Proxy] Proxy resource
-      def read
-        @log.info('Read proxy')
-        response = http_client.get(base_path)
-        log_result resource_instance(response)
-      end
-
-      # @api public
-      # Updates proxy
-      #
-      # @return [Proxy] Updated proxy
-      def update(attributes)
-        @log.info("Update #{resource_name}: #{attributes}")
-        response = http_client.patch(base_path, body: attributes)
-        log_result resource_instance(response)
       end
 
       # @api public
@@ -92,29 +73,6 @@ module ThreeScaleApi
         @log.info("Latest #{resource_name} config for: #{env}")
         response = http_client.get("#{base_path}/configs/#{env}/latest")
         log_result resource_instance(response)
-      end
-    end
-
-    # @api public
-    # Proxy resource wrapper for proxy entity received by REST API
-    class Proxy < DefaultResource
-      attr_accessor :service
-
-      # @api public
-      # Construct the proxy resource
-      #
-      # @param [ThreeScaleApi::HttpClient] client Instance of test client
-      # @param [ThreeScaleApi::Clients::DefaultManager] manager Instance of the manager
-      # @param [Hash] entity Entity Hash from API client of the proxy
-      def initialize(client, manager, entity)
-        super(client, manager, entity)
-        @service = manager.service
-      end
-
-      # @api public
-      # Updates proxy
-      def update
-        @manager.update(entity)
       end
     end
   end

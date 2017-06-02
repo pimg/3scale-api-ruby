@@ -8,30 +8,30 @@ RSpec.describe 'ThreeScaleApi Client' do
   subject(:client) { ThreeScaleApi::Client.new(endpoint: endpoint, provider_key: provider_key) }
 
   it 'should create service manager instance' do
-    expect(client.services).to be_a_kind_of(ThreeScaleApi::Clients::ServiceManager)
+    expect(client.services).to be_a_kind_of(ThreeScaleApi::Clients::ServiceClient)
   end
 
   it 'should create accounts manager instance' do
-    expect(client.accounts).to be_a_kind_of(ThreeScaleApi::Clients::AccountManager)
+    expect(client.accounts).to be_a_kind_of(ThreeScaleApi::Clients::AccountClient)
   end
 
   it 'should create account plans manager instance' do
-    expect(client.account_plans).to be_a_kind_of(ThreeScaleApi::Clients::AccountPlanManager)
+    expect(client.account_plans).to be_a_kind_of(ThreeScaleApi::Clients::AccountPlanClient)
   end
 
   it 'should create active doc manager instance' do
-    expect(client.active_docs).to be_a_kind_of(ThreeScaleApi::Clients::ActiveDocManager)
+    expect(client.active_docs).to be_a_kind_of(ThreeScaleApi::Clients::ActiveDocClient)
   end
 
   it 'should create webhooks manager instance' do
-    expect(client.webhooks).to be_a_kind_of(ThreeScaleApi::Clients::WebHookManager)
+    expect(client.webhooks).to be_a_kind_of(ThreeScaleApi::Clients::WebHookClient)
   end
 
   it 'should create providers manager instance' do
-    expect(client.providers).to be_a_kind_of(ThreeScaleApi::Clients::ProviderManager)
+    expect(client.providers).to be_a_kind_of(ThreeScaleApi::Clients::ProviderClient)
   end
 
   it 'should create settings manager instance' do
-    expect(client.settings).to be_a_kind_of(ThreeScaleApi::Clients::SettingsManager)
+    expect(client.settings).to be_a_kind_of(ThreeScaleApi::Clients::SettingsClient)
   end
 end

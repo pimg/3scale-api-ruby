@@ -2,18 +2,19 @@
 
 require 'three_scale_api/tools'
 require 'three_scale_api/clients/default'
+require 'three_scale_api/resources/settings'
+
 
 module ThreeScaleApi
   module Clients
     # Service resource manager wrapper for the service entity received by the REST API
-    class SettingsManager < DefaultManager
+    class SettingsClient < DefaultClient
       # @api public
       # Creates instance of the Service resource manager
       #
       # @param [ThreeScaleQE::TestClient] http_client Instance of http client
       def initialize(http_client)
         super(http_client, entity_name: 'settings', collection_name: 'settings')
-        @resource_instance = Settings
       end
 
       # Base path for the REST call
@@ -28,9 +29,7 @@ module ThreeScaleApi
       #
       # @return [Settings] Instance of the settings resource
       def read
-        @log.info("Read #{resource_name}")
-        response = http_client.get(base_path)
-        log_result resource_instance(response)
+        super
       end
 
       # @api public
@@ -52,22 +51,7 @@ module ThreeScaleApi
       # @option attributes [Boolean] :change_service_plan_permission Service Plans changing
       # @option attributes [Boolean] :end_user_plans_ui_visible Enables visibility of End User Plans
       def update(attributes)
-        @log.info("Update #{resource_name}: #{attributes}")
-        response = http_client.patch(base_path, body: attributes)
-        log_result resource_instance(response)
-      end
-    end
-
-    # Service resource wrapper for the service entity received by REST API
-    class Settings < DefaultResource
-      # @api public
-      # Creates instance of the Service resource
-      #
-      # @param [ThreeScaleQE::TestClient] client Instance of the test client
-      # @param [ServicesManager] manager Instance of the manager
-      # @param [Hash] entity Service Hash from API client
-      def initialize(client, manager, entity)
-        super(client, manager, entity)
+        super(attributes, method: :patch)
       end
     end
   end

@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
-require 'three_scale_api/clients/default_helpers'
+require 'three_scale_api/clients/default'
 require 'three_scale_api/clients/application_key'
+require 'three_scale_api/resources/application'
+
+
 
 module ThreeScaleApi
   module Clients
     # Application resource manager wrapper for an application entity received by the REST API
-    class ApplicationManager < DefaultStateManager
+    class ApplicationClient < DefaultClient
+      include DefaultStateClient
       attr_accessor :account
       # @api public
       # Creates instance of the Service resource manager
@@ -15,7 +19,6 @@ module ThreeScaleApi
       # @param [Account] account Account entity
       def initialize(http_client, account)
         super(http_client, entity_name: 'application', collection_name: 'applications')
-        @resource_instance = Application
         @account = account
       end
 
@@ -92,47 +95,6 @@ module ThreeScaleApi
       # @param [Fixnum] id Application ID
       def resume(id)
         set_state(id, state: 'resume')
-      end
-    end
-
-    # Application resource wrapper for an application received by the REST API
-    class Application < DefaultStateResource
-      attr_accessor :account
-      # @api public
-      # Creates instance of the Service resource
-      #
-      # @param [ThreeScaleQE::TestClient] client Instance of the test client
-      # @param [ApplicationManager] manager Instance of the manager
-      # @param [Hash] entity Service Hash from API client
-      def initialize(client, manager, entity)
-        super(client, manager, entity)
-        @account = manager.account
-      end
-
-      # @api public
-      # Applications keys manager instance
-      #
-      # @return [ApplicationKeysManager] Application keys manager instance
-      def keys
-        manager_instance(ApplicationKeyManager)
-      end
-
-      # @api public
-      # Accept application
-      def accept
-        set_state('accept')
-      end
-
-      # @api public
-      # Suspend application
-      def suspend
-        set_state('suspend')
-      end
-
-      # @api public
-      # Resume application
-      def resume
-        set_state('resume')
       end
     end
   end

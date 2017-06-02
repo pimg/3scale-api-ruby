@@ -4,7 +4,7 @@ require 'three_scale_api/http_client'
 require 'three_scale_api/tools'
 require 'three_scale_api/clients/service'
 require 'three_scale_api/clients/account'
-require 'three_scale_api/clients/account_plan'
+require 'three_scale_api/clients/plans'
 require 'three_scale_api/clients/provider'
 require 'three_scale_api/clients/webhook'
 require 'three_scale_api/clients/active_doc'
@@ -39,57 +39,57 @@ module ThreeScaleApi
     # @api public
     # Gets services manager instance
     #
-    # @return [ThreeScaleApi::Clients::ServiceManager] Service manager instance
+    # @return [ThreeScaleApi::Clients::ServiceClient] Service manager instance
     def services
-      @services_manager ||= ThreeScaleApi::Clients::ServiceManager.new(@http_client)
+      @services_manager ||= ThreeScaleApi::Clients::ServiceClient.new(@http_client)
     end
 
     # @api public
     # Gets accounts manager instance
     #
-    # @return [ThreeScaleApi::Clients::AccountManager] Account manager instance
+    # @return [ThreeScaleApi::Clients::AccountClient] Account manager instance
     def accounts
-      @accounts_manager ||= ThreeScaleApi::Clients::AccountManager.new(@http_client)
+      @accounts_manager ||= ThreeScaleApi::Clients::AccountClient.new(@http_client)
     end
 
     # @api public
     # Gets providers manager instance
     #
-    # @return [ThreeScaleApi::Clients::ProviderManager] Provider manager instance
+    # @return [ThreeScaleApi::Clients::ProviderClient] Provider manager instance
     def providers
-      @providers_manager ||= ThreeScaleApi::Clients::ProviderManager.new(@http_client)
+      @providers_manager ||= ThreeScaleApi::Clients::ProviderClient.new(@http_client)
     end
 
     # @api public
     # Gets account plans manager instance
     #
-    # @return [ThreeScaleApi::Clients::AccountPlanManager] Account plans manager instance
+    # @return [ThreeScaleApi::Clients::AccountPlanClient] Account plans manager instance
     def account_plans
-      @account_plans_manager ||= ThreeScaleApi::Clients::AccountPlanManager.new(@http_client)
+      @account_plans_manager ||= ThreeScaleApi::Clients::AccountPlanClient.new(@http_client)
     end
 
     # @api public
     # Gets active docs manager instance
     #
-    # @return [ThreeScaleApi::Clients::ActiveDocManager] active docs manager instance
+    # @return [ThreeScaleApi::Clients::ActiveDocClient] active docs manager instance
     def active_docs
-      @active_docs_manager ||= ThreeScaleApi::Clients::ActiveDocManager.new(@http_client)
+      @active_docs_manager ||= ThreeScaleApi::Clients::ActiveDocClient.new(@http_client)
     end
 
     # @api public
     # Gets webhooks manager instance
     #
-    # @return [ThreeScaleApi::Clients::WebHookManager] WebHooks manager instance
+    # @return [ThreeScaleApi::Clients::WebHookClient] WebHooks manager instance
     def webhooks
-      @webhooks_manager ||= ThreeScaleApi::Clients::WebHookManager.new(@http_client)
+      @webhooks_manager ||= ThreeScaleApi::Clients::WebHookClient.new(@http_client)
     end
 
     # @api public
     # Gets settings manager instance
     #
-    # @return [ThreeScaleApi::Clients::SettingsManager] Settings manager instance
+    # @return [ThreeScaleApi::Clients::SettingsClient] Settings manager instance
     def settings
-      @settings_manager ||= ThreeScaleApi::Clients::SettingsManager.new(@http_client)
+      @settings_manager ||= ThreeScaleApi::Clients::SettingsClient.new(@http_client)
     end
   end
 end

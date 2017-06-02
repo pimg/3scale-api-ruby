@@ -3,11 +3,13 @@
 require 'three_scale_api/clients/default'
 require 'three_scale_api/clients/application_plan_limit'
 require 'three_scale_api/clients/method'
+require 'three_scale_api/resources/mapping_rule'
+
 
 module ThreeScaleApi
   module Clients
     # Mapping rules resource manager wrapper for the mapping rule entity received by REST API
-    class MappingRuleManager < DefaultManager
+    class MappingRuleClient < DefaultClient
       attr_accessor :service, :metric
 
       # @api public
@@ -18,7 +20,6 @@ module ThreeScaleApi
         super(http_client, entity_name: 'mapping_rule', collection_name: 'mapping_rules')
         @service = service
         @metric = metric
-        @resource_instance = MappingRule
       end
 
       # @api public
@@ -61,23 +62,6 @@ module ThreeScaleApi
       def update(attributes, id: nil)
         attributes[:metric_id] ||= @metric['id']
         super(attributes, id: id)
-      end
-    end
-
-    # MappingRule resource wrapper for the MappingRule entity received by the REST API
-    class MappingRule < DefaultResource
-      attr_accessor :service, :metric
-
-      # @api public
-      # Construct the MappingRule resource
-      #
-      # @param [ThreeScaleApi::HttpClient] client Instance of http client
-      # @param [ThreeScaleApi::Clients::MappingRuleManager] manager Mapping rule manager
-      # @param [Hash] entity Entity Hash from the API client of the MappingRule
-      def initialize(client, manager, entity)
-        super(client, manager, entity)
-        @service = manager.service
-        @metric = manager.metric
       end
     end
   end

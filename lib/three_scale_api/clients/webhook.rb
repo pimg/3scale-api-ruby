@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 require 'three_scale_api/clients/default'
+require 'three_scale_api/resources/webhook'
+
 
 module ThreeScaleApi
   module Clients
     # WebHook resource manager wrapper for the WebHook entity received by the REST API
-    class WebHookManager < DefaultManager
+    class WebHookClient < DefaultClient
       attr_accessor :service
 
       # @api public
@@ -14,7 +16,6 @@ module ThreeScaleApi
       # @param [ThreeScaleQE::TestClient] http_client Instance of http client
       def initialize(http_client)
         super(http_client, entity_name: 'webhook', collection_name: 'webhooks')
-        @resource_instance = WebHook
       end
 
       # Base path for the REST call
@@ -51,9 +52,7 @@ module ThreeScaleApi
       # @option attributes [Boolean] :application_key_updated_on
       # @return [Hash] Webhook
       def update(attributes)
-        @log.info("Update #{resource_name}: #{attributes}")
-        response = http_client.patch(base_path, body: attributes)
-        log_result resource_instance(response)
+        super(attributes, method: :patch)
       end
 
       # @api public
@@ -64,22 +63,6 @@ module ThreeScaleApi
         @log.info('Read webhook')
         response = http_client.patch(base_path, body: {})
         log_result resource_instance(response)
-      end
-    end
-
-    # WebHook resource wrapper for the WebHook entity received by the REST API
-    class WebHook < DefaultResource
-      attr_accessor :service
-
-      # @api public
-      # Construct the WebHook resource
-      #
-      # @param [ThreeScaleApi::HttpClient] client Instance of http client
-      # @param [WebHookManager] manager Instance of the webhook manager
-      # @param [Hash] entity Entity Hash from API client of the metric
-      def initialize(client, manager, entity)
-        super(client, manager, entity)
-        @service = manager.service
       end
     end
   end
