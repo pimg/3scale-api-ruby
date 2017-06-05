@@ -29,6 +29,19 @@ RSpec.shared_examples :crud_resource do
     end
   end
 
+  context 'Prepare' do
+    it 'should prepare resource' do
+      res = @manager.prepare(@resource['id'])
+      expect(res.instance_variable_get(:@entity)).to be_nil
+      expect(res.instance_variable_get(:@entity_id)).to eq(@resource['id'])
+
+      expect(res.entity).to be_truthy
+      expect(res.entity).to include(base_attr => @name)
+      expect(res.instance_variable_get(:@entity)).to be_truthy
+
+    end
+  end
+
   context 'Update' do
     it 'should update resource' do
       param = update_params[:param]

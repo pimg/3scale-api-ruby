@@ -24,7 +24,7 @@ module ThreeScaleApi
       #
       # @param [Fixnum] plan_id Plan ID
       def set_plan(plan_id)
-        @manager.set_plan(@entity['id'], plan_id) if @manager.respond_to?(:set_plan)
+        @manager.set_plan(@entity_id, plan_id) if @manager.respond_to?(:set_plan)
       end
 
       # @api public
