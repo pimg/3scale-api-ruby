@@ -1,7 +1,4 @@
-# ThreeScale::API
-
-
-This gem aims to expose all [3scale](http://3scale.net) APIs with a Ruby interface.
+This gem aims to expose most of the [3scale](http://3scale.net) APIs with a Ruby interface.
 
 
 ## Installation
@@ -9,7 +6,7 @@ This gem aims to expose all [3scale](http://3scale.net) APIs with a Ruby interfa
 Add this line to your application's Gemfile:
 
 ```ruby
-gem '3scale-api'
+gem 'ThreeScaleRest', git: 'https://github.com/pestanko/3scale-api'
 ```
 
 And then execute:
@@ -18,19 +15,28 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install 3scale-api
+    $ gem install ThreeScaleRest
 
 ## Usage
 
-
 ```ruby
-require '3scale/api'
-client = ThreeScale::API.new(endpoint: 'https://foo-admin.3scale.net', provider_key: 'foobar')
+# Initialization
+require 'three_scale_api'
+client = ThreeScaleApi::Client.new(endpoint: 'https://foo-admin.3scale.net', provider_key: 'foobar', log_level: 'debug')
 
-services = client.list_services
+# Services
+services = client.services.list
+service = client.services['my_service']
+hits = service.metrics['Hits']
+
+# Accounts
+org_account = client.accounts.create({ org_name: 'my_org', username: 'john' })
+john = org_account.users['john']
+john['email'] = 'john@example.com'
+john['name'] = 'John Snow'
+john.update
+john.delete
 ```
-
-Get the whole list of methods available from [the RDoc site](http://www.rubydoc.info/gems/3scale-api/ThreeScale/API/Client).
 
 ## Design
 
@@ -42,13 +48,18 @@ Design decisions:
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+To install this gem onto your local machine, run `bundle exec rake install`. 
+To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
-To run tests run `rake` or `rspec`.
+## Testing
+You need to have set these ENV variables:
+```bash
+ENDPOINT=               # Url to admin pages
+PROVIDER_KEY=           # Provider key
+THREESCALE_LOG=         # Logging level (debug, warn, error, info)
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/3scale/3scale-api-ruby.
-
+Bug reports and pull requests are welcome on [GitHub](https://github.com/pestanko/3scale-api).

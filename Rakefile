@@ -1,20 +1,8 @@
+# frozen_string_literal: true
+
 require 'bundler/gem_tasks'
-task default: :spec
+require 'rspec/core/rake_task'
 
-begin
-  require 'rspec/core/rake_task'
-  RSpec::Core::RakeTask.new(:spec)
-rescue LoadError
-  # no rspec available
-end
+RSpec::Core::RakeTask.new(:spec)
 
-begin
-  require 'yard'
-
-  YARD::Rake::YardocTask.new do |t|
-    t.files   = ['lib/**/*.rb']
-    t.options = ['--api' 'public']
-  end
-rescue LoadError
-  # no yard available
-end
+task :default => :spec

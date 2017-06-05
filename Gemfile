@@ -1,11 +1,6 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in 3scale-api.gemspec
+# Specify your gem's dependencies in ThreeScaleRest.gemspec
 gemspec
-
-group :development do
-  gem 'pry'
-  gem 'dotenv'
-  gem 'pry-byebug', platform: :mri
-  gem 'yard'
-end
