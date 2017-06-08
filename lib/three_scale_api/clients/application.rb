@@ -4,8 +4,6 @@ require 'three_scale_api/clients/default'
 require 'three_scale_api/clients/application_key'
 require 'three_scale_api/resources/application'
 
-
-
 module ThreeScaleApi
   module Clients
     # Application resource manager wrapper for an application entity received by the REST API

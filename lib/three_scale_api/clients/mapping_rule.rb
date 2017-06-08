@@ -5,7 +5,6 @@ require 'three_scale_api/clients/application_plan_limit'
 require 'three_scale_api/clients/method'
 require 'three_scale_api/resources/mapping_rule'
 
-
 module ThreeScaleApi
   module Clients
     # Mapping rules resource manager wrapper for the mapping rule entity received by REST API

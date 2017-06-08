@@ -4,6 +4,7 @@ require 'three_scale_api/resources/default'
 
 module ThreeScaleApi
   module Resources
+    # Resource that represents Application Plan limit
     class ApplicationPlanLimit < DefaultResource
       attr_accessor :service, :metric
 

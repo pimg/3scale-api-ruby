@@ -48,6 +48,17 @@ module ThreeScaleApi
     end
 
     # @api public
+    # Checks response whether it contains error attribute
+    #
+    # @param [Hash] response Response from server
+    def self.check_response(response)
+      if (response.is_a? Hash) && !response['error'].nil?
+        raise APIResponseError.new(response), response['error']
+      end
+      response
+    end
+
+    # @api public
     # Extracts Hash from response
     #
     # @param [String] collection Collection name
@@ -63,10 +74,7 @@ module ThreeScaleApi
                  else raise "unknown #{from}"
                  end
 
-      if (response.is_a? Hash) && !response['error'].nil?
-        raise APIResponseError.new(response), response['error']
-      end
-      response
+      check_response(response)
     end
 
     # Custom error that is thrown when the

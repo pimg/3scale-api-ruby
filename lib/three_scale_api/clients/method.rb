@@ -4,7 +4,6 @@ require 'three_scale_api/clients/default'
 require 'three_scale_api/clients/application_plan_limit'
 require 'three_scale_api/resources/method'
 
-
 module ThreeScaleApi
   module Clients
     # Method resource manager wrapper for the method entity received by REST API

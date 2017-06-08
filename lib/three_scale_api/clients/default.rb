@@ -9,7 +9,7 @@ module ThreeScaleApi
     # Default resource manager wrapper for default entity received by REST API
     # All other managers inherits from Default manager
     class DefaultClient
-      attr_accessor :http_client
+      attr_accessor :http_client, :entity_name, :collection_name
 
       # @api public
       # Creates instance of the Default resource manager
@@ -36,7 +36,7 @@ module ThreeScaleApi
       # @return [DefaultResource] Requested entity
       def [](key)
         if key.is_a? Numeric
-          prepare(key)
+          read(key)
         else
           read_by_name(key)
         end
@@ -87,10 +87,10 @@ module ThreeScaleApi
       #
       # @param [Fixnum] id Id of the entity
       # @return [DefaultResource] Instance of the default resource
-      def read(id = nil)
+      def fetch(id = nil)
         path = base_path
         path = "#{path}/#{id}" unless id.nil?
-        log.info("Read #{resource_name}: #{path}")
+        log.info("Fetched #{resource_name}: #{path}")
         response = http_client.get(path)
         log_result resource_instance(response)
       end
@@ -177,7 +177,7 @@ module ThreeScaleApi
       # Returns resource without fetched entity
       #
       # @param [Fixnum] selector Entity ID
-      def prepare(selector)
+      def read(selector = nil)
         instance(selector: selector)
       end
 
@@ -196,7 +196,7 @@ module ThreeScaleApi
                               entity: entity,
                               entity_id: selector)
         end
-        
+
         instance_name = inst.class.name.split('::').last
         log.debug("[RES] #{instance_name}: #{entity}")
         inst
@@ -259,7 +259,6 @@ module ThreeScaleApi
 
     # Default state resource manager wrapper for default entity received by REST API
     module DefaultStateClient
-
       # @api public
       # Sets account to spec. state
       #

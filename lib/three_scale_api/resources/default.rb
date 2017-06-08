@@ -73,8 +73,8 @@ module ThreeScaleApi
       #
       # @return [DefaultEntity] Entity
       def read
-        return nil unless @manager.respond_to?(:read)
-        ent = @manager.read(@entity_id)
+        return nil unless @manager.respond_to?(:fetch)
+        ent = @manager.fetch(@entity_id)
         @entity = ent.entity
       end
 
@@ -83,7 +83,7 @@ module ThreeScaleApi
       #
       # @return [String] String representation of the resource
       def to_s
-        entity.to_s
+        @entity.to_s
       end
 
       # Wrapper to create manager instance

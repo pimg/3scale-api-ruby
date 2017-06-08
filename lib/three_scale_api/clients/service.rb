@@ -9,7 +9,6 @@ require 'three_scale_api/clients/mapping_rule'
 require 'three_scale_api/clients/plans'
 require 'three_scale_api/resources/service'
 
-
 module ThreeScaleApi
   module Clients
     # Service resource manager wrapper for the service entity received by the REST API

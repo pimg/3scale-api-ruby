@@ -4,7 +4,6 @@ require 'three_scale_api/tools'
 require 'three_scale_api/clients/default'
 require 'three_scale_api/resources/provider'
 
-
 module ThreeScaleApi
   module Clients
     # Provider resource manager wrapper for the provider entity received by the REST API
