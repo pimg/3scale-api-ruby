@@ -4,7 +4,6 @@ require 'three_scale_api/clients/default'
 require 'three_scale_api/clients/application_plan_limit'
 require 'three_scale_api/resources/method'
 
-
 module ThreeScaleApi
   module Clients
     # Method resource manager wrapper for the method entity received by REST API
@@ -26,7 +25,7 @@ module ThreeScaleApi
       #
       # @return [String] Base URL for the REST call
       def base_path
-        super.concat "/services/#{@service['id']}/metrics/#{@metric['id']}/methods"
+        super.concat "/services/#{@service.entity_id}/metrics/#{@metric.entity_id}/methods"
       end
     end
   end

@@ -3,7 +3,6 @@
 require 'three_scale_api/clients/default'
 require 'three_scale_api/resources/account_user'
 
-
 module ThreeScaleApi
   module Clients
     # Account user resource manager wrapper for account user entity received by REST API
@@ -25,7 +24,7 @@ module ThreeScaleApi
       #
       # @return [String] Base URL for the REST call
       def base_path
-        super.concat "/accounts/#{@account['id']}/users"
+        super.concat "/accounts/#{@account.entity_id}/users"
       end
     end
   end

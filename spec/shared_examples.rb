@@ -3,29 +3,10 @@
 require_relative './shared_tests_config'
 
 # Shared test for Crud operations
-RSpec.shared_examples :crud_resource do
-  context 'manager reference' do
-    it 'has valid manager reference' do
-      expect(@resource.manager).to eq(@manager)
-    end
-  end
-
+shared_examples :crud_resource do
   context 'Create' do
     it 'should create resource' do
       expect(@resource).to res_include(base_attr => @name)
-    end
-  end
-
-  context 'List' do
-    it 'should list resource' do
-      res_name = @resource[base_attr]
-      expect(@manager.list.any? { |res| res[base_attr] == res_name }).to be(true)
-    end
-  end
-
-  context 'Read' do
-    it 'should read resource' do
-      expect(@manager.read(@resource['id'])).to res_include(base_attr => @name)
     end
   end
 
@@ -49,6 +30,13 @@ RSpec.shared_examples :crud_resource do
     end
   end
 
+  context 'List' do
+    it 'should list resource' do
+      res_name = @resource[base_attr]
+      expect(@manager.list.any? { |res| res[base_attr] == res_name }).to be(true)
+    end
+  end
+
   context 'Find' do
     it 'should find resource' do
       resource = @manager[@resource[base_attr]]
@@ -59,16 +47,33 @@ RSpec.shared_examples :crud_resource do
     end
   end
 
-  context 'Valid references' do
-    it 'should have valid reference to manager' do
-      expect(@resource.manager).to eq(@manager)
+  context 'Read' do
+    it 'should not call http_client get' do
+      expect(@manager.http_client).not_to receive(:get)
+      @manager.read(@resource['id'])
+    end
+
+    it 'should fetch resource and call http_client get' do
+      entity_name = @manager.entity_name
+      expect(@manager.http_client).to receive(:get).and_return(
+        entity_name.to_s => { base_attr => @name }
+      )
+      res = @manager.read(@resource['id'])
+      expect(res.entity).to be_truthy
+      expect(res).to res_include(base_attr => @name)
+    end
+  end
+
+  context 'Fetch' do
+    it 'should prepare resource' do
+      expect(@manager.fetch(@resource['id'])).to res_include(base_attr => @name)
     end
   end
 end
 
 # Shared example for all plan resources and managers.
 # It runs shared crud tests and List all with get and set default plan
-RSpec.shared_examples :plan_resource do
+shared_examples :plan_resource do
   let(:base_attr) { 'name' }
   let(:update_params) do
     { param: 'state', value: 'published' }
@@ -101,8 +106,7 @@ RSpec.shared_examples :plan_resource do
   end
 end
 
-
-RSpec.shared_examples :user_resource do
+shared_examples :user_resource do
   let(:base_attr) { 'username' }
   let(:update_params) do
     new_name = @name + '-updated@example.com'

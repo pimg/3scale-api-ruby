@@ -4,8 +4,6 @@ require 'three_scale_api/clients/default'
 require 'three_scale_api/clients/application_key'
 require 'three_scale_api/resources/application'
 
-
-
 module ThreeScaleApi
   module Clients
     # Application resource manager wrapper for an application entity received by the REST API
@@ -26,7 +24,7 @@ module ThreeScaleApi
       #
       # @return [String] Base URL for the REST call
       def base_path
-        super.concat "/accounts/#{account['id']}/applications"
+        super.concat "/accounts/#{@account.entity_id}/applications"
       end
 
       # @api public

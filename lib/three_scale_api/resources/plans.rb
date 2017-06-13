@@ -4,7 +4,6 @@ require 'three_scale_api/resources/default'
 
 module ThreeScaleApi
   module Resources
-
     # Application plan resource wrapper for an application entity received by the REST API
     class ApplicationPlan < DefaultResource
       include DefaultPlanResource

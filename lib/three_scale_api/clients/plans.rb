@@ -3,13 +3,10 @@
 require 'three_scale_api/clients/default'
 require 'three_scale_api/resources/plans'
 
-
 module ThreeScaleApi
   module Clients
-
     # Default plan resource manager wrapper
     module DefaultPlanClient
-
       # @api public
       # Lists all plans
       #
@@ -44,8 +41,6 @@ module ThreeScaleApi
         log_result result
       end
     end
-
-
 
     # Application plan resource manager wrapper for an application plan entity
     # received by the REST API
@@ -124,7 +119,7 @@ module ThreeScaleApi
       #
       # @return [String] Base URL for the REST call
       def base_path
-        super.concat "/services/#{@service['id']}/service_plans"
+        super.concat "/services/#{@service.entity_id}/service_plans"
       end
 
       # @api public
@@ -135,6 +130,5 @@ module ThreeScaleApi
         super('/admin/api/service_plans')
       end
     end
-
   end
 end

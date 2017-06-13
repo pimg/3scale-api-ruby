@@ -22,6 +22,7 @@ module ThreeScaleApi
       # @api public
       # Deletes key resource
       def delete
+        read unless entity
         @manager.delete(entity['value']) if @manager.respond_to?(:delete)
       end
     end

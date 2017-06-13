@@ -3,7 +3,6 @@
 require 'three_scale_api/clients/default'
 require 'three_scale_api/resources/active_doc'
 
-
 module ThreeScaleApi
   module Clients
     # Active doc resource manager wrapper for the active doc entity received by the REST API
@@ -16,13 +15,8 @@ module ThreeScaleApi
         super(http_client, entity_name: 'api_doc')
       end
 
-      # @api public
-      # Gets active doc by ID
-      #
-      # @param [Fixnum] id Active doc id
-      # @return [ActiveDoc] Active doc resource instance
-      def read(id)
-        @log.info("Read #{resource_name}: #{id}")
+      def fetch(id)
+        @log.info("Fetch #{resource_name}: #{id}")
         res = _list.find { |doc| doc['id'] == id }
         log_result res
       end

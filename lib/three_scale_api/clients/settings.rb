@@ -4,7 +4,6 @@ require 'three_scale_api/tools'
 require 'three_scale_api/clients/default'
 require 'three_scale_api/resources/settings'
 
-
 module ThreeScaleApi
   module Clients
     # Service resource manager wrapper for the service entity received by the REST API

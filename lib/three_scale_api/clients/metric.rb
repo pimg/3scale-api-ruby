@@ -5,7 +5,6 @@ require 'three_scale_api/clients/application_plan_limit'
 require 'three_scale_api/clients/method'
 require 'three_scale_api/resources/metric'
 
-
 module ThreeScaleApi
   module Clients
     # Metric resource manager wrapper for the metric entity received by REST API
@@ -25,7 +24,7 @@ module ThreeScaleApi
       #
       # @return [String] Base URL for the REST call
       def base_path
-        super.concat "/services/#{@service['id']}/metrics"
+        super.concat "/services/#{@service.entity_id}/metrics"
       end
     end
   end

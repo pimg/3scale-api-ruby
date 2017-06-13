@@ -3,7 +3,6 @@
 require 'three_scale_api/clients/default'
 require 'three_scale_api/resources/webhook'
 
-
 module ThreeScaleApi
   module Clients
     # WebHook resource manager wrapper for the WebHook entity received by the REST API

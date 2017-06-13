@@ -3,7 +3,6 @@
 require 'three_scale_api/clients/default'
 require 'three_scale_api/resources/proxy'
 
-
 module ThreeScaleApi
   module Clients
     # Proxy resource manager wrapper for the proxy entity received by the REST API
@@ -23,7 +22,7 @@ module ThreeScaleApi
       #
       # @return [String] Base URL for the REST call
       def base_path
-        super.concat "/services/#{@service['id']}/proxy"
+        super.concat "/services/#{@service.entity_id}/proxy"
       end
 
       # @api public

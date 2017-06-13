@@ -12,7 +12,7 @@ module ThreeScaleApi
       attr_accessor :http_client,
                     :manager,
                     :api,
-                    :entity
+                    :entity_id
 
       # @api public
       # Constructs the resource
@@ -20,10 +20,18 @@ module ThreeScaleApi
       # @param [ThreeScaleApi::HttpClient] client Instance of http client
       # @param [ThreeScaleApi::Clients::DefaultClient] manager Instance of test client
       # @param [Hash] entity Entity Hash from API client
-      def initialize(client, manager, entity)
+      def initialize(client, manager, entity: nil, entity_id: nil)
         @http_client = client
         @entity = entity
         @manager = manager
+        @entity_id = entity_id
+        @entity_id ||= entity['id'] if entity
+      end
+
+      # Lazy load entity
+      def entity
+        read unless @entity
+        @entity
       end
 
       # @api public
@@ -32,8 +40,7 @@ module ThreeScaleApi
       # @param [String] key Name of the property
       # @return [object] Value of the property
       def [](key)
-        return nil unless entity
-        @entity[key]
+        entity[key]
       end
 
       # @api public
@@ -43,15 +50,14 @@ module ThreeScaleApi
       # @param [String] value Value of the property
       # @return [object] Value of the property
       def []=(key, value)
-        return nil unless entity
-        @entity[key] = value
+        entity[key] = value
       end
 
       # @api public
       # Deletes Resource if possible (method is implemented in the manager)
       def delete
-        return false unless @entity
-        @manager.delete(@entity['id']) if @manager.respond_to?(:delete)
+        return false unless @entity_id
+        @manager.delete(@entity_id) if @manager.respond_to?(:delete)
       end
 
       # @api public
@@ -59,8 +65,7 @@ module ThreeScaleApi
       #
       # @return [DefaultEntity] Updated entity
       def update
-        return nil unless @entity
-        @manager.update(@entity) if @manager.respond_to?(:update)
+        @manager.update(entity) if @manager.respond_to?(:update)
       end
 
       # @api public
@@ -68,9 +73,8 @@ module ThreeScaleApi
       #
       # @return [DefaultEntity] Entity
       def read
-        return nil unless entity
-        return nil unless @manager.respond_to?(:read)
-        ent = @manager.read(@entity['id'])
+        return nil unless @manager.respond_to?(:fetch)
+        ent = @manager.fetch(@entity_id)
         @entity = ent.entity
       end
 
@@ -79,7 +83,7 @@ module ThreeScaleApi
       #
       # @return [String] String representation of the resource
       def to_s
-        entity.to_s
+        @entity.to_s
       end
 
       # Wrapper to create manager instance
@@ -121,7 +125,7 @@ module ThreeScaleApi
       #
       # @return [Hash] Entity hash
       def to_h
-        @entity
+        entity
       end
     end
 
@@ -130,7 +134,7 @@ module ThreeScaleApi
       # @api public
       # Sets plan as default
       def set_default
-        @manager.set_default(entity['id']) if @manager.respond_to?(:set_default)
+        @manager.set_default(@entity_id) if @manager.respond_to?(:set_default)
       end
     end
 
@@ -141,7 +145,7 @@ module ThreeScaleApi
       #
       # @param [String] state 'approve' or 'reject' or 'make_pending'
       def set_state(state)
-        @manager.set_state(@entity['id'], state) if @manager.respond_to?(:set_state)
+        @manager.set_state(@entity_id, state) if @manager.respond_to?(:set_state)
       end
     end
 
