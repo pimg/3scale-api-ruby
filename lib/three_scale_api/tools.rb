@@ -52,8 +52,8 @@ module ThreeScaleApi
     #
     # @param [Hash] response Response from server
     def self.check_response(response)
-      if (response.is_a? Hash) && !response['error'].nil?
-        raise APIResponseError.new(response), response['error']
+      if (response.is_a? Hash) && (response['error'] || response['errors'])
+        raise APIResponseError.new(response), (response['error'] || response['errors'])
       end
       response
     end

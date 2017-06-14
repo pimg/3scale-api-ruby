@@ -3,7 +3,7 @@
 require_relative './shared_tests_config'
 
 # Shared test for Crud operations
-shared_examples :crud_resource do
+RSpec.shared_examples :crud_resource do
   context 'Create' do
     it 'should create resource' do
       expect(@resource).to res_include(base_attr => @name)
@@ -73,7 +73,7 @@ end
 
 # Shared example for all plan resources and managers.
 # It runs shared crud tests and List all with get and set default plan
-shared_examples :plan_resource do
+RSpec.shared_examples :plan_resource do
   let(:base_attr) { 'name' }
   let(:update_params) do
     { param: 'state', value: 'published' }
@@ -106,7 +106,7 @@ shared_examples :plan_resource do
   end
 end
 
-shared_examples :user_resource do
+RSpec.shared_examples :user_resource do
   let(:base_attr) { 'username' }
   let(:update_params) do
     new_name = @name + '-updated@example.com'
