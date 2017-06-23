@@ -4,8 +4,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachangelog.com/).
 
 ## [Unreleased]
+
+## [0.1.5] - 2017-06-23
+
 ### Added
 - Application Customize Plan
+- MIT license
 
 ## [0.1.4] - 2016-05-10
 ### Added
@@ -35,7 +39,8 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 - Application Plans List & Create
 - Usage Limits List, Create & Delete
 
-[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.1.4...HEAD
+[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.1.5...HEAD
+[0.1.5]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.5
 [0.1.4]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.4
 [0.1.3]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.3
 [0.1.2]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.2
