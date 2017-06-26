@@ -40,7 +40,7 @@ module ThreeScaleApi
       # @param [String] key Name of the property
       # @return [object] Value of the property
       def [](key)
-        entity[key]
+        entity[key.to_s]
       end
 
       # @api public
@@ -50,7 +50,7 @@ module ThreeScaleApi
       # @param [String] value Value of the property
       # @return [object] Value of the property
       def []=(key, value)
-        entity[key] = value
+        entity[key.to_s] = value
       end
 
       # @api public
