@@ -2,6 +2,7 @@
 
 require 'three_scale_api/resources/default'
 require 'three_scale_api/clients/application_key'
+require 'three_scale_api/clients/service'
 
 module ThreeScaleApi
   module Resources
@@ -18,6 +19,23 @@ module ThreeScaleApi
       def initialize(client, manager, entity)
         super(client, manager, entity)
         @account = manager.account
+      end
+
+      # @api public
+      # Gets corresponding service for the application
+      #
+      # @return [ThreeScaleApi::Resources::Service]
+      def service
+        services = ThreeScaleApi::Clients::ServiceClient.new(http_client)
+        services[entity['service_id']]
+      end
+
+      # @api public
+      # Gets corresponding application plan for the application
+      #
+      # @return [ThreeScaleApi::Resources::ApplicationPlan]
+      def application_plan
+        service.application_plans[entity['plan_id']]
       end
 
       # @api public
