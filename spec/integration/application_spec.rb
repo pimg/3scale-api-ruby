@@ -35,6 +35,22 @@ RSpec.describe 'Application Resource', type: :integration do
 
   it_behaves_like :crud_resource
 
+  context 'Has valid references' do
+    it 'should have valid service reference' do
+      app_service = @resource.service
+      expect(app_service).to be_truthy
+      expect(app_service).to be_a ThreeScaleApi::Resources::Service
+      expect(app_service).to res_include('id' => @service['id'])
+    end
+
+    it 'should have valid application plan reference' do
+      plan = @resource.application_plan
+      expect(plan).to be_truthy
+      expect(plan).to be_a ThreeScaleApi::Resources::ApplicationPlan
+      expect(plan).to res_include('id' => @app_plan['id'])
+    end
+  end
+
   context 'Set application state' do
     it 'should activate application' do
       @resource.suspend
