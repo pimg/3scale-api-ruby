@@ -28,6 +28,15 @@ RSpec.describe ThreeScale::API::Client do
     end
   end
 
+  context '#update_service' do
+    it do
+      expect(http_client).to receive(:put)
+        .with('/admin/api/services/42', body: { service: { name: 'Updated Service'} })
+        .and_return('service' => {'id' => 42})
+      expect(client.update_service(42, { name: 'Updated Service' })).to eq({'id' => 42})
+    end
+  end  
+
   context '#show_proxy' do
     it do
       expect(http_client).to receive(:get).with('/admin/api/services/42/proxy').and_return('proxy' => {})
