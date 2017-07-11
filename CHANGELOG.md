@@ -5,6 +5,9 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 
 ## [Unreleased]
 
+### Added
+- Service Update
+
 ## [0.1.5] - 2017-06-23
 
 ### Added
