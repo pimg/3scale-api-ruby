@@ -44,11 +44,29 @@ Design decisions:
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
+## Testing
+
 To run tests run `rake` or `rspec`.
+
+There are two kinds of tests: unit (see [spec/api](spec/api)) and integration (see [spec/integration](spec/integration)).
+
+For running the integration tests you will need to have a real 3scale account, you can set the details of the account via environment variables. The easiest way to set everything up is it to have a `.env` file in the root of the project with the following environment variables (set your own values):
+
+```
+ENDPOINT=https://your-domain-admin.3scale.net
+PROVIDER_KEY=abc123
+SERVICE_ID=12345
+METRIC_ID=12345 # should be a numeric value, not the system name
+APPLICATION_PLAN_ID=12345
+```
+
+**Note:** for the tests to pass the following requirements need to be met:
+- authorization mode of the service should be *API key*
+- there should be at least 1 method for the 'hits' metric
+- the field `billing_address` should be added to the Account model in **Settings > Fields Definitions**
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/3scale/3scale-api-ruby.
-

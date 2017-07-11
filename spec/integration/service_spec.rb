@@ -30,6 +30,13 @@ RSpec.describe 'Service API', type: :integration do
     end
   end
 
+  context '#update_service' do
+    let(:name) { SecureRandom.uuid }
+    subject(:response) { client.update_service(service_id, 'name' => name) }
+
+    it { is_expected.to include('name' => name) }
+  end
+
   context '#show_proxy' do
     it { expect(client.show_proxy(service_id).keys.size).to be >= 1 }
   end
