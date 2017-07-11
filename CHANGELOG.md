@@ -7,6 +7,7 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 
 ### Added
 - Service Update
+- Access Token support added (Provider Key is still supported, but Access Token is preferred)
 
 ## [0.1.5] - 2017-06-23
 

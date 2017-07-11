@@ -5,19 +5,22 @@ require 'net/http'
 module ThreeScale
   module API
     class HttpClient
-      attr_reader :endpoint, :admin_domain, :provider_key, :headers, :format
+      attr_reader :endpoint, :admin_domain, :provider_key, :access_token, :headers, :format
 
-      def initialize(endpoint:, provider_key:, format: :json)
+      def initialize(endpoint:, provider_key: nil, access_token: nil, format: :json)
         @endpoint = URI(endpoint).freeze
         @admin_domain = @endpoint.host.freeze
         @provider_key = provider_key.freeze
+        @access_token = access_token.freeze
         @http = Net::HTTP.new(admin_domain, @endpoint.port)
         @http.use_ssl = @endpoint.is_a?(URI::HTTPS)
+
+        auth = access_token || provider_key
 
         @headers = {
           'Accept' => "application/#{format}",
           'Content-Type' => "application/#{format}",
-          'Authorization' => 'Basic ' + [":#{@provider_key}"].pack('m').delete("\r\n")
+          'Authorization' => 'Basic ' + [":#{auth}"].pack('m').delete("\r\n")
         }
 
         if debug?

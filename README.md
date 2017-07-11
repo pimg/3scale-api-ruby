@@ -25,7 +25,7 @@ Or install it yourself as:
 
 ```ruby
 require '3scale/api'
-client = ThreeScale::API.new(endpoint: 'https://foo-admin.3scale.net', provider_key: 'foobar')
+client = ThreeScale::API.new(endpoint: 'https://foo-admin.3scale.net', access_token: 'foobar')
 
 services = client.list_services
 ```
@@ -54,7 +54,7 @@ For running the integration tests you will need to have a real 3scale account, y
 
 ```
 ENDPOINT=https://your-domain-admin.3scale.net
-PROVIDER_KEY=abc123
+ACCESS_TOKEN=abc123
 SERVICE_ID=12345
 METRIC_ID=12345 # should be a numeric value, not the system name
 APPLICATION_PLAN_ID=12345

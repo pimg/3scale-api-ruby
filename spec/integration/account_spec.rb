@@ -2,11 +2,11 @@ require 'securerandom'
 
 RSpec.describe 'Account API', type: :integration do
   let(:endpoint) { ENV.fetch('ENDPOINT') }
-  let(:provider_key) { ENV.fetch('PROVIDER_KEY') }
+  let(:access_token) { ENV.fetch('ACCESS_TOKEN') }
   let(:service_id)   { ENV.fetch('SERVICE_ID').to_i }
   let(:application_plan_id) { ENV.fetch('APPLICATION_PLAN_ID').to_i }
 
-  subject(:client) { ThreeScale::API.new(endpoint: endpoint, provider_key: provider_key) }
+  subject(:client) { ThreeScale::API.new(endpoint: endpoint, access_token: access_token) }
 
   context '#signup' do
     let(:name) { SecureRandom.hex(14) }

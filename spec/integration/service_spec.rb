@@ -2,12 +2,12 @@ require 'securerandom'
 
 RSpec.describe 'Service API', type: :integration do
   let(:endpoint) { ENV.fetch('ENDPOINT') }
-  let(:provider_key) { ENV.fetch('PROVIDER_KEY') }
+  let(:access_token) { ENV.fetch('ACCESS_TOKEN') }
   let(:service_id)   { ENV.fetch('SERVICE_ID').to_i }
   let(:metric_id) { ENV.fetch('METRIC_ID').to_i }
   let(:application_plan_id) { ENV.fetch('APPLICATION_PLAN_ID').to_i }
 
-  subject(:client) { ThreeScale::API.new(endpoint: endpoint, provider_key: provider_key) }
+  subject(:client) { ThreeScale::API.new(endpoint: endpoint, access_token: access_token) }
 
   context '#list_services' do
     it { expect(client.list_services.length).to be >= 1 }

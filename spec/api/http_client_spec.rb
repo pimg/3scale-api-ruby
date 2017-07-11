@@ -1,24 +1,49 @@
 RSpec.describe ThreeScale::API::HttpClient do
   describe '#initialize' do
-    subject(:client) do
-      described_class.new(endpoint: 'https://foo-admin.3scale.net',
-                          provider_key: 'some-key')
+    context 'provider_key is provided' do
+      subject(:client) do
+        described_class.new(endpoint: 'https://foo-admin.3scale.net',
+                            provider_key: 'some-key')
+      end
+
+      it { is_expected.to be }
+
+      it { expect(client.admin_domain).to eq('foo-admin.3scale.net') }
+      it { expect(client.provider_key).to eq('some-key') }
     end
 
-    it { is_expected.to be }
+    context 'access_token is provided' do
+      subject(:client) do
+        described_class.new(endpoint: 'https://foo-admin.3scale.net',
+                            access_token: 'some-token')
+      end
 
-    it { expect(client.admin_domain).to eq('foo-admin.3scale.net') }
-    it { expect(client.provider_key).to eq('some-key') }
+      it { is_expected.to be }
+
+      it { expect(client.admin_domain).to eq('foo-admin.3scale.net') }
+      it { expect(client.access_token).to eq('some-token') }
+    end
+
+    context 'both provider_key and access_token are provided' do
+      subject(:client) do
+        described_class.new(endpoint: 'https://foo-admin.3scale.net',
+                            access_token: 'some-token', provider_key: 'some-key')
+      end
+
+      it 'access_token takes precedence' do
+        expect(client.headers['Authorization']).to include([":some-token"].pack('m').delete("\r\n"))
+      end
+    end
   end
 
   let(:admin_domain) { 'foo-admin.3scale.net' }
-  let(:provider_key) { 'some-key' }
+  let(:access_token) { 'some-token' }
 
-  subject(:client) { described_class.new(endpoint: "https://#{admin_domain}", provider_key: provider_key) }
+  subject(:client) { described_class.new(endpoint: "https://#{admin_domain}", access_token: access_token) }
 
   describe '#get' do
     let!(:stub) do
-      stub_request(:get,  "https://:#{provider_key}@#{admin_domain}/foo.json")
+      stub_request(:get,  "https://:#{access_token}@#{admin_domain}/foo.json")
         .and_return(body: '{"foo":"bar"}')
     end
 
@@ -36,7 +61,7 @@ RSpec.describe ThreeScale::API::HttpClient do
 
   describe '#post' do
     let!(:stub) do
-      stub_request(:post, "https://:#{provider_key}@#{admin_domain}/foo.json?one=1&two=2")
+      stub_request(:post, "https://:#{access_token}@#{admin_domain}/foo.json?one=1&two=2")
         .with(body: '{"bar":"baz"}')
         .and_return(body: '{"foo":"bar"}')
     end
@@ -56,7 +81,7 @@ RSpec.describe ThreeScale::API::HttpClient do
   describe '#put' do
     let(:body) { '' }
     let!(:stub) do
-      stub_request(:put, "https://:#{provider_key}@#{admin_domain}/foo.json?one=1&two=2")
+      stub_request(:put, "https://:#{access_token}@#{admin_domain}/foo.json?one=1&two=2")
         .with(body: body)
         .and_return(body: '{"foo":"bar"}')
     end
@@ -85,7 +110,7 @@ RSpec.describe ThreeScale::API::HttpClient do
 
   describe '#patch' do
     let!(:stub) do
-      stub_request(:patch,  "https://:#{provider_key}@#{admin_domain}/foo.json?one=1&two=2")
+      stub_request(:patch,  "https://:#{access_token}@#{admin_domain}/foo.json?one=1&two=2")
         .with(body: '{"bar":"baz"}')
         .and_return(body: '{"foo":"bar"}')
     end
@@ -104,7 +129,7 @@ RSpec.describe ThreeScale::API::HttpClient do
 
   describe '#delete' do
     let!(:stub) do
-      stub_request(:delete, "https://:#{provider_key}@#{admin_domain}/foo.json?one=1&two=2")
+      stub_request(:delete, "https://:#{access_token}@#{admin_domain}/foo.json?one=1&two=2")
         .and_return(body: '{"foo":"bar"}')
     end
 
