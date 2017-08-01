@@ -35,6 +35,20 @@ module ThreeScaleApi
         logger.progname = name if name
         log_level = log_level || @log_level || ENV['THREESCALE_LOG'] || 'debug'
         logger.level = LoggingFactory.get_level(log_level)
+        logging_format logger
+      end
+
+      private
+
+      # Sets logging format for specified logger
+      #
+      # @param [Logger] logger Logger for which the formatter will be set
+      # @return [Logger] modified logger instance
+      def logging_format(logger)
+        default_formatter = Logger::Formatter.new
+        logger.formatter = proc do |severity, datetime, progname, msg|
+          default_formatter.call(severity, datetime, "(#{progname})", msg.dump)
+        end
         logger
       end
     end
