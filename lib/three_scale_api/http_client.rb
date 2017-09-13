@@ -177,7 +177,7 @@ module ThreeScaleApi
       headers = {
         'Accept': "application/#{@format}",
         'Content-Type': "application/#{@format}",
-        'Authorization': 'Basic ' + [":#{@provider_key}"].pack('m').delete("\r\n")
+        'Authorization': 'Basic ' + [":#{@provider_key}"].pack('m').delete("\r\n"),
       }
       headers['Accept-Encoding'] = 'identity' if trace_net_http?
       headers.freeze

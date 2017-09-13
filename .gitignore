@@ -11,3 +11,4 @@
 .env
 .idea/
 .rspec_status
+.ruby-version

@@ -87,9 +87,12 @@ RSpec.shared_context 'Shared initialization', shared_context: :metadata do
   # @param [Hash] params Additional parameters
   def create_active_doc(name: nil, **params)
     name ||= @name
-    args = { name: name, body: '{}',
-             published: false,
-             skip_swagger_validations: true }.merge(params)
+    args = {
+      name: name,
+      body: '{}',
+      published: false,
+      skip_swagger_validations: true,
+    }.merge(params)
     @resource = @manager.create(args)
   end
 
