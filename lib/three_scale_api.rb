@@ -9,6 +9,7 @@ require 'three_scale_api/clients/provider'
 require 'three_scale_api/clients/webhook'
 require 'three_scale_api/clients/active_doc'
 require 'three_scale_api/clients/settings'
+require 'three_scale_api/clients/analytics'
 
 module ThreeScaleApi
   # Base class that is supposed to be used for communication with the REST API
@@ -92,6 +93,14 @@ module ThreeScaleApi
     # @return [ThreeScaleApi::Clients::SettingsClient] Settings manager instance
     def settings
       @settings_manager ||= ThreeScaleApi::Clients::SettingsClient.new(@http_client)
+    end
+
+    # @api public
+    # Gets analytics manager instance
+    #
+    # @return [ThreeScaleApi::Clients::AnalyticsClient] Settings manager instance
+    def analytics
+      @settings_manager ||= ThreeScaleApi::Clients::AnalyticsClient.new(@http_client)
     end
   end
 end
