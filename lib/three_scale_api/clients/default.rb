@@ -243,7 +243,7 @@ module ThreeScaleApi
           log.info(" #{resource_name}s: #{result.length}")
           result.each_with_index { |res, index| @log.info("\tItem #{index}: #{res}") }
         else
-          log.info(" --> Result: #{result}")
+          log.debug(" --> Result: #{result}")
         end
         result
       end
