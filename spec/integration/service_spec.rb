@@ -6,8 +6,12 @@ RSpec.describe 'Service API', type: :integration do
   let(:service_id)   { ENV.fetch('SERVICE_ID').to_i }
   let(:metric_id) { ENV.fetch('METRIC_ID').to_i }
   let(:application_plan_id) { ENV.fetch('APPLICATION_PLAN_ID').to_i }
+  let(:verify_ssl) { !(ENV.fetch('VERIFY_SSL', 'true').to_s =~ /(true|t|yes|y|1)$/i).nil? }
 
-  subject(:client) { ThreeScale::API.new(endpoint: endpoint, provider_key: provider_key) }
+  subject(:client) do
+    ThreeScale::API.new(endpoint: endpoint, provider_key: provider_key,
+                        verify_ssl: verify_ssl)
+  end
 
   context '#list_services' do
     it { expect(client.list_services.length).to be >= 1 }
