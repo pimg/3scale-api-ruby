@@ -58,6 +58,7 @@ PROVIDER_KEY=abc123
 SERVICE_ID=12345
 METRIC_ID=12345 # should be a numeric value, not the system name
 APPLICATION_PLAN_ID=12345
+VERIFY_SSL=true (by default true)
 ```
 
 **Note:** for the tests to pass the following requirements need to be met:
