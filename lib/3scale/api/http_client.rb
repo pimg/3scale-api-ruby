@@ -1,18 +1,20 @@
 require 'json'
 require 'uri'
 require 'net/http'
+require 'openssl'
 
 module ThreeScale
   module API
     class HttpClient
       attr_reader :endpoint, :admin_domain, :provider_key, :headers, :format
 
-      def initialize(endpoint:, provider_key:, format: :json)
+      def initialize(endpoint:, provider_key:, format: :json, verify_ssl: true)
         @endpoint = URI(endpoint).freeze
         @admin_domain = @endpoint.host.freeze
         @provider_key = provider_key.freeze
         @http = Net::HTTP.new(admin_domain, @endpoint.port)
         @http.use_ssl = @endpoint.is_a?(URI::HTTPS)
+        @http.verify_mode = OpenSSL::SSL::VERIFY_NONE unless verify_ssl
 
         @headers = {
           'Accept' => "application/#{format}",
