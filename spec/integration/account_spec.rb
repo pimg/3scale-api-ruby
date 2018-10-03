@@ -5,8 +5,12 @@ RSpec.describe 'Account API', type: :integration do
   let(:provider_key) { ENV.fetch('PROVIDER_KEY') }
   let(:service_id)   { ENV.fetch('SERVICE_ID').to_i }
   let(:application_plan_id) { ENV.fetch('APPLICATION_PLAN_ID').to_i }
+  let(:verify_ssl) { !(ENV.fetch('VERIFY_SSL', 'true').to_s =~ /(true|t|yes|y|1)$/i).nil? }
 
-  subject(:client) { ThreeScale::API.new(endpoint: endpoint, provider_key: provider_key) }
+  subject(:client) do
+    ThreeScale::API.new(endpoint: endpoint, provider_key: provider_key,
+                        verify_ssl: verify_ssl)
+  end
 
   context '#signup' do
     let(:name) { SecureRandom.hex(14) }
