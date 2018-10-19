@@ -5,7 +5,10 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 
 ## [Unreleased]
 
+## [0.1.6] - 2018-10-18
+
 ### Added
+- Expose ssl_verify http client option
 - Service Update
 
 ## [0.1.5] - 2017-06-23
@@ -42,7 +45,8 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 - Application Plans List & Create
 - Usage Limits List, Create & Delete
 
-[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.1.5...HEAD
+[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.1.6...HEAD
+[0.1.6]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.6
 [0.1.5]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.5
 [0.1.4]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.4
 [0.1.3]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.3
