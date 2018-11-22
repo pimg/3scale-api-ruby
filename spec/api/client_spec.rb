@@ -254,4 +254,14 @@ RSpec.describe ThreeScale::API::Client do
       expect(client.delete_application_plan_limit(42, 21, 10)).to eq(true)
     end
   end
+
+  context '#delete_service' do
+    let(:service_id) { 41 }
+    it do
+      expect(http_client).to receive(:delete)
+        .with("/admin/api/services/#{service_id}")
+        .and_return(nil)
+      expect(client.delete_service(service_id)).to be_truthy
+    end
+  end
 end
