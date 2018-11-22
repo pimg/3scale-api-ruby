@@ -151,4 +151,13 @@ RSpec.describe 'Service API', type: :integration do
       end
     end
   end
+
+  context '#delete_service' do
+    let(:service_name) { "API_UNITTEST_#{Time.now.getutc.to_i}" }
+    let(:new_service) { client.create_service name: service_name }
+
+    it 'service is deleted' do
+      expect(client.delete_service(new_service['id'])).to be_truthy
+    end
+  end
 end
