@@ -249,6 +249,16 @@ module ThreeScale
         extract(entity: 'application_plan', from: response)
       end
 
+
+      # @api public
+      # @return [Bool]
+      # @param [Fixnum] service_id Service ID
+      # @param [Fixnum] application_plan_id Application Plan ID
+      def delete_application_plan(service_id,application_plan_id)
+        response = http_client.delete("/admin/api/services/#{service_id}/application_plans/#{application_plan_id}")
+        true
+      end
+
       # @api public
       # @return [Array<Hash>]
       # @param [Fixnum] application_plan_id Application Plan ID
