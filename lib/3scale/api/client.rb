@@ -255,7 +255,7 @@ module ThreeScale
       # @param [Fixnum] service_id Service ID
       # @param [Fixnum] application_plan_id Application Plan ID
       def delete_application_plan(service_id,application_plan_id)
-        response = http_client.delete("/admin/api/services/#{service_id}/application_plans/#{application_plan_id}")
+        http_client.delete("/admin/api/services/#{service_id}/application_plans/#{application_plan_id}")
         true
       end
 
