@@ -35,7 +35,7 @@ RSpec.describe ThreeScale::API::Client do
         .and_return('service' => {'id' => 42})
       expect(client.update_service(42, { name: 'Updated Service' })).to eq({'id' => 42})
     end
-  end  
+  end
 
   context '#show_proxy' do
     it do
@@ -265,11 +265,21 @@ RSpec.describe ThreeScale::API::Client do
     end
   end
   context '#delete_application_plan' do
-    it do 
+    it do
       expect(http_client).to receive(:delete)
         .with('/admin/api/services/42/application_plans/21')
         .and_return(nil)
       expect(client.delete_application_plan(42,21)).to eq(true)
+    end
+  end
+
+  context '#find_account' do
+    let(:criteria) { double('criteria') }
+    it do
+      expect(http_client).to receive(:get)
+        .with('/admin/api/accounts/find', params: criteria)
+        .and_return('account' => { 'id' => 42 })
+      expect(client.find_account(criteria)).to eq('id' => 42)
     end
   end
 end
