@@ -289,6 +289,14 @@ module ThreeScale
         true
       end
 
+      # @api public
+      # @param [Hash] account criteria
+      # @return [Hash]
+      def find_account(criteria)
+        response = http_client.get('/admin/api/accounts/find', params: criteria)
+        extract(entity: 'account', from: response)
+      end
+
       protected
 
       def extract(collection: nil, entity:, from:)
