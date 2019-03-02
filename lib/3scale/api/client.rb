@@ -338,6 +338,37 @@ module ThreeScale
         extract(entity: 'pricing_rule', from: response)
       end
 
+      # @api public
+      # @return [Array<Hash>]
+      def list_activedocs
+        response = http_client.get('/admin/api/active_docs')
+        extract(collection: 'api_docs', entity: 'api_doc', from: response)
+      end
+
+      # @api public
+      # @param [Hash] attributes ActiveDocs attributes
+      # @return [Hash]
+      def create_activedocs(attributes)
+        response = http_client.post('/admin/api/active_docs', body: attributes)
+        extract(entity: 'api_doc', from: response)
+      end
+
+      # @api public
+      # @param [Fixnum] id ActiveDocs ID
+      # @param [Hash] attributes ActiveDocs attributes
+      # @return [Hash]
+      def update_activedocs(id, attributes)
+        response = http_client.put("/admin/api/active_docs/#{id}", body: attributes)
+        extract(entity: 'api_doc', from: response)
+      end
+
+      # @api public
+      # @return [Hash]
+      def delete_activedocs(id)
+        http_client.delete("/admin/api/active_docs/#{id}")
+        true
+      end
+
       protected
 
       def extract(collection: nil, entity:, from:)
