@@ -373,4 +373,46 @@ RSpec.describe ThreeScale::API::Client do
       expect(client.create_pricingrule(application_plan_id, metric_id, attributes)).to eq pricingrule
     end
   end
+
+  context '#list_activedocs' do
+    let(:api_doc) { {id: '44' } }
+    it do
+      expect(http_client).to receive(:get)
+        .with('/admin/api/active_docs')
+        .and_return('api_docs' => [{'api_doc' => api_doc}])
+      expect(client.list_activedocs).to eq [api_doc]
+    end
+  end
+
+  context '#create_activedocs' do
+    let(:attributes) { {} }
+    let(:api_doc) { { id: '44' } }
+    it do
+      expect(http_client).to receive(:post)
+        .with('/admin/api/active_docs', body: attributes)
+        .and_return('api_doc' => api_doc)
+      expect(client.create_activedocs(attributes)).to eq api_doc
+    end
+  end
+
+  context '#update_activedocs' do
+    let(:api_doc_id) { '44' }
+    let(:attributes) { {} }
+    let(:api_doc) { { id: api_doc_id } }
+    it do
+      expect(http_client).to receive(:put)
+        .with("/admin/api/active_docs/#{api_doc_id}", body: attributes)
+        .and_return('api_doc' => api_doc)
+      expect(client.update_activedocs(api_doc_id, attributes)).to eq api_doc
+    end
+  end
+
+  context '#delete_activedocs' do
+    let(:api_doc_id) { '44' }
+    it do
+      expect(http_client).to receive(:delete)
+        .with("/admin/api/active_docs/#{api_doc_id}")
+      expect(client.delete_activedocs(api_doc_id)).to be_truthy
+    end
+  end
 end
