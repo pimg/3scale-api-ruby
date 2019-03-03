@@ -1,6 +1,7 @@
 require 'three_scale/api'
 
 require 'webmock/rspec'
+WebMock.disable_net_connect!
 
 require 'dotenv'
 Dotenv.load

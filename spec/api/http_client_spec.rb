@@ -18,7 +18,8 @@ RSpec.describe ThreeScale::API::HttpClient do
 
   describe '#get' do
     let!(:stub) do
-      stub_request(:get,  "https://:#{provider_key}@#{admin_domain}/foo.json")
+      stub_request(:get,  "https://#{admin_domain}/foo.json")
+        .with(basic_auth: ['', provider_key])
         .and_return(body: '{"foo":"bar"}')
     end
 
@@ -36,8 +37,8 @@ RSpec.describe ThreeScale::API::HttpClient do
 
   describe '#post' do
     let!(:stub) do
-      stub_request(:post, "https://:#{provider_key}@#{admin_domain}/foo.json?one=1&two=2")
-        .with(body: '{"bar":"baz"}')
+      stub_request(:post, "https://#{admin_domain}/foo.json?one=1&two=2")
+        .with(body: '{"bar":"baz"}', basic_auth: ['', provider_key])
         .and_return(body: '{"foo":"bar"}')
     end
 
@@ -56,8 +57,8 @@ RSpec.describe ThreeScale::API::HttpClient do
   describe '#put' do
     let(:body) { '' }
     let!(:stub) do
-      stub_request(:put, "https://:#{provider_key}@#{admin_domain}/foo.json?one=1&two=2")
-        .with(body: body)
+      stub_request(:put, "https://#{admin_domain}/foo.json?one=1&two=2")
+        .with(body: body, basic_auth: ['', provider_key])
         .and_return(body: '{"foo":"bar"}')
     end
 
@@ -85,8 +86,8 @@ RSpec.describe ThreeScale::API::HttpClient do
 
   describe '#patch' do
     let!(:stub) do
-      stub_request(:patch,  "https://:#{provider_key}@#{admin_domain}/foo.json?one=1&two=2")
-        .with(body: '{"bar":"baz"}')
+      stub_request(:patch,  "https://#{admin_domain}/foo.json?one=1&two=2")
+        .with(body: '{"bar":"baz"}', basic_auth: ['', provider_key])
         .and_return(body: '{"foo":"bar"}')
     end
 
@@ -104,7 +105,8 @@ RSpec.describe ThreeScale::API::HttpClient do
 
   describe '#delete' do
     let!(:stub) do
-      stub_request(:delete, "https://:#{provider_key}@#{admin_domain}/foo.json?one=1&two=2")
+      stub_request(:delete, "https://#{admin_domain}/foo.json?one=1&two=2")
+        .with(basic_auth: ['', provider_key])
         .and_return(body: '{"foo":"bar"}')
     end
 
