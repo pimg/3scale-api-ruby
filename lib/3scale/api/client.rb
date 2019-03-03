@@ -313,6 +313,31 @@ module ThreeScale
         extract(entity: 'policies_config', from: response)
       end
 
+      # @api public
+      # @param [Fixnum] application_plan_id Application Plan ID
+      # @param [Fixnum] metric_id Metric ID
+      # @return [Array<Hash>]
+      def list_pricingrules_per_metric(application_plan_id, metric_id)
+        response = http_client.get("/admin/api/application_plans/#{application_plan_id}/metrics/#{metric_id}/pricing_rules")
+        extract(collection: 'pricing_rules', entity: 'pricing_rule', from: response)
+      end
+
+      # @api public
+      # @param [Fixnum] application_plan_id Application Plan ID
+      # @return [Array<Hash>]
+      def list_pricingrules_per_application_plan(application_plan_id)
+        response = http_client.get("/admin/api/application_plans/#{application_plan_id}/pricing_rules")
+        extract(collection: 'pricing_rules', entity: 'pricing_rule', from: response)
+      end
+
+      # @api public
+      # @param [Fixnum] application_plan_id Application Plan ID
+      # @return [Array<Hash>]
+      def create_pricingrule(application_plan_id, metric_id, attributes)
+        response = http_client.post("/admin/api/application_plans/#{application_plan_id}/metrics/#{metric_id}/pricing_rules", body: attributes)
+        extract(entity: 'pricing_rule', from: response)
+      end
+
       protected
 
       def extract(collection: nil, entity:, from:)
