@@ -4,14 +4,9 @@ cache: bundler
 before_install:
 - gem install bundler -v 1.11.2
 rvm:
-- 2.3.0
-- 2.2.4
-- 2.1.8
-- jruby-9.0.5.0
-- rbx-3.19
-matrix:
-  allow_failures:
-  - rvm: rbx-3.19
+- 2.5.0
+- 2.4.3
+- 2.3.6
 env:
   global:
   - secure: "Ya4IKzJRx5lZdvVtmexNsijxuQ+N3Z3kxVvQ75+5sV0qrCglZAkN/Yg9q++0TGlyXUKvB7wt46HMnn0cjYd81UlkX+YArlQQtA5OrgSsZ0jcVSJk4E+RlSXew8/FMUZ/Bsg9vMPXXp+WPWuOYeSQwyDSRXpIiq7x4bF3j/aUAO3MrcUQLr2z6uab0N6yj/E7Zqtp/tt0L91vAtsbyLYkU1Xjd67FBh7G2oQFlEfVApNlSGMS0HfGygSzhWkGpZOB8ERo7eMImOmIwOhX4xdSsGb1lc97rOcwzeuedVlEFuDMUIMsh36Ut5asVDvLubmvrC8O0GYCzhCAmk8aYRbC2mhWoVoLYpBuf5VXP7gbzPrc0AAs9T5gSBxMbZCMz+O9qm4BkKJ9HOTqeIMFNpUlvJjb6N7WDTirQ9P0PkNayGJtpKaJJmLFkK+mSlj01T7VfO0Lh+krn0JrxHFoRnpABPqXq7cn7DoEFWNjPYHk3UNmwe8PBFCeQu0BpoTOhWGAlBoUIwB/ILNjpiGokhTbNDTRAm16+GaVkxQmm7L+1NmXUhPwebLtrJgurkEL1lfBjhlf1sxsy/9NE1cYKmVTcWgrhjvfjiwqYD8xAxcJBaF+TI9gZ9vk1gCerCDqra51IeKtQjawyPhRNBM5GlH6R+Q8nvHuWeugWPRZtDBa8J0="
