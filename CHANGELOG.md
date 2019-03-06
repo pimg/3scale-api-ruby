@@ -5,6 +5,15 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 
 ## [Unreleased]
 
+## [0.1.8] - 2019-03-06
+
+### Added
+- Find account method
+- Activedocs methods
+- PricingRules methods
+- Policies methods
+- Support for Ruby versions 2.5.0, 2.4.3, 2.3.6
+
 ## [0.1.7] - 2018-12-05
 
 ### Added
@@ -54,7 +63,8 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 - Application Plans List & Create
 - Usage Limits List, Create & Delete
 
-[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.1.7...HEAD
+[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.1.8...HEAD
+[0.1.8]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.8
 [0.1.7]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.7
 [0.1.6]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.6
 [0.1.5]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.5
