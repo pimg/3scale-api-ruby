@@ -282,4 +282,59 @@ RSpec.describe ThreeScale::API::Client do
       expect(client.find_account(criteria)).to eq('id' => 42)
     end
   end
+
+  context '#show_policies' do
+    let(:service_id) { 31 }
+    let(:threescale_policy) do
+      {
+        'name' => 'apicast',
+        'version' => 'builtin',
+        'configuration' => {},
+        'enabled' => true
+      }
+    end
+    let(:soap_policy) do
+      {
+        'name' => 'soap',
+        'version' => 'builtin',
+        'configuration' => {},
+        'enabled' => true
+      }
+    end
+
+    it do
+      expect(http_client).to receive(:get)
+        .with('/admin/api/services/31/proxy/policies')
+        .and_return('policies_config' => [threescale_policy, soap_policy])
+      expect(client.show_policies(service_id)).to eq([threescale_policy, soap_policy])
+    end
+  end
+
+  context '#update_policies' do
+    let(:service_id) { 31 }
+    let(:policies_config) { [] }
+    let(:threescale_policy) do
+      {
+        'name' => 'apicast',
+        'version' => 'builtin',
+        'configuration' => {},
+        'enabled' => true
+      }
+    end
+    let(:soap_policy) do
+      {
+        'name' => 'soap',
+        'version' => 'builtin',
+        'configuration' => {},
+        'enabled' => true
+      }
+    end
+
+    it do
+      expect(http_client).to receive(:put)
+        .with('/admin/api/services/31/proxy/policies', body: policies_config)
+        .and_return('policies_config' => [threescale_policy, soap_policy])
+      expect(client.update_policies(service_id, policies_config)).to eq([threescale_policy, soap_policy])
+    end
+  end
 end

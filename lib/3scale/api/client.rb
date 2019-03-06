@@ -297,6 +297,22 @@ module ThreeScale
         extract(entity: 'account', from: response)
       end
 
+      # @api public
+      # @return [Array]
+      # @param [Fixnum] id Service ID
+      def show_policies(id)
+        response = http_client.get("/admin/api/services/#{id}/proxy/policies")
+        extract(entity: 'policies_config', from: response)
+      end
+
+      # @api public
+      # @return [Array]
+      # @param [Fixnum] id Service ID
+      def update_policies(id, policies_config)
+        response = http_client.put("/admin/api/services/#{id}/proxy/policies", body: policies_config)
+        extract(entity: 'policies_config', from: response)
+      end
+
       protected
 
       def extract(collection: nil, entity:, from:)
