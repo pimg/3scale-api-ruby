@@ -337,4 +337,40 @@ RSpec.describe ThreeScale::API::Client do
       expect(client.update_policies(service_id, policies_config)).to eq([threescale_policy, soap_policy])
     end
   end
+
+  context '#list_pricingrules_per_metric' do
+    let(:pricingrule) { { id: '44' } }
+    let(:application_plan_id) { '10' }
+    let(:metric_id) { '20' }
+    it do
+      expect(http_client).to receive(:get)
+        .with('/admin/api/application_plans/10/metrics/20/pricing_rules')
+        .and_return('pricing_rules' => [{'pricing_rule' => pricingrule}])
+      expect(client.list_pricingrules_per_metric(application_plan_id, metric_id)).to eq [pricingrule]
+    end
+  end
+
+  context '#list_pricingrules_per_application_plan' do
+    let(:pricingrule) { { id: '44' } }
+    let(:application_plan_id) { '10' }
+    it do
+      expect(http_client).to receive(:get)
+        .with('/admin/api/application_plans/10/pricing_rules')
+        .and_return('pricing_rules' => [{'pricing_rule' => pricingrule}])
+      expect(client.list_pricingrules_per_application_plan(application_plan_id)).to eq [pricingrule]
+    end
+  end
+
+  context '#create_pricingrule' do
+    let(:attributes) { {} }
+    let(:pricingrule) { { id: '44' } }
+    let(:application_plan_id) { '10' }
+    let(:metric_id) { '20' }
+    it do
+      expect(http_client).to receive(:post)
+        .with('/admin/api/application_plans/10/metrics/20/pricing_rules', body: attributes)
+        .and_return('pricing_rule' => pricingrule)
+      expect(client.create_pricingrule(application_plan_id, metric_id, attributes)).to eq pricingrule
+    end
+  end
 end
