@@ -18,9 +18,7 @@ RSpec.shared_context :integration_test_context do
     app_id = SecureRandom.hex(14)
     @application_test = @apiclient.create_application(@account_test['id'],
                                                       plan_id: @application_plan_test['id'],
-                                                      user_key: app_id,
-                                                      application_id: app_id,
-                                                      application_key: app_id)
+                                                      user_key: app_id)
     @metric_test = @apiclient.create_metric(@service_test['id'],
                                             'friendly_name' => SecureRandom.uuid, 'unit' => 'foo')
     @mapping_rule_test = @apiclient.create_mapping_rule(@service_test['id'],

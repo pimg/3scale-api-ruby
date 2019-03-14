@@ -65,6 +65,39 @@ RSpec.describe 'Account API', type: :integration do
       find = client.find_application(user_key: user_key)
       expect(find).to include('id' => application_id, 'user_key' => user_key)
     end
+
+    context 'on app_id, app_key service' do
+      let(:service) do
+        @apiclient.create_service(
+          'name' => "3scalerubytest#{SecureRandom.uuid}",
+          'backend_version': '2'
+        )
+      end
+      let(:account) do
+        @apiclient.signup(name: SecureRandom.hex(14), username: SecureRandom.hex(14))
+      end
+      let(:application_plan) do
+        @apiclient.create_application_plan(service['id'],
+                                           'name' => "3scale ruby test #{SecureRandom.uuid}")
+      end
+      let(:app_id) { SecureRandom.hex(14) }
+      let!(:application) do
+        @apiclient.create_application(account['id'], plan_id: application_plan['id'],
+                                                     application_id: app_id,
+                                                     application_key: app_id)
+      end
+
+      after :each do
+        @apiclient.delete_application(account['id'], application['id'])
+        @apiclient.delete_service(service['id'])
+        @apiclient.delete_account(account['id'])
+      end
+
+      it 'finds by app_id' do
+        find = client.find_application(application_id: app_id)
+        expect(find).to include('id' => application['id'], 'application_id' => app_id)
+      end
+    end
   end
 
   context '#customize_application_plan' do
