@@ -402,6 +402,23 @@ module ThreeScale
         true
       end
 
+       # @api public
+      # @param [Fixnum] id Service ID
+      # @return [Array<Hash>]
+      def show_oidc(service_id)
+        response = http_client.get("/admin/api/services/#{service_id}/proxy/oidc_configuration")
+        extract(entity: 'oidc_configuration', from: response)
+      end
+
+      # @api public
+      # @param [Fixnum] id Service ID
+      # @return [Hash]
+      def update_oidc(service_id, attributes)
+        response = http_client.patch("/admin/api/services/#{service_id}/proxy/oidc_configuration",
+                                     body: { oidc_configuration: attributes })
+        extract(entity: 'oidc_configuration', from: response)
+      end
+
       protected
 
       def extract(collection: nil, entity:, from:)

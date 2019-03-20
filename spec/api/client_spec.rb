@@ -463,4 +463,41 @@ RSpec.describe ThreeScale::API::Client do
       expect(client.delete_application_plan_customization(10, 100)).to include(plan)
     end
   end
+  context '#show_oidc' do
+    let(:service_id) { '1001' }
+    let(:oidc_configuration) {
+      {
+        standard_flow_enabled: false,
+        implicit_flow_enabled: false,
+        service_accounts_enabled: true,
+        direct_access_grants_enabled: false
+      }
+    }
+
+    it do
+      expect(http_client).to receive(:get)
+        .with("/admin/api/services/#{service_id}/proxy/oidc_configuration")
+        .and_return('oidc_configuration' => oidc_configuration)
+      expect(client.show_oidc(service_id)).to eq(oidc_configuration)
+    end
+  end
+
+  context '#update_oidc' do
+    let(:service_id) { '1001' }
+    let(:oidc_configuration) {
+      {
+        standard_flow_enabled: false,
+        implicit_flow_enabled: false,
+        service_accounts_enabled: true,
+        direct_access_grants_enabled: false
+      }
+    }
+
+    it do
+      expect(http_client).to receive(:patch)
+        .with("/admin/api/services/#{service_id}/proxy/oidc_configuration", body: { oidc_configuration: oidc_configuration })
+        .and_return('oidc_configuration' => {'id' => 42})
+      expect(client.update_oidc(service_id, oidc_configuration)).to eq({'id' => 42})
+    end
+  end
 end
