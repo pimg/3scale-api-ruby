@@ -5,6 +5,20 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 
 ## [Unreleased]
 
+## [0.1.9] - 2019-03-22
+
+### Added
+- Delete application plan customization
+- Delete activedocs
+- List accounts
+- Delete account
+- Delete application
+- Show OIDC configuration
+- Update OIDC configuration
+
+### Fixed
+- Integration tests do the clean up
+
 ## [0.1.8] - 2019-03-06
 
 ### Added
@@ -63,7 +77,8 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 - Application Plans List & Create
 - Usage Limits List, Create & Delete
 
-[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.1.8...HEAD
+[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.1.9...HEAD
+[0.1.9]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.9
 [0.1.8]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.8
 [0.1.7]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.7
 [0.1.6]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.6
