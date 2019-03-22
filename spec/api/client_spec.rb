@@ -415,4 +415,52 @@ RSpec.describe ThreeScale::API::Client do
       expect(client.delete_activedocs(api_doc_id)).to be_truthy
     end
   end
+
+  context '#list_accounts' do
+    let(:account) do
+      {
+        'id' => 1
+      }
+    end
+    let(:accounts) do
+      {
+        'accounts' => [
+          {
+            'account' => account
+          }
+        ]
+      }
+    end
+
+    it do
+      expect(http_client).to receive(:get).with('/admin/api/accounts').and_return(accounts)
+      expect(client.list_accounts).to include(account)
+    end
+  end
+
+  context '#delete_account' do
+    it do
+      expect(http_client).to receive(:delete).with('/admin/api/accounts/1').and_return(nil)
+      expect(client.delete_account(1)).to eq(true)
+    end
+  end
+
+  context '#delete_application' do
+    it do
+      expect(http_client).to receive(:delete).with('/admin/api/accounts/1/applications/10')
+        .and_return(nil)
+      expect(client.delete_application(1, 10)).to eq(true)
+    end
+  end
+
+  context '#delete_application_plan_customization' do
+    let(:plan) { { 'id' => 1 } }
+    let(:plan_reponse) { { 'application_plan' => plan } }
+
+    it do
+      expect(http_client).to receive(:put).with('/admin/api/accounts/10/applications/100/decustomize_plan')
+        .and_return(plan_reponse)
+      expect(client.delete_application_plan_customization(10, 100)).to include(plan)
+    end
+  end
 end

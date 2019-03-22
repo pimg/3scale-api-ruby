@@ -51,7 +51,7 @@ module ThreeScale
       # @return [Hash]
       # @param [Fixnum] id Application ID
       # @param [String] user_key Application User Key
-      # @param [String] application_id Application App ID
+      # @param [String] application_id Application app_id
       def find_application(id: nil, user_key: nil, application_id: nil)
         params = { application_id: id, user_key: user_key, app_id: application_id }.reject { |_, value| value.nil? }
         response = http_client.get('/admin/api/applications/find', params: params)
@@ -79,6 +79,15 @@ module ThreeScale
       # @param [Fixnum] application_id Application ID
       def customize_application_plan(account_id, application_id)
         response = http_client.put("/admin/api/accounts/#{account_id}/applications/#{application_id}/customize_plan")
+        extract(entity: 'application_plan', from: response)
+      end
+
+      # @api public
+      # @return [Hash] a Plan
+      # @param [Fixnum] account_id Account ID
+      # @param [Fixnum] application_id Application ID
+      def delete_application_plan_customization(account_id, application_id)
+        response = http_client.put("/admin/api/accounts/#{account_id}/applications/#{application_id}/decustomize_plan")
         extract(entity: 'application_plan', from: response)
       end
 
@@ -366,6 +375,30 @@ module ThreeScale
       # @return [Hash]
       def delete_activedocs(id)
         http_client.delete("/admin/api/active_docs/#{id}")
+        true
+      end
+
+      # @api public
+      # @return [Array<Hash>]
+      def list_accounts
+        response = http_client.get('/admin/api/accounts')
+        extract(collection: 'accounts', entity: 'account', from: response)
+      end
+
+      # @api public
+      # @param [Fixnum] account_id Account ID
+      # @return [Bool]
+      def delete_account(id)
+        http_client.delete("/admin/api/accounts/#{id}")
+        true
+      end
+
+      # @api public
+      # @param [Fixnum] account_id Account ID
+      # @param [Fixnum] application_id Application ID
+      # @return [Bool]
+      def delete_application(account_id, id)
+        http_client.delete("/admin/api/accounts/#{account_id}/applications/#{id}")
         true
       end
 

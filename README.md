@@ -55,15 +55,10 @@ For running the integration tests you will need to have a real 3scale account, y
 ```
 ENDPOINT=https://your-domain-admin.3scale.net
 PROVIDER_KEY=abc123
-SERVICE_ID=12345
-METRIC_ID=12345 # should be a numeric value, not the system name
-APPLICATION_PLAN_ID=12345
 VERIFY_SSL=true (by default true)
 ```
 
 **Note:** for the tests to pass the following requirements need to be met:
-- authorization mode of the service should be *API key*
-- there should be at least 1 method for the 'hits' metric
 - the field `billing_address` should be added to the Account model in **Settings > Fields Definitions**
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
