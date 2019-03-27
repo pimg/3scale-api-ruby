@@ -98,7 +98,7 @@ module ThreeScale
       protected
 
       def debug?
-        ENV.fetch('3SCALE_DEBUG', '0') == '1'
+        ENV.fetch('THREESCALE_DEBUG', '0') == '1'
       end
 
       # Helper to create a string representing a path plus a query string
