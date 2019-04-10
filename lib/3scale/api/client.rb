@@ -138,6 +138,24 @@ module ThreeScale
       # @api public
       # @return [Hash]
       # @param [Fixnum] service_id Service ID
+      # @param [String] environment. Must be 'sandbox' or 'production' 
+      def proxy_config_list(service_id, environment='sandbox')
+        response = http_client.get("/admin/api/services/#{service_id}/proxy/configs/#{environment}")
+        extract(entity: 'proxy', from: response)
+      end
+
+      # @api public
+      # @return [Hash]
+      # @param [Fixnum] service_id Service ID
+      # @param [String] environment. Must be 'sandbox' or 'production' 
+      def proxy_config_latest(service_id, environment='sandbox')
+        response = http_client.get("/admin/api/services/#{service_id}/proxy/configs/#{environment}/latest")
+        extract(entity: 'proxy', from: response)
+      end
+
+      # @api public
+      # @return [Hash]
+      # @param [Fixnum] service_id Service ID
       def update_proxy(service_id, attributes)
         response = http_client.patch("/admin/api/services/#{service_id}/proxy",
                                      body: { proxy: attributes })
