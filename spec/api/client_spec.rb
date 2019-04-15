@@ -174,7 +174,7 @@ RSpec.describe ThreeScale::API::Client do
     end
   end
 
-  context '#create_mapping_rule' do
+  context '#delete_mapping_rule' do
     it do
       expect(http_client).to receive(:delete)
         .with('/admin/api/services/42/proxy/mapping_rules/21')
@@ -498,6 +498,116 @@ RSpec.describe ThreeScale::API::Client do
         .with("/admin/api/services/#{service_id}/proxy/oidc_configuration", body: { oidc_configuration: oidc_configuration })
         .and_return('oidc_configuration' => {'id' => 42})
       expect(client.update_oidc(service_id, oidc_configuration)).to eq({'id' => 42})
+    end
+  end
+
+  context '#list_features_per_application_plan' do
+    let(:feature_a) do
+      {
+        'id' => 1
+      }
+    end
+    let(:features) do
+      {
+        'features' => [
+          {
+            'feature' => feature_a
+          }
+        ]
+      }
+    end
+    it do
+      expect(http_client).to receive(:get)
+        .with('/admin/api/application_plans/100/features').and_return(features)
+      expect(client.list_features_per_application_plan(100)).to match_array([feature_a])
+    end
+  end
+
+  context '#create_application_plan_feature' do
+    let(:feature_a) { { 'id' => 200 } }
+    let(:create_body) { { feature_id: feature_a.fetch('id') } }
+    let(:response_body) { { 'feature' => feature_a } }
+
+    it do
+      expect(http_client).to receive(:post)
+        .with('/admin/api/application_plans/1000/features', body: create_body)
+        .and_return(response_body)
+      expect(client.create_application_plan_feature(1000, 200)).to eq(feature_a)
+    end
+  end
+
+  context '#delete_application_plan_feature' do
+    it do
+      expect(http_client).to receive(:delete)
+        .with('/admin/api/application_plans/1000/features/200').and_return(' ')
+      expect(client.delete_application_plan_feature(1000, 200)).to eq(true)
+    end
+  end
+
+  context '#list_service_features' do
+    let(:feature_a) { { 'id' => 1 } }
+    let(:feature_b) { { 'id' => 2 } }
+    let(:features) do
+      {
+        'features' => [
+          {
+            'feature' => feature_a
+          },
+          {
+            'feature' => feature_b
+          }
+        ]
+      }
+    end
+    it do
+      expect(http_client).to receive(:get)
+        .with('/admin/api/services/1000/features').and_return(features)
+      expect(client.list_service_features(1000)).to match_array([feature_a, feature_b])
+    end
+  end
+
+  context '#create_service_feature' do
+    let(:feature_attrs) { { 'name' => 'feature_a'} }
+    let(:feature_a) { { 'id' => 200 } }
+    let(:response_body) { { 'feature' => feature_a } }
+
+    it do
+      expect(http_client).to receive(:post)
+        .with('/admin/api/services/1000/features', body: { feature: feature_attrs })
+        .and_return(response_body)
+      expect(client.create_service_feature(1000, feature_attrs)).to eq(feature_a)
+    end
+  end
+
+  context '#show_service_feature' do
+    let(:feature_a) { { 'id' => 200 } }
+    let(:response_body) { { 'feature' => feature_a} }
+    it do
+      expect(http_client).to receive(:get)
+        .with('/admin/api/services/1000/features/200')
+        .and_return(response_body)
+      expect(client.show_service_feature(1000, 200)).to eq(feature_a)
+    end
+  end
+
+  context '#update_service_feature' do
+    let(:feature_attrs) { { 'name' => 'new_name'} }
+    let(:feature_a) { { 'id' => 200 } }
+    let(:response_body) { { 'feature' => feature_a } }
+
+    it do
+      expect(http_client).to receive(:put)
+        .with('/admin/api/services/1000/features/200', body: { feature: feature_attrs })
+        .and_return(response_body)
+      expect(client.update_service_feature(1000, 200, feature_attrs)).to eq(feature_a)
+    end
+  end
+
+  context '#delete_service_feature' do
+    it do
+      expect(http_client).to receive(:delete)
+        .with('/admin/api/services/1000/features/200').and_return(' ')
+      expect(client.delete_service_feature(1000, 200)).to eq(true)
     end
   end
 end

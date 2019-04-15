@@ -419,6 +419,80 @@ module ThreeScale
         extract(entity: 'oidc_configuration', from: response)
       end
 
+      # @api public
+      # @param [Fixnum] application_plan_id Application Plan ID
+      # @return [Array<Hash>]
+      def list_features_per_application_plan(application_plan_id)
+        response = http_client.get("/admin/api/application_plans/#{application_plan_id}/features")
+        extract(collection: 'features', entity: 'feature', from: response)
+      end
+
+      # @api public
+      # @param [Fixnum] application_plan_id Application Plan ID
+      # @param [Fixnum] id Feature ID
+      # @return [Hash]
+      def create_application_plan_feature(application_plan_id, id)
+        response = http_client.post("/admin/api/application_plans/#{application_plan_id}/features",
+                                    body: { feature_id: id })
+        extract(entity: 'feature', from: response)
+      end
+
+      # @api public
+      # @param [Fixnum] application_plan_id Application Plan ID
+      # @param [Fixnum] id Feature ID
+      # @return [Boolean]
+      def delete_application_plan_feature(application_plan_id, id)
+        http_client.delete("/admin/api/application_plans/#{application_plan_id}/features/#{id}")
+        true
+      end
+
+      # @api public
+      # @param [Fixnum] id Service ID
+      # @return [Array<Hash>]
+      def list_service_features(id)
+        response = http_client.get("/admin/api/services/#{id}/features")
+        extract(collection: 'features', entity: 'feature', from: response)
+      end
+
+      # @api public
+      # @param [Fixnum] id Service ID
+      # @param [Hash] attributes Feature Attributes
+      # @return [Hash]
+      def create_service_feature(id, attributes)
+        response = http_client.post("/admin/api/services/#{id}/features",
+                                    body: { feature: attributes})
+        extract(entity: 'feature', from: response)
+      end
+
+      # @api public
+      # @param [Fixnum] service_id Service ID
+      # @param [Fixnum] id Feature ID
+      # @return [Hash]
+      def show_service_feature(service_id, id)
+        response = http_client.get("/admin/api/services/#{service_id}/features/#{id}")
+        extract(entity: 'feature', from: response)
+      end
+
+      # @api public
+      # @param [Fixnum] service_id Service ID
+      # @param [Fixnum] id Feature ID
+      # @param [Hash] attributes Feature Attributes
+      # @return [Hash]
+      def update_service_feature(service_id, id, attributes)
+        response = http_client.put("/admin/api/services/#{service_id}/features/#{id}",
+                                   body: { feature: attributes })
+        extract(entity: 'feature', from: response)
+      end
+
+      # @api public
+      # @param [Fixnum] service_id Service ID
+      # @param [Fixnum] id Feature ID
+      # @return [Boolean]
+      def delete_service_feature(service_id, id)
+        http_client.delete("/admin/api/services/#{service_id}/features/#{id}")
+        true
+      end
+
       protected
 
       def extract(collection: nil, entity:, from:)
