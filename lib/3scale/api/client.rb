@@ -276,6 +276,25 @@ module ThreeScale
         extract(entity: 'application_plan', from: response)
       end
 
+      # @api public
+      # @param [Fixnum] id Service ID
+      # @param [Fixnum] id Application Plan ID
+      # @return [Hash]
+      def show_application_plan(service_id, id)
+        response = http_client.get("/admin/api/services/#{service_id}/application_plans/#{id}")
+        extract(entity: 'application_plan', from: response)
+      end
+
+      # @api public
+      # @param [Fixnum] service_id Service ID
+      # @param [Fixnum] id Application Plan ID
+      # @param [Hash] attributes Application Plan Attributes
+      # @return [Hash]
+      def update_application_plan(service_id, id, attributes)
+        response = http_client.patch("/admin/api/services/#{service_id}/application_plans/#{id}",
+                                     body: { application_plan: attributes })
+        extract(entity: 'application_plan', from: response)
+      end
 
       # @api public
       # @return [Bool]
