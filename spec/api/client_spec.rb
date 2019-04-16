@@ -228,6 +228,30 @@ RSpec.describe ThreeScale::API::Client do
     end
   end
 
+  context '#show_application_plan' do
+    let(:plan) { { 'id' => 1 } }
+    let(:response_body) { { 'application_plan' => plan } }
+
+    it do
+      expect(http_client).to receive(:get).with('/admin/api/services/1000/application_plans/200')
+                                          .and_return(response_body)
+      expect(client.show_application_plan(1000, 200)).to eq(plan)
+    end
+  end
+
+  context '#update_application_plan' do
+    let(:plan_attrs) { { 'name' => 'new_name'} }
+    let(:plan_a) { { 'id' => 200 } }
+    let(:response_body) { { 'application_plan' => plan_a } }
+
+    it do
+      expect(http_client).to receive(:patch).with('/admin/api/services/1000/application_plans/200',
+                                                  body: { application_plan: plan_attrs })
+                                            .and_return(response_body)
+      expect(client.update_application_plan(1000, 200, plan_attrs)).to eq(plan_a)
+    end
+  end
+
   context '#list_application_plan_limits' do
     it do
       expect(http_client).to receive(:get)
