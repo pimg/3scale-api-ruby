@@ -5,6 +5,26 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 
 ## [Unreleased]
 
+## [0.2.0] - 2019-04-16
+
+### Added
+- Proxy Config list
+- Proxy Config latest
+- Deprecate ruby 2.3, Support ruby 2.6
+- List features per application plan
+- Create application plan feature
+- Delete application plan feature
+- List service features
+- Create service feature
+- Show service feature
+- Update service feature
+- Delete service feature
+- Show application plan
+- Update application plan
+
+### Fixed
+- `3SCALE_DEBUG` env var name for `THREESCALE_DEBUG`
+
 ## [0.1.9] - 2019-03-22
 
 ### Added
@@ -77,7 +97,8 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 - Application Plans List & Create
 - Usage Limits List, Create & Delete
 
-[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.1.9...HEAD
+[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.2.0
 [0.1.9]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.9
 [0.1.8]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.8
 [0.1.7]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.7
