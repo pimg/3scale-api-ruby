@@ -138,7 +138,7 @@ module ThreeScale
       # @api public
       # @return [Hash]
       # @param [Fixnum] service_id Service ID
-      # @param [String] environment. Must be 'sandbox' or 'production' 
+      # @param [String] environment. Must be 'sandbox' or 'production'
       def proxy_config_list(service_id, environment='sandbox')
         response = http_client.get("/admin/api/services/#{service_id}/proxy/configs/#{environment}")
         extract(entity: 'proxy', from: response)
@@ -147,7 +147,7 @@ module ThreeScale
       # @api public
       # @return [Hash]
       # @param [Fixnum] service_id Service ID
-      # @param [String] environment. Must be 'sandbox' or 'production' 
+      # @param [String] environment. Must be 'sandbox' or 'production'
       def proxy_config_latest(service_id, environment='sandbox')
         response = http_client.get("/admin/api/services/#{service_id}/proxy/configs/#{environment}/latest")
         extract(entity: 'proxy', from: response)
@@ -303,6 +303,15 @@ module ThreeScale
       def delete_application_plan(service_id,application_plan_id)
         http_client.delete("/admin/api/services/#{service_id}/application_plans/#{application_plan_id}")
         true
+      end
+
+      # @api public
+      # @return [Bool]
+      # @param [Fixnum] service_id Service ID
+      # @param [Fixnum] application_plan_id Application Plan ID
+      def application_plan_as_default(service_id, application_plan_id)
+        response = http_client.put("/admin/api/services/#{service_id}/application_plans/#{application_plan_id}/default")
+        extract(entity: 'application_plan', from: response)
       end
 
       # @api public
