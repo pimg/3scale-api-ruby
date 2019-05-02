@@ -326,6 +326,21 @@ RSpec.describe ThreeScale::API::Client do
       expect(client.delete_service(service_id)).to be_truthy
     end
   end
+
+  context '#application_plan_as_default' do
+    let(:service_id) { 1000 }
+    let(:plan_id) { 200 }
+    let(:plan) { { 'id' => 200, 'default' => true } }
+    let(:response_body) { { 'application_plan' => plan } }
+
+    it do
+      expect(http_client).to receive(:put)
+        .with("/admin/api/services/#{service_id}/application_plans/#{plan_id}/default")
+        .and_return(response_body)
+      expect(client.application_plan_as_default(service_id, plan_id)).to eq plan
+    end
+  end
+
   context '#delete_application_plan' do
     it do
       expect(http_client).to receive(:delete)
