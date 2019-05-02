@@ -308,6 +308,21 @@ RSpec.describe ThreeScale::API::Client do
     end
   end
 
+  context '#update_application_plan_limit' do
+    let(:plan_id) { 200 }
+    let(:metric_id) { 1000 }
+    let(:limit_id) { 3000 }
+    let(:limit) { { 'id' => limit_id, 'period' => 'eternity', 'value' => 1000 } }
+    let(:response_body) { { 'limit' => limit } }
+
+    it do
+      expect(http_client).to receive(:put).with("/admin/api/application_plans/#{plan_id}/metrics/#{metric_id}/limits/#{limit_id}",
+                                                body: { usage_limit: limit })
+                                          .and_return(response_body)
+      expect(client.update_application_plan_limit(plan_id, metric_id, limit_id, limit)).to eq limit
+    end
+  end
+
   context '#delete_application_plan_limit' do
     it do
       expect(http_client).to receive(:delete)
