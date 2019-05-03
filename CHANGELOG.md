@@ -5,6 +5,13 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 
 ## [Unreleased]
 
+## [0.3.0] - 2019-05-03
+
+### Added
+- List limits per plan and metric
+- Update app plan limit
+- Operation to set application plan as default
+
 ## [0.2.0] - 2019-04-16
 
 ### Added
@@ -97,7 +104,8 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 - Application Plans List & Create
 - Usage Limits List, Create & Delete
 
-[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.3.0
 [0.2.0]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.2.0
 [0.1.9]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.9
 [0.1.8]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.8
