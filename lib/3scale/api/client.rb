@@ -257,6 +257,15 @@ module ThreeScale
       end
 
       # @api public
+      # @param [Fixnum] application_plan_id Application Plan ID
+      # @param [Fixnum] metric_id Metric ID
+      # @return [Hash]
+      def list_metric_limits(application_plan_id, metric_id)
+        response = http_client.get("/admin/api/application_plans/#{application_plan_id}/metrics/#{metric_id}/limits")
+        extract(collection: 'limits', entity: 'limit', from: response)
+      end
+
+      # @api public
       # @return [Array<Hash>]
       # @param [Fixnum] service_id Service ID
       def list_service_application_plans(service_id)
