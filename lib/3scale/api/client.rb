@@ -236,6 +236,15 @@ module ThreeScale
       end
 
       # @api public
+      # @return [Bool]
+      # @param [Fixnum] service_id Service ID
+      # @param [Fixnum] metric_id Metric ID
+      def delete_metric(service_id, metric_id)
+        http_client.delete("/admin/api/services/#{service_id}/metrics/#{metric_id}")
+        true
+      end
+
+      # @api public
       # @return [Array<Hash>]
       # @param [Fixnum] service_id Service ID
       # @param [Fixnum] metric_id Metric ID

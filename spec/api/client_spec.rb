@@ -724,4 +724,15 @@ RSpec.describe ThreeScale::API::Client do
       expect(client.delete_service_feature(1000, 200)).to eq(true)
     end
   end
+
+  context '#delete_metric' do
+    let(:service_id) { 2000 }
+    let(:metric_id) { 1000 }
+    it do
+      expect(http_client).to receive(:delete)
+        .with("/admin/api/services/#{service_id}/metrics/#{metric_id}")
+        .and_return({})
+      expect(client.delete_metric(service_id, metric_id)).to eq(true)
+    end
+  end
 end
