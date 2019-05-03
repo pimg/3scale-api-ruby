@@ -299,6 +299,28 @@ RSpec.describe ThreeScale::API::Client do
     end
   end
 
+  context '#list_metric_limits' do
+    let(:plan_id) { 200 }
+    let(:metric_id) { 1000 }
+    let(:limit_0) { { 'id' => 0, 'metric_id' => metric_id, 'period' => 'eternity', 'value' => 1000 } }
+    let(:limit_1) { { 'id' => 1, 'metric_id' => metric_id, 'period' => 'year', 'value' => 1000 } }
+    let(:response_body) do
+      {
+        'limits' => [
+          { 'limit' => limit_0 },
+          { 'limit' => limit_1 }
+        ]
+      }
+    end
+
+    it do
+      expect(http_client).to receive(:get)
+        .with("/admin/api/application_plans/#{plan_id}/metrics/#{metric_id}/limits")
+        .and_return(response_body)
+      expect(client.list_metric_limits(plan_id, metric_id)).to eq([limit_0, limit_1])
+    end
+  end
+
   context '#create_application_plan_limit' do
     it do
       expect(http_client).to receive(:post)
