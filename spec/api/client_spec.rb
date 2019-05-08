@@ -230,6 +230,21 @@ RSpec.describe ThreeScale::API::Client do
     end
   end
 
+  context '#update_metric' do
+    let(:service_id) { 200 }
+    let(:metric_id) { 1000 }
+    let(:metric_attrs) { { 'unit' => '1' } }
+    let(:metric) { metric_attrs.merge('id' => metric_id) }
+    let(:response_body) { { 'metric' => metric } }
+
+    it do
+      expect(http_client).to receive(:put)
+        .with("/admin/api/services/#{service_id}/metrics/#{metric_id}", body: { metric: metric_attrs })
+        .and_return(response_body)
+      expect(client.update_metric(service_id, metric_id, metric_attrs)).to eq(metric)
+    end
+  end
+
   context '#list_methods' do
     it do
       expect(http_client).to receive(:get)

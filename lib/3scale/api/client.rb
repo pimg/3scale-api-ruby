@@ -236,6 +236,20 @@ module ThreeScale
       end
 
       # @api public
+      # @return [Hash]
+      # @param [Fixnum] service_id Service ID
+      # @param [Fixnum] metric_id Metric ID
+      # @param [Hash] attributes Metric Attributes
+      # @option attributes [String] :friendly_name Metric Name
+      # @option attributes [String] :unit Metric unit
+      # @option attributes [String] :description Metric description
+      def update_metric(service_id, metric_id, attributes)
+        response = http_client.put("/admin/api/services/#{service_id}/metrics/#{metric_id}",
+                                   body: { metric: attributes })
+        extract(entity: 'metric', from: response)
+      end
+
+      # @api public
       # @return [Bool]
       # @param [Fixnum] service_id Service ID
       # @param [Fixnum] metric_id Metric ID
