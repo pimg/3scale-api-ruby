@@ -221,6 +221,19 @@ RSpec.describe ThreeScale::API::Client do
     end
   end
 
+  context '#show_metric' do
+    let(:service_id) { 300 }
+    let(:metric_id) { 100 }
+    let(:metric) { { 'id' => metric_id } }
+    let(:response_body) { { 'metric' => metric } }
+
+    it do
+      expect(http_client).to receive(:get).with("/admin/api/services/#{service_id}/metrics/#{metric_id}")
+                                          .and_return(response_body)
+      expect(client.show_metric(service_id, metric_id)).to eq(metric)
+    end
+  end
+
   context '#create_metric' do
     it do
       expect(http_client).to receive(:post)
@@ -260,6 +273,48 @@ RSpec.describe ThreeScale::API::Client do
         .with('/admin/api/services/42/metrics/21/methods', body: { metric: {} })
         .and_return('method' => {})
       expect(client.create_method(42, 21, {})).to eq({})
+    end
+  end
+
+  context '#show_method' do
+    let(:service_id) { 300 }
+    let(:parent_id) { 100 }
+    let(:method_id) { 200 }
+    let(:method) { { 'id' => method_id } }
+    let(:response_body) { { 'method' => method } }
+
+    it do
+      expect(http_client).to receive(:get).with("/admin/api/services/#{service_id}/metrics/#{parent_id}/methods/#{method_id}")
+                                          .and_return(response_body)
+      expect(client.show_method(service_id, parent_id, method_id)).to eq(method)
+    end
+  end
+
+  context '#update_method' do
+    let(:service_id) { 300 }
+    let(:parent_id) { 100 }
+    let(:method_id) { 200 }
+    let(:method_attrs) { { 'description' => "some descr" } }
+    let(:method) { method_attrs.merge('id' => method_id) }
+    let(:response_body) { { 'method' => method } }
+
+    it do
+      expect(http_client).to receive(:put)
+        .with("/admin/api/services/#{service_id}/metrics/#{parent_id}/methods/#{method_id}", body: { metric: method_attrs })
+        .and_return(response_body)
+      expect(client.update_method(service_id, parent_id, method_id, method_attrs)).to eq(method)
+    end
+  end
+
+  context '#delete_method' do
+    let(:service_id) { 300 }
+    let(:parent_id) { 100 }
+    let(:method_id) { 200 }
+
+    it do
+      expect(http_client).to receive(:delete)
+        .with("/admin/api/services/#{service_id}/metrics/#{parent_id}/methods/#{method_id}")
+      expect(client.delete_method(service_id, parent_id, method_id)).to eq(true)
     end
   end
 
