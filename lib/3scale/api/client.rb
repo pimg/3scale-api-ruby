@@ -218,6 +218,15 @@ module ThreeScale
       end
 
       # @api public
+      # @param [Fixnum] service_id Service ID
+      # @param [Fixnum] id Metric ID 
+      # @return [Hash]
+      def show_metric(service_id, id)
+        response = http_client.get("/admin/api/services/#{service_id}/metrics/#{id}")
+        extract(entity: 'metric', from: response)
+      end
+
+      # @api public
       # @return [Array<Hash>]
       # @param [Fixnum] service_id Service ID
       def list_metrics(service_id)
@@ -236,12 +245,48 @@ module ThreeScale
       end
 
       # @api public
+      # @return [Hash]
+      # @param [Fixnum] service_id Service ID
+      # @param [Fixnum] metric_id Metric ID
+      # @param [Hash] attributes Metric Attributes
+      # @option attributes [String] :friendly_name Metric Name
+      # @option attributes [String] :unit Metric unit
+      # @option attributes [String] :description Metric description
+      def update_metric(service_id, metric_id, attributes)
+        response = http_client.put("/admin/api/services/#{service_id}/metrics/#{metric_id}",
+                                   body: { metric: attributes })
+        extract(entity: 'metric', from: response)
+      end
+
+      # @api public
       # @return [Bool]
       # @param [Fixnum] service_id Service ID
       # @param [Fixnum] metric_id Metric ID
       def delete_metric(service_id, metric_id)
         http_client.delete("/admin/api/services/#{service_id}/metrics/#{metric_id}")
         true
+      end
+
+      # @api public
+      # @param [Fixnum] service_id Service ID
+      # @param [Fixnum] id Parent metric ID 
+      # @param [Fixnum] id Method ID 
+      # @return [Hash]
+      def show_method(service_id, parent_id, id)
+        response = http_client.get("/admin/api/services/#{service_id}/metrics/#{parent_id}/methods/#{id}")
+        extract(entity: 'method', from: response)
+      end
+
+      # @api public
+      # @return [Hash]
+      # @param [Fixnum] service_id Service ID
+      # @param [Fixnum] parent_id Parent metric ID 
+      # @param [Fixnum] id Method ID
+      # @param [Hash] attributes Method Attributes
+      def update_method(service_id, parent_id, id, attributes)
+        response = http_client.put("/admin/api/services/#{service_id}/metrics/#{parent_id}/methods/#{id}",
+                                   body: { metric: attributes })
+        extract(entity: 'method', from: response)
       end
 
       # @api public
@@ -264,6 +309,17 @@ module ThreeScale
                                     body: { metric: attributes })
         extract(entity: 'method', from: response)
       end
+
+      # @api public
+      # @return [Bool]
+      # @param [Fixnum] service_id Service ID
+      # @param [Fixnum] parent_id Parent metric ID 
+      # @param [Fixnum] metric_id Metric ID
+      def delete_method(service_id, parent_id, id)
+        http_client.delete("/admin/api/services/#{service_id}/metrics/#{parent_id}/methods/#{id}")
+        true
+      end
+
 
       # @api public
       # @param [Fixnum] application_plan_id Application Plan ID
