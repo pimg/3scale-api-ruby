@@ -5,6 +5,16 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 
 ## [Unreleased]
 
+## [0.4.0] - 2019-05-13
+
+### Added
+- Delete metric
+- Show metric
+- Update metric
+- Show method
+- Update method
+- Delete method
+
 ## [0.3.0] - 2019-05-03
 
 ### Added
@@ -104,7 +114,8 @@ This file tries to follow recommendations of [Keep a CHANGELOG](http://keepachan
 - Application Plans List & Create
 - Usage Limits List, Create & Delete
 
-[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/3scale/3scale-api-ruby/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.4.0
 [0.3.0]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.3.0
 [0.2.0]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.2.0
 [0.1.9]: https://github.com/3scale/3scale-api-ruby/releases/tag/v0.1.9
