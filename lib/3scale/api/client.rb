@@ -139,7 +139,7 @@ module ThreeScale
       # @return [Hash]
       # @param [Fixnum] service_id Service ID
       # @param [String] environment. Must be 'sandbox' or 'production'
-      def proxy_config_list(service_id, environment='sandbox')
+      def proxy_config_list(service_id, environment = 'sandbox')
         response = http_client.get("/admin/api/services/#{service_id}/proxy/configs/#{environment}")
         extract(collection: 'proxy_configs', entity: 'proxy_config', from: response)
       end
@@ -148,7 +148,7 @@ module ThreeScale
       # @return [Hash]
       # @param [Fixnum] service_id Service ID
       # @param [String] environment. Must be 'sandbox' or 'production'
-      def proxy_config_latest(service_id, environment='sandbox')
+      def proxy_config_latest(service_id, environment = 'sandbox')
         response = http_client.get("/admin/api/services/#{service_id}/proxy/configs/#{environment}/latest")
         extract(entity: 'proxy_config', from: response)
       end
@@ -342,7 +342,6 @@ module ThreeScale
         true
       end
 
-
       # @api public
       # @param [Fixnum] application_plan_id Application Plan ID
       # @param [Fixnum] metric_id Metric ID
@@ -396,7 +395,7 @@ module ThreeScale
       # @return [Bool]
       # @param [Fixnum] service_id Service ID
       # @param [Fixnum] application_plan_id Application Plan ID
-      def delete_application_plan(service_id,application_plan_id)
+      def delete_application_plan(service_id, application_plan_id)
         http_client.delete("/admin/api/services/#{service_id}/application_plans/#{application_plan_id}")
         true
       end
@@ -438,7 +437,7 @@ module ThreeScale
       # @param [Hash] attributes Limit Attributes
       def update_application_plan_limit(application_plan_id, metric_id, limit_id, attributes)
         response = http_client.put("/admin/api/application_plans/#{application_plan_id}/metrics/#{metric_id}/limits/#{limit_id}",
-                                    body: { usage_limit: attributes })
+                                   body: { usage_limit: attributes })
         extract(entity: 'limit', from: response)
       end
 
@@ -554,7 +553,7 @@ module ThreeScale
         true
       end
 
-       # @api public
+      # @api public
       # @param [Fixnum] id Service ID
       # @return [Array<Hash>]
       def show_oidc(service_id)
@@ -612,7 +611,7 @@ module ThreeScale
       # @return [Hash]
       def create_service_feature(id, attributes)
         response = http_client.post("/admin/api/services/#{id}/features",
-                                    body: { feature: attributes})
+                                    body: { feature: attributes })
         extract(entity: 'feature', from: response)
       end
 

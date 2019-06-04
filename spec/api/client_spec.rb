@@ -31,9 +31,9 @@ RSpec.describe ThreeScale::API::Client do
   context '#update_service' do
     it do
       expect(http_client).to receive(:put)
-        .with('/admin/api/services/42', body: { service: { name: 'Updated Service'} })
-        .and_return('service' => {'id' => 42})
-      expect(client.update_service(42, { name: 'Updated Service' })).to eq({'id' => 42})
+        .with('/admin/api/services/42', body: { service: { name: 'Updated Service' } })
+        .and_return('service' => { 'id' => 42 })
+      expect(client.update_service(42, { name: 'Updated Service' })).to eq({ 'id' => 42 })
     end
   end
 
@@ -55,8 +55,8 @@ RSpec.describe ThreeScale::API::Client do
 
   context '#proxy_config_list' do
     let(:service_id) { '1001' }
-    let(:config_content) { {'id': 1} }
-    let(:config_list) { [{'proxy_config' => config_content }] }
+    let(:config_content) { { 'id': 1 } }
+    let(:config_list) { [{ 'proxy_config' => config_content }] }
     let(:config_list_result) { [config_content] }
 
     it 'default value is sandbox' do
@@ -76,7 +76,7 @@ RSpec.describe ThreeScale::API::Client do
 
   context '#proxy_config_latest' do
     let(:service_id) { '1001' }
-    let(:proxy_config) { {'id': 1} }
+    let(:proxy_config) { { 'id': 1 } }
 
     it 'default value is sandbox' do
       expect(http_client).to receive(:get)
@@ -95,7 +95,7 @@ RSpec.describe ThreeScale::API::Client do
 
   context '#show_proxy_config' do
     let(:service_id) { '1001' }
-    let(:proxy_config) { {'id': 1} }
+    let(:proxy_config) { { 'id': 1 } }
     let(:version) { 3 }
 
     it 'production proxy config show' do
@@ -108,7 +108,7 @@ RSpec.describe ThreeScale::API::Client do
 
   context '#promote_proxy_config' do
     let(:service_id) { '1001' }
-    let(:proxy_config) { {'id': 1} }
+    let(:proxy_config) { { 'id': 1 } }
     let(:version_from) { 3 }
     let(:version_to) { 4 }
 
@@ -378,7 +378,7 @@ RSpec.describe ThreeScale::API::Client do
   end
 
   context '#update_application_plan' do
-    let(:plan_attrs) { { 'name' => 'new_name'} }
+    let(:plan_attrs) { { 'name' => 'new_name' } }
     let(:plan_a) { { 'id' => 200 } }
     let(:response_body) { { 'application_plan' => plan_a } }
 
@@ -483,7 +483,7 @@ RSpec.describe ThreeScale::API::Client do
       expect(http_client).to receive(:delete)
         .with('/admin/api/services/42/application_plans/21')
         .and_return(nil)
-      expect(client.delete_application_plan(42,21)).to eq(true)
+      expect(client.delete_application_plan(42, 21)).to eq(true)
     end
   end
 
@@ -559,7 +559,7 @@ RSpec.describe ThreeScale::API::Client do
     it do
       expect(http_client).to receive(:get)
         .with('/admin/api/application_plans/10/metrics/20/pricing_rules')
-        .and_return('pricing_rules' => [{'pricing_rule' => pricingrule}])
+        .and_return('pricing_rules' => [{ 'pricing_rule' => pricingrule }])
       expect(client.list_pricingrules_per_metric(application_plan_id, metric_id)).to eq [pricingrule]
     end
   end
@@ -570,7 +570,7 @@ RSpec.describe ThreeScale::API::Client do
     it do
       expect(http_client).to receive(:get)
         .with('/admin/api/application_plans/10/pricing_rules')
-        .and_return('pricing_rules' => [{'pricing_rule' => pricingrule}])
+        .and_return('pricing_rules' => [{ 'pricing_rule' => pricingrule }])
       expect(client.list_pricingrules_per_application_plan(application_plan_id)).to eq [pricingrule]
     end
   end
@@ -589,11 +589,11 @@ RSpec.describe ThreeScale::API::Client do
   end
 
   context '#list_activedocs' do
-    let(:api_doc) { {id: '44' } }
+    let(:api_doc) { { id: '44' } }
     it do
       expect(http_client).to receive(:get)
         .with('/admin/api/active_docs')
-        .and_return('api_docs' => [{'api_doc' => api_doc}])
+        .and_return('api_docs' => [{ 'api_doc' => api_doc }])
       expect(client.list_activedocs).to eq [api_doc]
     end
   end
@@ -662,7 +662,7 @@ RSpec.describe ThreeScale::API::Client do
   context '#delete_application' do
     it do
       expect(http_client).to receive(:delete).with('/admin/api/accounts/1/applications/10')
-        .and_return(nil)
+                                             .and_return(nil)
       expect(client.delete_application(1, 10)).to eq(true)
     end
   end
@@ -673,7 +673,7 @@ RSpec.describe ThreeScale::API::Client do
 
     it do
       expect(http_client).to receive(:put).with('/admin/api/accounts/10/applications/100/decustomize_plan')
-        .and_return(plan_reponse)
+                                          .and_return(plan_reponse)
       expect(client.delete_application_plan_customization(10, 100)).to include(plan)
     end
   end
@@ -710,8 +710,8 @@ RSpec.describe ThreeScale::API::Client do
     it do
       expect(http_client).to receive(:patch)
         .with("/admin/api/services/#{service_id}/proxy/oidc_configuration", body: { oidc_configuration: oidc_configuration })
-        .and_return('oidc_configuration' => {'id' => 42})
-      expect(client.update_oidc(service_id, oidc_configuration)).to eq({'id' => 42})
+        .and_return('oidc_configuration' => { 'id' => 42 })
+      expect(client.update_oidc(service_id, oidc_configuration)).to eq({ 'id' => 42 })
     end
   end
 
@@ -781,7 +781,7 @@ RSpec.describe ThreeScale::API::Client do
   end
 
   context '#create_service_feature' do
-    let(:feature_attrs) { { 'name' => 'feature_a'} }
+    let(:feature_attrs) { { 'name' => 'feature_a' } }
     let(:feature_a) { { 'id' => 200 } }
     let(:response_body) { { 'feature' => feature_a } }
 
@@ -795,7 +795,7 @@ RSpec.describe ThreeScale::API::Client do
 
   context '#show_service_feature' do
     let(:feature_a) { { 'id' => 200 } }
-    let(:response_body) { { 'feature' => feature_a} }
+    let(:response_body) { { 'feature' => feature_a } }
     it do
       expect(http_client).to receive(:get)
         .with('/admin/api/services/1000/features/200')
@@ -805,7 +805,7 @@ RSpec.describe ThreeScale::API::Client do
   end
 
   context '#update_service_feature' do
-    let(:feature_attrs) { { 'name' => 'new_name'} }
+    let(:feature_attrs) { { 'name' => 'new_name' } }
     let(:feature_a) { { 'id' => 200 } }
     let(:response_body) { { 'feature' => feature_a } }
 
@@ -859,7 +859,7 @@ RSpec.describe ThreeScale::API::Client do
   end
 
   context '#create_policy_registry' do
-    let(:policy_attrs) { { 'name' => 'policy A'} }
+    let(:policy_attrs) { { 'name' => 'policy A' } }
     let(:policy_a) { { 'id' => 200 } }
     let(:response_body) { { 'policy' => policy_a } }
 
@@ -882,7 +882,7 @@ RSpec.describe ThreeScale::API::Client do
   end
 
   context '#update_policy_registry' do
-    let(:policy_attrs) { { 'name' => 'policy A'} }
+    let(:policy_attrs) { { 'name' => 'policy A' } }
     let(:policy_a) { { 'id' => 200 } }
     let(:response_body) { { 'policy' => policy_a } }
 
