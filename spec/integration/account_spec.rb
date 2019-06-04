@@ -1,4 +1,3 @@
-
 RSpec.describe 'Account API', type: :integration do
   include_context :integration_test_context
 
