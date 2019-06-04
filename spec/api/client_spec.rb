@@ -55,20 +55,22 @@ RSpec.describe ThreeScale::API::Client do
 
   context '#proxy_config_list' do
     let(:service_id) { '1001' }
-    let(:config_list) { [{'id': 1}] }
+    let(:config_content) { {'id': 1} }
+    let(:config_list) { [{'proxy_config' => config_content }] }
+    let(:config_list_result) { [config_content] }
 
     it 'default value is sandbox' do
       expect(http_client).to receive(:get)
         .with("/admin/api/services/#{service_id}/proxy/configs/sandbox")
-        .and_return('proxy' => config_list)
-      expect(client.proxy_config_list(service_id)).to eq(config_list)
+        .and_return('proxy_configs' => config_list)
+      expect(client.proxy_config_list(service_id)).to eq(config_list_result)
     end
 
     it 'production proxy config list' do
       expect(http_client).to receive(:get)
         .with("/admin/api/services/#{service_id}/proxy/configs/production")
-        .and_return('proxy' => config_list)
-      expect(client.proxy_config_list(service_id, 'production')).to eq(config_list)
+        .and_return('proxy_configs' => config_list)
+      expect(client.proxy_config_list(service_id, 'production')).to eq(config_list_result)
     end
   end
 
@@ -79,14 +81,14 @@ RSpec.describe ThreeScale::API::Client do
     it 'default value is sandbox' do
       expect(http_client).to receive(:get)
         .with("/admin/api/services/#{service_id}/proxy/configs/sandbox/latest")
-        .and_return('proxy' => proxy_config)
+        .and_return('proxy_config' => proxy_config)
       expect(client.proxy_config_latest(service_id)).to eq(proxy_config)
     end
 
     it 'production proxy config latest' do
       expect(http_client).to receive(:get)
         .with("/admin/api/services/#{service_id}/proxy/configs/production/latest")
-        .and_return('proxy' => proxy_config)
+        .and_return('proxy_config' => proxy_config)
       expect(client.proxy_config_latest(service_id, 'production')).to eq(proxy_config)
     end
   end

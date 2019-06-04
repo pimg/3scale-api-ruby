@@ -141,7 +141,7 @@ module ThreeScale
       # @param [String] environment. Must be 'sandbox' or 'production'
       def proxy_config_list(service_id, environment='sandbox')
         response = http_client.get("/admin/api/services/#{service_id}/proxy/configs/#{environment}")
-        extract(entity: 'proxy', from: response)
+        extract(collection: 'proxy_configs', entity: 'proxy_config', from: response)
       end
 
       # @api public
@@ -150,7 +150,7 @@ module ThreeScale
       # @param [String] environment. Must be 'sandbox' or 'production'
       def proxy_config_latest(service_id, environment='sandbox')
         response = http_client.get("/admin/api/services/#{service_id}/proxy/configs/#{environment}/latest")
-        extract(entity: 'proxy', from: response)
+        extract(entity: 'proxy_config', from: response)
       end
 
       # @api public
