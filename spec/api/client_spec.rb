@@ -93,6 +93,34 @@ RSpec.describe ThreeScale::API::Client do
     end
   end
 
+  context '#show_proxy_config' do
+    let(:service_id) { '1001' }
+    let(:proxy_config) { {'id': 1} }
+    let(:version) { 3 }
+
+    it 'production proxy config show' do
+      expect(http_client).to receive(:get)
+        .with("/admin/api/services/#{service_id}/proxy/configs/production/#{version}")
+        .and_return('proxy_config' => proxy_config)
+      expect(client.show_proxy_config(service_id, 'production', version)).to eq(proxy_config)
+    end
+  end
+
+  context '#promote_proxy_config' do
+    let(:service_id) { '1001' }
+    let(:proxy_config) { {'id': 1} }
+    let(:version_from) { 3 }
+    let(:version_to) { 4 }
+
+    it 'promote proxy config from sandbox to production' do
+      expect(http_client).to receive(:post)
+        .with("/admin/api/services/#{service_id}/proxy/configs/sandbox/#{version_from}/promote", body: { to: version_to })
+        .and_return('proxy_config' => proxy_config)
+
+      expect(client.promote_proxy_config(service_id, 'sandbox', version_from, version_to)).to eq(proxy_config)
+    end
+  end
+
   context '#list_applications' do
     it do
       expect(http_client).to receive(:get)

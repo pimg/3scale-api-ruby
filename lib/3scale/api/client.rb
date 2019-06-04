@@ -156,6 +156,28 @@ module ThreeScale
       # @api public
       # @return [Hash]
       # @param [Fixnum] service_id Service ID
+      # @param [String] environment. Must be 'sandbox' or 'production'
+      # @param [Fixnum] proxy configuration version
+      def show_proxy_config(service_id, environment, version)
+        response = http_client.get("/admin/api/services/#{service_id}/proxy/configs/#{environment}/#{version}")
+        extract(entity: 'proxy_config', from: response)
+      end
+
+      # @api public
+      # @return [Hash]
+      # @param [Fixnum] service_id Service ID
+      # @param [String] environment. Must be 'sandbox' or 'production'
+      # @param [Fixnum] proxy configuration version to promote
+      # @param [Fixnum] proxy configuration to which the specified proxy configuration will be promoted to
+      def promote_proxy_config(service_id, environment, version, to)
+        response = http_client.post("/admin/api/services/#{service_id}/proxy/configs/#{environment}/#{version}/promote",
+                                    body: { to: to })
+        extract(entity: 'proxy_config', from: response)
+      end
+
+      # @api public
+      # @return [Hash]
+      # @param [Fixnum] service_id Service ID
       def update_proxy(service_id, attributes)
         response = http_client.patch("/admin/api/services/#{service_id}/proxy",
                                      body: { proxy: attributes })
