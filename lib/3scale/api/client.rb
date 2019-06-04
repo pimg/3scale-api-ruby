@@ -241,7 +241,7 @@ module ThreeScale
 
       # @api public
       # @param [Fixnum] service_id Service ID
-      # @param [Fixnum] id Metric ID 
+      # @param [Fixnum] id Metric ID
       # @return [Hash]
       def show_metric(service_id, id)
         response = http_client.get("/admin/api/services/#{service_id}/metrics/#{id}")
@@ -291,8 +291,8 @@ module ThreeScale
 
       # @api public
       # @param [Fixnum] service_id Service ID
-      # @param [Fixnum] id Parent metric ID 
-      # @param [Fixnum] id Method ID 
+      # @param [Fixnum] id Parent metric ID
+      # @param [Fixnum] id Method ID
       # @return [Hash]
       def show_method(service_id, parent_id, id)
         response = http_client.get("/admin/api/services/#{service_id}/metrics/#{parent_id}/methods/#{id}")
@@ -302,7 +302,7 @@ module ThreeScale
       # @api public
       # @return [Hash]
       # @param [Fixnum] service_id Service ID
-      # @param [Fixnum] parent_id Parent metric ID 
+      # @param [Fixnum] parent_id Parent metric ID
       # @param [Fixnum] id Method ID
       # @param [Hash] attributes Method Attributes
       def update_method(service_id, parent_id, id, attributes)
@@ -335,7 +335,7 @@ module ThreeScale
       # @api public
       # @return [Bool]
       # @param [Fixnum] service_id Service ID
-      # @param [Fixnum] parent_id Parent metric ID 
+      # @param [Fixnum] parent_id Parent metric ID
       # @param [Fixnum] metric_id Metric ID
       def delete_method(service_id, parent_id, id)
         http_client.delete("/admin/api/services/#{service_id}/metrics/#{parent_id}/methods/#{id}")
@@ -642,6 +642,45 @@ module ThreeScale
       # @return [Boolean]
       def delete_service_feature(service_id, id)
         http_client.delete("/admin/api/services/#{service_id}/features/#{id}")
+        true
+      end
+
+      # @api public
+      # @return [Array<Hash>]
+      def list_policy_registry
+        response = http_client.get('/admin/api/registry/policies')
+        extract(collection: 'policies', entity: 'policy', from: response)
+      end
+
+      # @api public
+      # @param [Hash] attributes Policy Registry Attributes
+      # @return [Hash]
+      def create_policy_registry(attributes)
+        response = http_client.post('/admin/api/registry/policies', body: attributes)
+        extract(entity: 'policy', from: response)
+      end
+
+      # @api public
+      # @return [Hash]
+      # @param [Fixnum] id Policy Registry Id
+      def show_policy_registry(id)
+        response = http_client.get("/admin/api/registry/policies/#{id}")
+        extract(entity: 'policy', from: response)
+      end
+
+      # @api public
+      # @return [Hash]
+      # @param [Fixnum] id Policy Registry Id
+      # @param [Hash] attributes Policy Registry Attributes
+      def update_policy_registry(id, attributes)
+        response = http_client.put("/admin/api/registry/policies/#{id}", body: attributes)
+        extract(entity: 'policy', from: response)
+      end
+
+      # @api public
+      # @param [Fixnum] id Policy Registry Id
+      def delete_policy_registry(id)
+        http_client.delete("/admin/api/registry/policies/#{id}")
         true
       end
 

@@ -835,4 +835,70 @@ RSpec.describe ThreeScale::API::Client do
       expect(client.delete_metric(service_id, metric_id)).to eq(true)
     end
   end
+
+  context '#list_policy_registry' do
+    let(:policy_registry_a) { { 'id' => 1 } }
+    let(:policy_registry_b) { { 'id' => 2 } }
+    let(:policies) do
+      {
+        'policies' => [
+          {
+            'policy' => policy_registry_a
+          },
+          {
+            'policy' => policy_registry_b
+          }
+        ]
+      }
+    end
+    it do
+      expect(http_client).to receive(:get)
+        .with('/admin/api/registry/policies').and_return(policies)
+      expect(client.list_policy_registry).to match_array([policy_registry_a, policy_registry_b])
+    end
+  end
+
+  context '#create_policy_registry' do
+    let(:policy_attrs) { { 'name' => 'policy A'} }
+    let(:policy_a) { { 'id' => 200 } }
+    let(:response_body) { { 'policy' => policy_a } }
+
+    it do
+      expect(http_client).to receive(:post)
+        .with('/admin/api/registry/policies', body: policy_attrs)
+        .and_return(response_body)
+      expect(client.create_policy_registry(policy_attrs)).to eq(policy_a)
+    end
+  end
+
+  context '#show_policy_registry' do
+    let(:policy_a) { { 'id' => 200 } }
+    let(:response_body) { { 'policy' => policy_a } }
+    it do
+      expect(http_client).to receive(:get).with('/admin/api/registry/policies/200')
+                                          .and_return(response_body)
+      expect(client.show_policy_registry(200)).to eq(policy_a)
+    end
+  end
+
+  context '#update_policy_registry' do
+    let(:policy_attrs) { { 'name' => 'policy A'} }
+    let(:policy_a) { { 'id' => 200 } }
+    let(:response_body) { { 'policy' => policy_a } }
+
+    it do
+      expect(http_client).to receive(:put)
+        .with('/admin/api/registry/policies/200', body: policy_attrs)
+        .and_return(response_body)
+      expect(client.update_policy_registry(200, policy_attrs)).to eq(policy_a)
+    end
+  end
+
+  context '#delete_policy_registry' do
+    it do
+      expect(http_client).to receive(:delete)
+        .with('/admin/api/registry/policies/200').and_return(' ')
+      expect(client.delete_policy_registry(200)).to eq(true)
+    end
+  end
 end
