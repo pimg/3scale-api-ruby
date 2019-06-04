@@ -141,7 +141,7 @@ module ThreeScale
       # @param [String] environment. Must be 'sandbox' or 'production'
       def proxy_config_list(service_id, environment='sandbox')
         response = http_client.get("/admin/api/services/#{service_id}/proxy/configs/#{environment}")
-        extract(entity: 'proxy', from: response)
+        extract(collection: 'proxy_configs', entity: 'proxy_config', from: response)
       end
 
       # @api public
@@ -150,7 +150,29 @@ module ThreeScale
       # @param [String] environment. Must be 'sandbox' or 'production'
       def proxy_config_latest(service_id, environment='sandbox')
         response = http_client.get("/admin/api/services/#{service_id}/proxy/configs/#{environment}/latest")
-        extract(entity: 'proxy', from: response)
+        extract(entity: 'proxy_config', from: response)
+      end
+
+      # @api public
+      # @return [Hash]
+      # @param [Fixnum] service_id Service ID
+      # @param [String] environment. Must be 'sandbox' or 'production'
+      # @param [Fixnum] proxy configuration version
+      def show_proxy_config(service_id, environment, version)
+        response = http_client.get("/admin/api/services/#{service_id}/proxy/configs/#{environment}/#{version}")
+        extract(entity: 'proxy_config', from: response)
+      end
+
+      # @api public
+      # @return [Hash]
+      # @param [Fixnum] service_id Service ID
+      # @param [String] environment. Must be 'sandbox' or 'production'
+      # @param [Fixnum] proxy configuration version to promote
+      # @param [Fixnum] proxy configuration to which the specified proxy configuration will be promoted to
+      def promote_proxy_config(service_id, environment, version, to)
+        response = http_client.post("/admin/api/services/#{service_id}/proxy/configs/#{environment}/#{version}/promote",
+                                    body: { to: to })
+        extract(entity: 'proxy_config', from: response)
       end
 
       # @api public
