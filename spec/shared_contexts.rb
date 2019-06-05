@@ -31,7 +31,7 @@ RSpec.shared_context :integration_test_context do
     end
 
     @method_test = @apiclient.create_method(@service_test['id'], @hits_metric_test['id'],
-                                 'friendly_name' => SecureRandom.uuid, 'unit' => 'bar')
+                                            'friendly_name' => SecureRandom.uuid, 'unit' => 'bar')
   end
 
   after :context do

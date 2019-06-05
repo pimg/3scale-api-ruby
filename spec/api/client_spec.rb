@@ -31,9 +31,9 @@ RSpec.describe ThreeScale::API::Client do
   context '#update_service' do
     it do
       expect(http_client).to receive(:put)
-        .with('/admin/api/services/42', body: { service: { name: 'Updated Service'} })
-        .and_return('service' => {'id' => 42})
-      expect(client.update_service(42, { name: 'Updated Service' })).to eq({'id' => 42})
+        .with('/admin/api/services/42', body: { service: { name: 'Updated Service' } })
+        .and_return('service' => { 'id' => 42 })
+      expect(client.update_service(42, { name: 'Updated Service' })).to eq({ 'id' => 42 })
     end
   end
 
@@ -55,39 +55,69 @@ RSpec.describe ThreeScale::API::Client do
 
   context '#proxy_config_list' do
     let(:service_id) { '1001' }
-    let(:config_list) { [{'id': 1}] }
+    let(:config_content) { { 'id': 1 } }
+    let(:config_list) { [{ 'proxy_config' => config_content }] }
+    let(:config_list_result) { [config_content] }
 
     it 'default value is sandbox' do
       expect(http_client).to receive(:get)
         .with("/admin/api/services/#{service_id}/proxy/configs/sandbox")
-        .and_return('proxy' => config_list)
-      expect(client.proxy_config_list(service_id)).to eq(config_list)
+        .and_return('proxy_configs' => config_list)
+      expect(client.proxy_config_list(service_id)).to eq(config_list_result)
     end
 
     it 'production proxy config list' do
       expect(http_client).to receive(:get)
         .with("/admin/api/services/#{service_id}/proxy/configs/production")
-        .and_return('proxy' => config_list)
-      expect(client.proxy_config_list(service_id, 'production')).to eq(config_list)
+        .and_return('proxy_configs' => config_list)
+      expect(client.proxy_config_list(service_id, 'production')).to eq(config_list_result)
     end
   end
 
   context '#proxy_config_latest' do
     let(:service_id) { '1001' }
-    let(:proxy_config) { {'id': 1} }
+    let(:proxy_config) { { 'id': 1 } }
 
     it 'default value is sandbox' do
       expect(http_client).to receive(:get)
         .with("/admin/api/services/#{service_id}/proxy/configs/sandbox/latest")
-        .and_return('proxy' => proxy_config)
+        .and_return('proxy_config' => proxy_config)
       expect(client.proxy_config_latest(service_id)).to eq(proxy_config)
     end
 
     it 'production proxy config latest' do
       expect(http_client).to receive(:get)
         .with("/admin/api/services/#{service_id}/proxy/configs/production/latest")
-        .and_return('proxy' => proxy_config)
+        .and_return('proxy_config' => proxy_config)
       expect(client.proxy_config_latest(service_id, 'production')).to eq(proxy_config)
+    end
+  end
+
+  context '#show_proxy_config' do
+    let(:service_id) { '1001' }
+    let(:proxy_config) { { 'id': 1 } }
+    let(:version) { 3 }
+
+    it 'production proxy config show' do
+      expect(http_client).to receive(:get)
+        .with("/admin/api/services/#{service_id}/proxy/configs/production/#{version}")
+        .and_return('proxy_config' => proxy_config)
+      expect(client.show_proxy_config(service_id, 'production', version)).to eq(proxy_config)
+    end
+  end
+
+  context '#promote_proxy_config' do
+    let(:service_id) { '1001' }
+    let(:proxy_config) { { 'id': 1 } }
+    let(:version_from) { 3 }
+    let(:version_to) { 4 }
+
+    it 'promote proxy config from sandbox to production' do
+      expect(http_client).to receive(:post)
+        .with("/admin/api/services/#{service_id}/proxy/configs/sandbox/#{version_from}/promote", body: { to: version_to })
+        .and_return('proxy_config' => proxy_config)
+
+      expect(client.promote_proxy_config(service_id, 'sandbox', version_from, version_to)).to eq(proxy_config)
     end
   end
 
@@ -348,7 +378,7 @@ RSpec.describe ThreeScale::API::Client do
   end
 
   context '#update_application_plan' do
-    let(:plan_attrs) { { 'name' => 'new_name'} }
+    let(:plan_attrs) { { 'name' => 'new_name' } }
     let(:plan_a) { { 'id' => 200 } }
     let(:response_body) { { 'application_plan' => plan_a } }
 
@@ -453,7 +483,7 @@ RSpec.describe ThreeScale::API::Client do
       expect(http_client).to receive(:delete)
         .with('/admin/api/services/42/application_plans/21')
         .and_return(nil)
-      expect(client.delete_application_plan(42,21)).to eq(true)
+      expect(client.delete_application_plan(42, 21)).to eq(true)
     end
   end
 
@@ -529,7 +559,7 @@ RSpec.describe ThreeScale::API::Client do
     it do
       expect(http_client).to receive(:get)
         .with('/admin/api/application_plans/10/metrics/20/pricing_rules')
-        .and_return('pricing_rules' => [{'pricing_rule' => pricingrule}])
+        .and_return('pricing_rules' => [{ 'pricing_rule' => pricingrule }])
       expect(client.list_pricingrules_per_metric(application_plan_id, metric_id)).to eq [pricingrule]
     end
   end
@@ -540,7 +570,7 @@ RSpec.describe ThreeScale::API::Client do
     it do
       expect(http_client).to receive(:get)
         .with('/admin/api/application_plans/10/pricing_rules')
-        .and_return('pricing_rules' => [{'pricing_rule' => pricingrule}])
+        .and_return('pricing_rules' => [{ 'pricing_rule' => pricingrule }])
       expect(client.list_pricingrules_per_application_plan(application_plan_id)).to eq [pricingrule]
     end
   end
@@ -559,11 +589,11 @@ RSpec.describe ThreeScale::API::Client do
   end
 
   context '#list_activedocs' do
-    let(:api_doc) { {id: '44' } }
+    let(:api_doc) { { id: '44' } }
     it do
       expect(http_client).to receive(:get)
         .with('/admin/api/active_docs')
-        .and_return('api_docs' => [{'api_doc' => api_doc}])
+        .and_return('api_docs' => [{ 'api_doc' => api_doc }])
       expect(client.list_activedocs).to eq [api_doc]
     end
   end
@@ -632,7 +662,7 @@ RSpec.describe ThreeScale::API::Client do
   context '#delete_application' do
     it do
       expect(http_client).to receive(:delete).with('/admin/api/accounts/1/applications/10')
-        .and_return(nil)
+                                             .and_return(nil)
       expect(client.delete_application(1, 10)).to eq(true)
     end
   end
@@ -643,7 +673,7 @@ RSpec.describe ThreeScale::API::Client do
 
     it do
       expect(http_client).to receive(:put).with('/admin/api/accounts/10/applications/100/decustomize_plan')
-        .and_return(plan_reponse)
+                                          .and_return(plan_reponse)
       expect(client.delete_application_plan_customization(10, 100)).to include(plan)
     end
   end
@@ -680,8 +710,8 @@ RSpec.describe ThreeScale::API::Client do
     it do
       expect(http_client).to receive(:patch)
         .with("/admin/api/services/#{service_id}/proxy/oidc_configuration", body: { oidc_configuration: oidc_configuration })
-        .and_return('oidc_configuration' => {'id' => 42})
-      expect(client.update_oidc(service_id, oidc_configuration)).to eq({'id' => 42})
+        .and_return('oidc_configuration' => { 'id' => 42 })
+      expect(client.update_oidc(service_id, oidc_configuration)).to eq({ 'id' => 42 })
     end
   end
 
@@ -751,7 +781,7 @@ RSpec.describe ThreeScale::API::Client do
   end
 
   context '#create_service_feature' do
-    let(:feature_attrs) { { 'name' => 'feature_a'} }
+    let(:feature_attrs) { { 'name' => 'feature_a' } }
     let(:feature_a) { { 'id' => 200 } }
     let(:response_body) { { 'feature' => feature_a } }
 
@@ -765,7 +795,7 @@ RSpec.describe ThreeScale::API::Client do
 
   context '#show_service_feature' do
     let(:feature_a) { { 'id' => 200 } }
-    let(:response_body) { { 'feature' => feature_a} }
+    let(:response_body) { { 'feature' => feature_a } }
     it do
       expect(http_client).to receive(:get)
         .with('/admin/api/services/1000/features/200')
@@ -775,7 +805,7 @@ RSpec.describe ThreeScale::API::Client do
   end
 
   context '#update_service_feature' do
-    let(:feature_attrs) { { 'name' => 'new_name'} }
+    let(:feature_attrs) { { 'name' => 'new_name' } }
     let(:feature_a) { { 'id' => 200 } }
     let(:response_body) { { 'feature' => feature_a } }
 
@@ -861,6 +891,17 @@ RSpec.describe ThreeScale::API::Client do
     end
   end
 
+  context '#active_user' do 
+    let(:account_id) { '42' }
+    let(:user_id) { '1' }
+    it do 
+      expect(http_client).to receive(:put)
+        .with("/admin/api/accounts/#{account_id}/users/#{user_id}/activate")
+        .and_return('user' => {'id' => user_id})
+      expect(client.activate_user(account_id, user_id)).to eq({'id' => user_id})
+    end
+  end
+
   context '#list_account_applications' do 
     let(:account_id) { '1' }
     it do 
@@ -928,6 +969,72 @@ RSpec.describe ThreeScale::API::Client do
         .with("/admin/api/accounts/#{account_id}/applications/#{application_id}/resume")
         .and_return('application' => {'id' => application_id})
       expect(client.resume_application(account_id, application_id)).to eq({'id' => application_id})
+    end
+  end
+
+  context '#list_policy_registry' do
+    let(:policy_registry_a) { { 'id' => 1 } }
+    let(:policy_registry_b) { { 'id' => 2 } }
+    let(:policies) do
+      {
+        'policies' => [
+          {
+            'policy' => policy_registry_a
+          },
+          {
+            'policy' => policy_registry_b
+          }
+        ]
+      }
+    end
+    it do
+      expect(http_client).to receive(:get)
+        .with('/admin/api/registry/policies').and_return(policies)
+      expect(client.list_policy_registry).to match_array([policy_registry_a, policy_registry_b])
+    end
+  end
+
+  context '#create_policy_registry' do
+    let(:policy_attrs) { { 'name' => 'policy A' } }
+    let(:policy_a) { { 'id' => 200 } }
+    let(:response_body) { { 'policy' => policy_a } }
+
+    it do
+      expect(http_client).to receive(:post)
+        .with('/admin/api/registry/policies', body: policy_attrs)
+        .and_return(response_body)
+      expect(client.create_policy_registry(policy_attrs)).to eq(policy_a)
+    end
+  end
+
+  context '#show_policy_registry' do
+    let(:policy_a) { { 'id' => 200 } }
+    let(:response_body) { { 'policy' => policy_a } }
+    it do
+      expect(http_client).to receive(:get).with('/admin/api/registry/policies/200')
+                                          .and_return(response_body)
+      expect(client.show_policy_registry(200)).to eq(policy_a)
+    end
+  end
+
+  context '#update_policy_registry' do
+    let(:policy_attrs) { { 'name' => 'policy A' } }
+    let(:policy_a) { { 'id' => 200 } }
+    let(:response_body) { { 'policy' => policy_a } }
+
+    it do
+      expect(http_client).to receive(:put)
+        .with('/admin/api/registry/policies/200', body: policy_attrs)
+        .and_return(response_body)
+      expect(client.update_policy_registry(200, policy_attrs)).to eq(policy_a)
+    end
+  end
+
+  context '#delete_policy_registry' do
+    it do
+      expect(http_client).to receive(:delete)
+        .with('/admin/api/registry/policies/200').and_return(' ')
+      expect(client.delete_policy_registry(200)).to eq(true)
     end
   end
 end

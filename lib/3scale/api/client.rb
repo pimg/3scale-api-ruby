@@ -139,18 +139,40 @@ module ThreeScale
       # @return [Hash]
       # @param [Fixnum] service_id Service ID
       # @param [String] environment. Must be 'sandbox' or 'production'
-      def proxy_config_list(service_id, environment='sandbox')
+      def proxy_config_list(service_id, environment = 'sandbox')
         response = http_client.get("/admin/api/services/#{service_id}/proxy/configs/#{environment}")
-        extract(entity: 'proxy', from: response)
+        extract(collection: 'proxy_configs', entity: 'proxy_config', from: response)
       end
 
       # @api public
       # @return [Hash]
       # @param [Fixnum] service_id Service ID
       # @param [String] environment. Must be 'sandbox' or 'production'
-      def proxy_config_latest(service_id, environment='sandbox')
+      def proxy_config_latest(service_id, environment = 'sandbox')
         response = http_client.get("/admin/api/services/#{service_id}/proxy/configs/#{environment}/latest")
-        extract(entity: 'proxy', from: response)
+        extract(entity: 'proxy_config', from: response)
+      end
+
+      # @api public
+      # @return [Hash]
+      # @param [Fixnum] service_id Service ID
+      # @param [String] environment. Must be 'sandbox' or 'production'
+      # @param [Fixnum] proxy configuration version
+      def show_proxy_config(service_id, environment, version)
+        response = http_client.get("/admin/api/services/#{service_id}/proxy/configs/#{environment}/#{version}")
+        extract(entity: 'proxy_config', from: response)
+      end
+
+      # @api public
+      # @return [Hash]
+      # @param [Fixnum] service_id Service ID
+      # @param [String] environment. Must be 'sandbox' or 'production'
+      # @param [Fixnum] proxy configuration version to promote
+      # @param [Fixnum] proxy configuration to which the specified proxy configuration will be promoted to
+      def promote_proxy_config(service_id, environment, version, to)
+        response = http_client.post("/admin/api/services/#{service_id}/proxy/configs/#{environment}/#{version}/promote",
+                                    body: { to: to })
+        extract(entity: 'proxy_config', from: response)
       end
 
       # @api public
@@ -219,7 +241,7 @@ module ThreeScale
 
       # @api public
       # @param [Fixnum] service_id Service ID
-      # @param [Fixnum] id Metric ID 
+      # @param [Fixnum] id Metric ID
       # @return [Hash]
       def show_metric(service_id, id)
         response = http_client.get("/admin/api/services/#{service_id}/metrics/#{id}")
@@ -269,8 +291,8 @@ module ThreeScale
 
       # @api public
       # @param [Fixnum] service_id Service ID
-      # @param [Fixnum] id Parent metric ID 
-      # @param [Fixnum] id Method ID 
+      # @param [Fixnum] id Parent metric ID
+      # @param [Fixnum] id Method ID
       # @return [Hash]
       def show_method(service_id, parent_id, id)
         response = http_client.get("/admin/api/services/#{service_id}/metrics/#{parent_id}/methods/#{id}")
@@ -280,7 +302,7 @@ module ThreeScale
       # @api public
       # @return [Hash]
       # @param [Fixnum] service_id Service ID
-      # @param [Fixnum] parent_id Parent metric ID 
+      # @param [Fixnum] parent_id Parent metric ID
       # @param [Fixnum] id Method ID
       # @param [Hash] attributes Method Attributes
       def update_method(service_id, parent_id, id, attributes)
@@ -313,13 +335,12 @@ module ThreeScale
       # @api public
       # @return [Bool]
       # @param [Fixnum] service_id Service ID
-      # @param [Fixnum] parent_id Parent metric ID 
+      # @param [Fixnum] parent_id Parent metric ID
       # @param [Fixnum] metric_id Metric ID
       def delete_method(service_id, parent_id, id)
         http_client.delete("/admin/api/services/#{service_id}/metrics/#{parent_id}/methods/#{id}")
         true
       end
-
 
       # @api public
       # @param [Fixnum] application_plan_id Application Plan ID
@@ -374,7 +395,7 @@ module ThreeScale
       # @return [Bool]
       # @param [Fixnum] service_id Service ID
       # @param [Fixnum] application_plan_id Application Plan ID
-      def delete_application_plan(service_id,application_plan_id)
+      def delete_application_plan(service_id, application_plan_id)
         http_client.delete("/admin/api/services/#{service_id}/application_plans/#{application_plan_id}")
         true
       end
@@ -416,7 +437,7 @@ module ThreeScale
       # @param [Hash] attributes Limit Attributes
       def update_application_plan_limit(application_plan_id, metric_id, limit_id, attributes)
         response = http_client.put("/admin/api/application_plans/#{application_plan_id}/metrics/#{metric_id}/limits/#{limit_id}",
-                                    body: { usage_limit: attributes })
+                                   body: { usage_limit: attributes })
         extract(entity: 'limit', from: response)
       end
 
@@ -532,7 +553,7 @@ module ThreeScale
         true
       end
 
-       # @api public
+      # @api public
       # @param [Fixnum] id Service ID
       # @return [Array<Hash>]
       def show_oidc(service_id)
@@ -590,7 +611,7 @@ module ThreeScale
       # @return [Hash]
       def create_service_feature(id, attributes)
         response = http_client.post("/admin/api/services/#{id}/features",
-                                    body: { feature: attributes})
+                                    body: { feature: attributes })
         extract(entity: 'feature', from: response)
       end
 
@@ -635,13 +656,14 @@ module ThreeScale
       end
 
       # @api public
+      # @param [String] account_id Account ID
       # @param [String] email User email
       # @param [String] username User Username
       # @param [String] password User password
       # @param [Hash] attributes User Attributes
       # @return [Hash]
-      def create_user(attributes = {}, account_id:, email:, username:, password:, **rest)
-        body = { email: email, username: username, password: password }.merge(attributes).merge(rest)
+      def create_user(account_id:, email:, username:, password:, **rest)
+        body = { email: email, username: username, password: password }.merge(rest)
         response = http_client.post("/admin/api/accounts/#{account_id}/users", body: body)
         extract(entity: 'user', from: response)
       end
@@ -722,6 +744,45 @@ module ThreeScale
       def resume_application(account_id, application_id)
         response = http_client.put("/admin/api/accounts/#{account_id}/applications/#{application_id}/resume")
         extract(entity: 'application', from: response)
+      end
+
+      # @api public
+      # @return [Array<Hash>]
+      def list_policy_registry
+        response = http_client.get('/admin/api/registry/policies')
+        extract(collection: 'policies', entity: 'policy', from: response)
+      end
+
+      # @api public
+      # @param [Hash] attributes Policy Registry Attributes
+      # @return [Hash]
+      def create_policy_registry(attributes)
+        response = http_client.post('/admin/api/registry/policies', body: attributes)
+        extract(entity: 'policy', from: response)
+      end
+
+      # @api public
+      # @return [Hash]
+      # @param [Fixnum] id Policy Registry Id
+      def show_policy_registry(id)
+        response = http_client.get("/admin/api/registry/policies/#{id}")
+        extract(entity: 'policy', from: response)
+      end
+
+      # @api public
+      # @return [Hash]
+      # @param [Fixnum] id Policy Registry Id
+      # @param [Hash] attributes Policy Registry Attributes
+      def update_policy_registry(id, attributes)
+        response = http_client.put("/admin/api/registry/policies/#{id}", body: attributes)
+        extract(entity: 'policy', from: response)
+      end
+
+      # @api public
+      # @param [Fixnum] id Policy Registry Id
+      def delete_policy_registry(id)
+        http_client.delete("/admin/api/registry/policies/#{id}")
+        true
       end
 
       protected

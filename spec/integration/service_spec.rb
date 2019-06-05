@@ -78,7 +78,6 @@ RSpec.describe 'Service API', type: :integration do
                                  pattern: '/',
                                  metric_id: @metric_test['id'],
                                  delta: 2)
-
     end
 
     it 'mapping rule is deleted' do
@@ -88,8 +87,10 @@ RSpec.describe 'Service API', type: :integration do
 
   context '#show_mapping_rule' do
     subject(:show) { client.show_mapping_rule(@service_test['id'], @mapping_rule_test.fetch('id')) }
-    it { is_expected.to include('http_method' => 'PUT', 'pattern' => '/',
-                                'metric_id' => @metric_test['id'], 'delta' => 2) }
+    it {
+      is_expected.to include('http_method' => 'PUT', 'pattern' => '/',
+                             'metric_id' => @metric_test['id'], 'delta' => 2)
+    }
   end
 
   context '#list_metrics' do
@@ -134,8 +135,10 @@ RSpec.describe 'Service API', type: :integration do
   end
 
   context '#create_application_plan_limit' do
-    let(:create) { client.create_application_plan_limit(@application_plan_test['id'],
-                                                        @metric_test['id'], period: 'hour', value: 42) }
+    let(:create) {
+      client.create_application_plan_limit(@application_plan_test['id'],
+                                           @metric_test['id'], period: 'hour', value: 42)
+    }
 
     it do
       expect(create).to include('period' => 'hour', 'value' => 42)
@@ -148,7 +151,7 @@ RSpec.describe 'Service API', type: :integration do
   end
 
   context '#delete_service' do
-    let(:service_name) {  "3scale ruby test #{SecureRandom.uuid}" }
+    let(:service_name) { "3scale ruby test #{SecureRandom.uuid}" }
     let(:new_service) { client.create_service name: service_name }
 
     it 'service is deleted' do
